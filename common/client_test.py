@@ -5,8 +5,8 @@ from matplotlib import pyplot
 from matplotlib import dates
 
 
-host="192.168.1.146"
-port="8142"
+host="192.168.1.112"
+port="8079"
 
 ### write exception
 addr=host+":"+port
