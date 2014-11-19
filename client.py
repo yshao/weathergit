@@ -11,19 +11,18 @@ from PyQt4 import QtCore, QtGui
 # from PyQt4.QtCore import QString
 
 ### ui files
-from weather.gui.ui_main import Ui_WeatherClientMain
+from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
 from best.daqmanager.gui.plotterwidget import PlotterWidget
-from best.daqmanager.gui.configeditor import ConfigEditor
+from weathergit.gui.configeditor import ConfigEditor
 
 from best.common.utils import *
 from best.common.testutils import *
-from best.common.sqliteutils import *
 from best.common.configutils import *
 from best.common.fileutils import *
 from best.common.netutils import *
 
 ### py files
-
+from weathergit.gui.tasks.taskutils import *
 
 ### setup ###
 script_name = re.sub('\..*','',os.path.basename(sys.argv[0]))
@@ -88,14 +87,8 @@ class WeatherClient(QtGui.QMainWindow):
         self.ui.tabWidget.addTab(PlotterWidget(),"Plotter")
 
         self.ui.inTestConnection.clicked.connect(self.evt_testServerConnection)
-        self.ui.inOpenPostgre.clicked.connect(self.openPostgre)
-
-        # self.ui.inSend.clicked.connect(self.guiSend)
-        # self.ui.inStartDAQ.clicked.connect(self.guiStartDAQ)
-        # self.ui.inFtpSync.clicked.connect(self.guiFtpSync)
-        self.ui.menuConfigEditor.triggered.connect(self.openConfigEditor)
-
-        #self.ui.buttonSendCommand.setEnabled(0)
+        self.ui.actionDatabase_Admin.triggered.connect(self.openPostgre)
+        self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
         ### connect signals to commands ###
         # self.ui.inServiceOn.clicked.connect(self.gui_start_mirroring)
@@ -139,12 +132,12 @@ class WeatherClient(QtGui.QMainWindow):
     def openConfigEditor(self):
         ""
 
-        app1 = QtGui.QApplication(sys.argv)
+        # app1 = QtGui.QApplication(sys.argv)
         configeditor=ConfigEditor()
         configeditor.setWindowTitle("Config Editor")
         configeditor.resize(400, 300)
         configeditor.show()
-        sys.exit(app.exec_())
+        # sys.exit(app.exec_())
 
     def evt_testServerConnection(self):
         ""

@@ -114,10 +114,22 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionConfig_Editor"/>
+    <addaction name="actionDatabase_Admin"/>
    </widget>
    <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionConfig_Editor">
+   <property name="text">
+    <string>Config Editor</string>
+   </property>
+  </action>
+  <action name="actionDatabase_Admin">
+   <property name="text">
+    <string>Database Admin</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
