@@ -1,3 +1,4 @@
+import psycopg2
 from best.common.sysutils import Command
 
 def testConnection(ip):
@@ -9,7 +10,7 @@ def testConnection(ip):
     code,out,err =  command.run(timeout=3)
 
 
-import psycopg2
+
 import sys
 
 def testPostgreConnection():

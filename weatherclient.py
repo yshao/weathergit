@@ -1,5 +1,7 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
+from PyQt4.QtGui import QStandardItemModel
+
 sip.setapi('QString', 2)
 import webbrowser
 import os
@@ -16,13 +18,11 @@ from best.daqmanager.gui.plotterwidget import PlotterWidget
 from weathergit.gui.configeditor import ConfigEditor
 
 from best.common.utils import *
-from best.common.testutils import *
-from best.common.configutils import *
 from best.common.fileutils import *
 from best.common.netutils import *
 
 ### py files
-from weathergit.gui.tasks.taskutils import *
+# from weathergit.gui.tasks.taskutils import *
 
 ### setup ###
 script_name = re.sub('\..*','',os.path.basename(sys.argv[0]))
@@ -68,9 +68,10 @@ class WeatherClient(QtGui.QMainWindow):
         self.ui.setupUi(self)
 
         ### init ###
-        # self.logger = ClientLogger(self.ui.outLogBrowser)
-        LOGGER = ClientLogger(self.ui.outLogBrowser)
-        self.config = Config('config.xml')
+        self.initEnv()
+        self.logger = ClientLogger(self.ui.outLogBrowser)
+        self.config = Config("common/data.conf")
+
         port = self.config.get("SMAP_SERVER_PORT")
         host = self.config.get("SMAP_SERVER_HOST")
 
@@ -80,7 +81,7 @@ class WeatherClient(QtGui.QMainWindow):
         # self.ui.outSize.setText("Size of folder: "+ str(self.folder_calc_size()))
         self.ui.outPort.setText(port)
         self.ui.outHost.setText(host)
-        self.evt_testServerConnect()
+        # self.evt_testServerConnect()
         self.ui.statusbar.showMessage("Config initialized")
 
         #--- inputs group ---
@@ -108,10 +109,11 @@ class WeatherClient(QtGui.QMainWindow):
 
         exit=QtGui.QAction(self)
 
-    def selectFile(self):   #Open a dialog to locate the sqlite file and some more...
+    def selectFile(self,*items):   #Open a dialog to locate the sqlite file and some more...
         path = QtGui.QFileDialog.getOpenFileName(None,QtCore.QString.fromLocal8Bit("Select database:"),"*.sqlite")
         if path:
-            self.database = path # To make possible cancel the FileDialog and continue loading a predefined db
+            for i in items.iteritems():
+                i = path # To make possible cancel the FileDialog and continue loading a predefined db
         self.openDBFile()
 
 
@@ -125,8 +127,18 @@ class WeatherClient(QtGui.QMainWindow):
 
 
     ### event handler methods###
+    def initEnv(self):
+        """"""
+        # check postgre installed
+
+
+
     def openPostgre(self):
         ""
+        # cmd=Command()
+        # cmd.run()
+        cmd="C:\\Program Files\\PostgreSQL\\9.3\\bin\\pgAdmin3.exe"
+        subprocess.call([cmd])
 
 
     def openConfigEditor(self):
@@ -146,14 +158,14 @@ class WeatherClient(QtGui.QMainWindow):
 
     ### methods and algorithm ###
 
-    def send_config(self):
+    def populate_uuids(self):
         ""
+        uuidList=[]
+        for i in self.config["uuid"].iteritems():
+            uuidList.append(i)
 
-    def start_mirroring(self):
-        ""
-
-    def start_processing(self):
-        ""
+        model=QStandardItemModel(uuidList)
+        self.ui.inUUIDList.setModel(model)
 
 
 if __name__ == '__main__':

@@ -8,16 +8,18 @@ class Omega(SmapDriver):
         self.rate = float(opts.get('Rate', 1))
         ADC.setup()
 
-        self.add_timeseries('/soil_temp', 'V', data_type="double")
-        self.add_timeseries('/supply_volt', 'V', data_type="double")
+        self.add_timeseries('/tempLO', 'mV', data_type="double")
+        self.add_timeseries('/tempHI', 'mV', data_type="double")
+
 
     def start(self):
         # call self.read every self.rate seconds
         periodicSequentialCall(self.read).start(self.rate)
 
     def read(self):
-        temp = ADC.read("AIN2") * 1.8
-        supply= ADC.read("AIN3") * 1.8
+        voltageHI = ADC.read("AIN0") * 1800 #1.8V
+        voltageLO = ADC.read("AIN1") * 1800 #1.8V
 
-        self.add('/soil_temp',temp)
-        self.add('/supply_volt',supply)
+        # print voltage
+        self.add('/tempLO',voltageLO)
+        self.add('/tempHI',voltageHI)

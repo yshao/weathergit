@@ -2,6 +2,7 @@ import sys
 import socket
 import time
 import logging
+import re
 
 from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
@@ -70,6 +71,20 @@ from smap.driver import SmapDriver
 #     }
 
 
+GARMIN_UNTS={
+            'utc':'',
+            'longitude':'deg E',
+            'latitude':'deg N',
+            'altitude':'mm',
+            'geoid':'M',
+            'fix':'',
+            'speed':'M',
+            'tracking_angle':'M',
+            'magnetic_variation':'',
+
+
+}
+
 from nmea import NMEAReceiver as GPSProtocolBase
 from twisted.python import log, usage
 
@@ -108,37 +123,30 @@ class GarminSerial(SmapDriver):
             # '\n'.join(map(lambda n: '  %s = %s' % tuple(n), zip(('utc', 'lon', 'lat', 'fix', 'sat', 'hdp', 'alt', 'geo', 'dgp'), map(repr, args)))))
             na=dict(zip(('utc', 'lon', 'lat', 'fix', 'sat', 'hdp', 'alt', 'geo', 'dgp'), map(repr, args)))
 
-
-            print na
-            # print "AA"
-            # print args
-            # print zip(('utc', 'lon', 'lat', 'fix', 'sat', 'hdp', 'alt', 'geo', 'dgp'), map(repr, args))
-            # args=dict((y, x) for x, y in args)
             data={}
             data['utc']=na['utc']
-            # data['fix']=na['fix']
+            data['longitude']=na['lon']
+            data['latitude']=na['lat']
+            data['altitude']=na['alt']
+            data['geoid']=na['geo']
+            data['fix']=na['fix']
 
 
-            self.upload(data)
+            self.upload(data,'gga')
 
 
         def handle_positiontime(self, *args):
             """"""
-            # log.msg('positiontime:\n' +
-            # '\n'.join(map(lambda n: '  %s = %s' % tuple(n), zip(('lat', 'lon', 'spd', 'cor', 'utc', 'utcd', 'mag'), map(repr, args)))))
             na=dict(zip(('lat', 'lon', 'spd', 'cor', 'utc', 'utcd', 'mag'), map(repr, args)))
-            print na
-            # print "AA"
-            # print args
-            # args=dict((y, x) for x, y in args)
+
 
             data={}
-            # data['speed']=na['spd']
-            data['utd']=na['utc']
-            # data['utcd']=na['utcd']
-            # data['magvar']=na['mag']
+            data['speed']=na['spd']
+            # data['tacking_angle']=na['cor']
+            data['magnetic_variation']=na['mag']
 
-            self.upload(data)
+
+            self.upload(data,'rmc')
 
 
         # def handle_activesatellites(self,*args):
@@ -156,50 +164,22 @@ class GarminSerial(SmapDriver):
         #     data['vdop']=na['vdop']
 
 
-            self.upload(data)
+            # self.upload(data,'na')
 
 
-        def upload(self,data):
-            print data
+        def upload(self,data,reg):
             for k,v in data.iteritems():
                 ts = int(time.time())
-                val = float(v.replace("'",''))
-                path = 'gps/'+k
-                unit = "deg"
+                num=re.findall(r"[-+]?\d*\.\d+|\d+", v)
+                # print num
+                val = float(num[0])
+                path = 'garmin0/'+k
+                unit = GARMIN_UNTS[k]
 
                 if not self.inst.lookup(path):
                     self.inst.add_timeseries(path, unit, data_type='double')
 
                 self.inst.add(path,ts,val)
-
-
-
-        # def process(self, line):
-        #     fields = line.split(',')
-        #     reg = fields[0][1:]
-        #     def proc_field(f):
-        #         v = f.split('=')
-        #         return (v[0], (v[1][:-1], v[1][-1]))
-        #     data = dict(map(proc_field, fields[1:]))
-        #
-        #     if VAISALA_POINTS.has_key(reg):
-        #         ts = int(time.time())
-        #         point = VAISALA_POINTS[reg][0]
-        #         # create the point in the smap tree if necessary
-        #         for k,v in VAISALA_POINTS[reg][1].iteritems():
-        #             unit = VAISALA_UNITS[reg][data[v[0]][1]]
-        #             path = '/%s/%s' % (point, k)
-        #             if not self.inst.lookup(path):
-        #                 self.inst.add_timeseries(path, unit, data_type='double')
-        #
-        #             val_ = float(data.get(v[0])[0])
-        #             min_ = data.get(v[1], None)
-        #             if min_ != None: min_ = min_[0]
-        #             max_ = data.get(v[2], None)
-        #             if max_ != None: max_ = max_[0]
-        #             self.inst.add(path, ts, val_)
-
-
 
     def setup(self, opts):
         self.port = opts.get('Port')
@@ -207,7 +187,7 @@ class GarminSerial(SmapDriver):
         self.set_metadata('/', {
             'Extra/Driver' : 'garmin.GarminSerial',
             'Instrument/Manufacturer' : 'Garmin',
-            'Instrument/Model' : '' })
+            'Instrument/Model' : '18xLVC' })
 
 
         self.serialPort=opts.get('SerialPort')

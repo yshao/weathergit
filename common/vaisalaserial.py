@@ -118,8 +118,6 @@ class VaisalaSerial(SmapDriver):
 
 
     def setup(self, opts):
-        # self.host = opts.get('Address')
-        # self.port = int(opts.get('Port', 4660))
         self.port = opts.get('Port')
         self.log = logging.getLogger('VaisalaSerial')
         self.set_metadata('/', {

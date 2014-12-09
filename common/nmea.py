@@ -64,7 +64,7 @@ class NMEAReceiver(basic.LineReceiver):
     convert_dates_before_y2k = 1
 
     def lineReceived(self, line):
-        print line
+        # print line
         if not line.startswith('$'):
             if self.ignore_invalid_sentence:
                 return
