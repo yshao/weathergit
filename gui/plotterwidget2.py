@@ -94,17 +94,17 @@ class PlotterDialog(QtGui.QDialog):
 
 
 ### test
-from best.common.sqliteutils import DaqDB
-conn=DaqDB("../daq.db").get_connection()
+# from best.common.sqliteutils import DaqDB
+# conn=DaqDB("../daq.db").get_connection()
 
-import random
-from matplotlib.figure import Figure
-# create the GUI application
-app = QtGui.QApplication(sys.argv)
-# instantiate the main window
-dmw = PlotterDialog()
-# show it
-dmw.show()
-# start the Qt main loop execution, exiting from this script
-# with the same return code of Qt application
-sys.exit(app.exec_())
+# import random
+# from matplotlib.figure import Figure
+# # create the GUI application
+# app = QtGui.QApplication(sys.argv)
+# # instantiate the main window
+# dmw = PlotterDialog()
+# # show it
+# dmw.show()
+# # start the Qt main loop execution, exiting from this script
+# # with the same return code of Qt application
+# sys.exit(app.exec_())

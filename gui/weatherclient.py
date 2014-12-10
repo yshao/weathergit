@@ -1,8 +1,8 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
-from PyQt4.QtGui import QStandardItemModel
+from PyQt4.QtGui import QStandardItemModel, QStandardItem
 
-sip.setapi('QString', 2)
+# sip.setapi('QString', 2)
 import webbrowser
 import os
 import re
@@ -13,9 +13,15 @@ from PyQt4 import QtCore, QtGui
 # from PyQt4.QtCore import QString
 
 ### ui files
+from common.dataclient import DataClient
+from weathergit.gui.plotterwidget import PlotterWidget
+from common.dbconn import DbConn
+from gui.matplotwidget import MatplotlibWidget
+from gui.mplwidget import MplWidget
 from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
-from best.daqmanager.gui.plotterwidget import PlotterWidget
-from weathergit.gui.configeditor import ConfigEditor
+from weathergit.gui.plotterwidget2 import PlotterDialog
+
+# from weathergit.gui.configeditor import ConfigEditor
 
 from best.common.utils import *
 from best.common.fileutils import *
@@ -31,7 +37,6 @@ starting_dir = os.getcwd()
 start_message="DataMan"
 logger=create_logger(script_name,start_message)
 
-DATA_DIR="c:/test_station/Demo/Data"
 
 class ClientLogger:
     def __init__(self,gui_logger):
@@ -51,45 +56,54 @@ class ClientLogger:
 
 
 LOGGER=""
-### main gui ###
-# class DAQManager(QtGui.QMainWindow):
-#     ### connects widgets and signals ###
-#     def __init__(self):
-#         super(DAQManager, self).__init__()
-#         self.ui = Ui_DAQManager()
-#         self.ui.setupUi(self)
-
 
 class WeatherClient(QtGui.QMainWindow):
     ### connects widgets and signals ###
     def __init__(self):
+        """"""
         super(WeatherClient, self).__init__()
         self.ui = Ui_WeatherClientMain()
         self.ui.setupUi(self)
 
+        # self.ui.mplWidget=MatplotlibWidget()
+        # self.ui.mplWidget.show()
+
+    def setConfig(self,config):
+        """"""
+        ### meta data connection
+        login={}
+        login['dbname']=config['dbname']
+        login['user']=config["user"]
+        login['password']=config['password']
+        login['host']=config['host']
+        conn=DbConn(login)
+        self.uuid=conn.get_uuid()
+
+        ### time series db connection
+        login['host']=config['smap_server_host']
+        login['port']=config["smap_server_port"]
+
+        self.datac=DataClient(login)
+
         ### init ###
         self.initEnv()
         self.logger = ClientLogger(self.ui.outLogBrowser)
-        self.config = Config("common/data.conf")
+        self.config = config
 
-        port = self.config.get("SMAP_SERVER_PORT")
-        host = self.config.get("SMAP_SERVER_HOST")
 
         ### gui init ###
         #--- Config Group ---
-        # self.ui.outServiceOn.setText("Off")
-        # self.ui.outSize.setText("Size of folder: "+ str(self.folder_calc_size()))
-        self.ui.outPort.setText(port)
-        self.ui.outHost.setText(host)
+        self.ui.outPort.setText(self.config["smap_server_port"])
+        self.ui.outHost.setText(self.config["smap_server_host"])
         # self.evt_testServerConnect()
         self.ui.statusbar.showMessage("Config initialized")
 
         #--- inputs group ---
-        self.ui.tabWidget.addTab(PlotterWidget(),"Plotter")
+        self.ui.tabWidget.addTab(PlotterWidget(self),"Plotter")
 
         self.ui.inTestConnection.clicked.connect(self.evt_testServerConnection)
         self.ui.actionDatabase_Admin.triggered.connect(self.openPostgre)
-        self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
+        # self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
         ### connect signals to commands ###
         # self.ui.inServiceOn.clicked.connect(self.gui_start_mirroring)
@@ -106,8 +120,10 @@ class WeatherClient(QtGui.QMainWindow):
         # self.ui.buttonSendCommand.clicked.connect(self.send_command)
         # self.ui.buttonSync.clicked.connect(self.sync)
 
+        # exit=QtGui.QAction(self)
 
-        exit=QtGui.QAction(self)
+        self.populate_uuids()
+
 
     def selectFile(self,*items):   #Open a dialog to locate the sqlite file and some more...
         path = QtGui.QFileDialog.getOpenFileName(None,QtCore.QString.fromLocal8Bit("Select database:"),"*.sqlite")
@@ -145,10 +161,10 @@ class WeatherClient(QtGui.QMainWindow):
         ""
 
         # app1 = QtGui.QApplication(sys.argv)
-        configeditor=ConfigEditor()
-        configeditor.setWindowTitle("Config Editor")
-        configeditor.resize(400, 300)
-        configeditor.show()
+        # configeditor=ConfigEditor()
+        # configeditor.setWindowTitle("Config Editor")
+        # configeditor.resize(400, 300)
+        # configeditor.show()
         # sys.exit(app.exec_())
 
     def evt_testServerConnection(self):
@@ -156,16 +172,44 @@ class WeatherClient(QtGui.QMainWindow):
 
         return True
 
+
+    # def evt_item
     ### methods and algorithm ###
 
     def populate_uuids(self):
         ""
-        uuidList=[]
-        for i in self.config["uuid"].iteritems():
-            uuidList.append(i)
+        self.selUUIDList=[]
 
-        model=QStandardItemModel(uuidList)
+        keys=self.uuid.keys()
+
+        model=QStandardItemModel()
+
+        def on_item_changed(item):
+            i = 0
+            list=[]
+            while model.item(i):
+                if not model.item(i).checkState():
+                    ""
+                    # return
+                else:
+                    list.append(model.item(i).text())
+                i += 1
+
+            # print list
+            self.UUIDList=list
+
+
+        for key in keys:
+            # print key
+            name=self.uuid[key]['Path']
+            item = QStandardItem(key+' - '+name)
+            item.setCheckable(True)
+            model.appendRow(item)
+
+
+        model.itemChanged.connect(lambda: on_item_changed(self.selUUIDList))
         self.ui.inUUIDList.setModel(model)
+
 
 
 if __name__ == '__main__':

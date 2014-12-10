@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui\weatherclientmain.ui'
 #
-# Created: Thu Nov 20 16:13:33 2014
+# Created: Tue Dec 09 15:32:14 2014
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,8 +29,8 @@ class Ui_WeatherClientMain(object):
         WeatherClientMain.resize(800, 600)
         self.centralwidget = QtGui.QWidget(WeatherClientMain)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.gridLayout_2 = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.formLayout = QtGui.QFormLayout(self.groupBox)
@@ -62,7 +62,10 @@ class Ui_WeatherClientMain(object):
         self.label_3 = QtGui.QLabel(self.groupBox)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.formLayout.setWidget(6, QtGui.QFormLayout.LabelRole, self.label_3)
-        self.verticalLayout.addWidget(self.groupBox)
+        self.gridLayout_2.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.outLogBrowser = QtGui.QTextBrowser(self.centralwidget)
+        self.outLogBrowser.setObjectName(_fromUtf8("outLogBrowser"))
+        self.gridLayout_2.addWidget(self.outLogBrowser, 2, 0, 1, 1)
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.tab = QtGui.QWidget()
@@ -91,10 +94,10 @@ class Ui_WeatherClientMain(object):
         self.label_6.setObjectName(_fromUtf8("label_6"))
         self.gridLayout.addWidget(self.label_6, 1, 2, 1, 1)
         self.tabWidget.addTab(self.tab, _fromUtf8(""))
-        self.verticalLayout.addWidget(self.tabWidget)
-        self.outLogBrowser = QtGui.QTextBrowser(self.centralwidget)
-        self.outLogBrowser.setObjectName(_fromUtf8("outLogBrowser"))
-        self.verticalLayout.addWidget(self.outLogBrowser)
+        self.gridLayout_2.addWidget(self.tabWidget, 1, 0, 1, 1)
+        self.mplWidget = QtGui.QWidget(self.centralwidget)
+        self.mplWidget.setObjectName(_fromUtf8("mplWidget"))
+        self.gridLayout_2.addWidget(self.mplWidget, 1, 1, 1, 1)
         WeatherClientMain.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(WeatherClientMain)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))

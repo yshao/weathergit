@@ -8,14 +8,18 @@ from PyQt4 import QtGui
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 
 # Matplotlib Figure object
-from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 
 class MplCanvas(FigureCanvas):
     """Class to represent the FigureCanvas widget"""
     def __init__(self):
         # setup Matplotlib Figure and Axis
-        self.fig = Figure()
+        self.fig = plt.Figure()
         self.ax = self.fig.add_subplot(111)
+        self.ax.set_title('title')
+        self.ax.set_xlabel('x')
+        self.ax.set_ylabel('y')
+
 
         # initialization of the canvas
         FigureCanvas.__init__(self, self.fig)
@@ -25,8 +29,6 @@ class MplCanvas(FigureCanvas):
                                    QtGui.QSizePolicy.Expanding)
         # notify the system of updated policy
         FigureCanvas.updateGeometry(self)
-    def get_canvas(self):
-        return self.ax
 
 
 
@@ -44,5 +46,14 @@ class MplWidget(QtGui.QWidget):
         # set the layout to the vertical box
         self.setLayout(self.vbl)
 
-    def get_canvas(self):
-        return self.canvas.get_canvas()
+    # def get_canvas(self):
+    #     return self.canvas.get_canvas()
+
+    def update_labels(self,title,xLabel,yLabel):
+        """"""
+        self.canvas.set_window_title(title)
+        # self.canvas.fig.set_label("Fig")
+        self.canvas.ax.set_xlabel(xLabel)
+        self.canvas.ax.set_ylabel(yLabel)
+        self.canvas.ax.set_title(title)
+

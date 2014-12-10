@@ -18,6 +18,7 @@ uuid = [
 ]
 data = c.data_uuid(uuid, start, end)
 
+c.data
 
 from matplotlib import pyplot, dates
 
@@ -26,3 +27,15 @@ for d in data:
                    tz='America/Denver')
 
 pyplot.show()
+
+class DataClient(object):
+    def __init__(self,login):
+        """"""
+        self.c = SmapClient("http://%(host)s:%(port)s" % login)
+
+
+    def get_data(self,start,end,uuid):
+        start = dtutil.dt2ts(dtutil.strptime_tz(startTime, "%m-%d-%Y"))
+        end   = dtutil.dt2ts(dtutil.strptime_tz(endTime, "%m-%d-%Y"))
+        return self.c.data_uuid(uuid, start, end)
+
