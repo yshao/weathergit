@@ -1,8 +1,9 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
 from PyQt4.QtGui import QStandardItemModel, QStandardItem
+from gui.tasks.TestServerConnectionTask import TestServerConnectionTask
 
-# sip.setapi('QString', 2)
+sip.setapi('QString', 2)
 import webbrowser
 import os
 import re
@@ -10,7 +11,6 @@ import sys
 import threading
 
 from PyQt4 import QtCore, QtGui
-# from PyQt4.QtCore import QString
 
 ### ui files
 from common.dataclient import DataClient
@@ -19,7 +19,6 @@ from common.dbconn import DbConn
 from gui.matplotwidget import MatplotlibWidget
 from gui.mplwidget import MplWidget
 from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
-from weathergit.gui.plotterwidget2 import PlotterDialog
 
 # from weathergit.gui.configeditor import ConfigEditor
 
@@ -42,20 +41,18 @@ class ClientLogger:
     def __init__(self,gui_logger):
         self.gui_logger=gui_logger
 
-    def log_info(self,txt):
+    def info(self,txt):
         self.gui_logger.append(txt)
         # logger.info(txt)
 
-    def log_error(self,txt):
+    def error(self,txt):
         self.gui_logger.append(txt)
         # logger.error(txt)
 
-    def log_warn(self,txt):
+    def warn(self,txt):
         self.gui_logger.append(txt)
         # logger.warn(txt)
 
-
-LOGGER=""
 
 class WeatherClient(QtGui.QMainWindow):
     ### connects widgets and signals ###
@@ -64,9 +61,8 @@ class WeatherClient(QtGui.QMainWindow):
         super(WeatherClient, self).__init__()
         self.ui = Ui_WeatherClientMain()
         self.ui.setupUi(self)
+        self.ui.outSMAPStatus.setText("Unknown")
 
-        # self.ui.mplWidget=MatplotlibWidget()
-        # self.ui.mplWidget.show()
 
     def setConfig(self,config):
         """"""
@@ -99,9 +95,9 @@ class WeatherClient(QtGui.QMainWindow):
         self.ui.statusbar.showMessage("Config initialized")
 
         #--- inputs group ---
-        self.ui.tabWidget.addTab(PlotterWidget(self),"Plotter")
+        self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
 
-        self.ui.inTestConnection.clicked.connect(self.evt_testServerConnection)
+        self.ui.inTestConnection.clicked.connect(self.testServerConnection)
         self.ui.actionDatabase_Admin.triggered.connect(self.openPostgre)
         # self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
@@ -167,24 +163,24 @@ class WeatherClient(QtGui.QMainWindow):
         # configeditor.show()
         # sys.exit(app.exec_())
 
-    def evt_testServerConnection(self):
+    def testServerConnection(self):
         ""
+        task=TestServerConnectionTask(self,self.logger,self.ui.cSMAP)
+        result=task.run()
 
-        return True
+        return result
 
 
-    # def evt_item
     ### methods and algorithm ###
 
     def populate_uuids(self):
         ""
-        self.selUUIDList=[]
-
         keys=self.uuid.keys()
+        # self.selUUIDList=[]
 
         model=QStandardItemModel()
 
-        def on_item_changed(item):
+        def on_item_changed():
             i = 0
             list=[]
             while model.item(i):
@@ -195,19 +191,17 @@ class WeatherClient(QtGui.QMainWindow):
                     list.append(model.item(i).text())
                 i += 1
 
-            # print list
             self.UUIDList=list
 
 
         for key in keys:
-            # print key
             name=self.uuid[key]['Path']
             item = QStandardItem(key+' - '+name)
             item.setCheckable(True)
             model.appendRow(item)
 
 
-        model.itemChanged.connect(lambda: on_item_changed(self.selUUIDList))
+        model.itemChanged.connect(lambda: on_item_changed())
         self.ui.inUUIDList.setModel(model)
 
 

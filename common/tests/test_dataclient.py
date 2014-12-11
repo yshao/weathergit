@@ -12,8 +12,8 @@ class TestDataClient(unittest.TestCase):
 
         self.d=DataClient(login)
 
-    # def testGetData(self):
-    #     self.d.get_data()
+    def testGetData(self):
+        self.d.get_data()
 
 
 

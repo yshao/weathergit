@@ -1,63 +1,20 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
-# sip.setapi('QString', 2)
+sip.setapi('QString', 2)
 import webbrowser
-import os
-import re
-import sys
-import threading
-from inspect import stack
-from threading import Thread
 from PyQt4 import QtCore, QtGui, QtXml
 ### ui files
 from PyQt4.QtGui import QApplication
 from ui_plotterwidget import Ui_PlotterWidget
 from best.common.utils import *
-from best.common.testutils import *
-from best.common.sqliteutils import *
-from best.common.configutils import *
-from best.common.fileutils import *
 from best.common.guiutils import *
 from mplwidget import MplWidget
 
-from best.daqmanager.tasks.PlotDataTask import PlotDataTask
-### py files
-# from parser_inu import *
-
-
-# script_name = re.sub('\..*','',os.path.basename(sys.argv[0]))
-# starting_dir = os.getcwd()
-#
-# start_message="DataMan"
-# logger=create_logger(script_name,start_message)
-#
-# DATA_DIR="c:/test_station/Demo/Data"
-
-
-# class ClientLogger:
-#     def __init__(self,gui_logger):
-#         self.gui_logger=gui_logger
-#
-#     def log_info(self,txt):
-#         self.gui_logger.append(txt)
-#         # logger.info(txt)
-#
-#     def log_error(self,txt):
-#         self.gui_logger.append(txt)
-#         # logger.error(txt)
-#
-#     def log_warn(self,txt):
-#         self.gui_logger.append(txt)
-#         # logger.warn(txt)
-#
 
 class PlotterWidget(QtGui.QWidget):
     ### connects widgets and signals ###
     def __init__(self, parent = None):
         super(PlotterWidget, self).__init__(parent)
-        # print parent
-        # print parent.ui.inStartTime.text()
-
         self.ui = Ui_PlotterWidget()
         self.ui.setupUi(self)
         self.asyncUiControl=asyncUiControl()
@@ -70,21 +27,15 @@ class PlotterWidget(QtGui.QWidget):
         self.mpl = MplWidget()
 
         ### signal init ###
-        # PlotDataTask
-        # self.connect(self.asyncUiControl, SIGNAL('task_checkNewData()'),self.sCheckNewDataFound)
 
         ### gui init ###
         #--- Config Group ---
-        # self.ui.outServiceOn.setText("Off")
         # self.ui.outSize.setText("Size of folder: "+ str(self.folder_calc_size()))
 
         #--- inputs group ---
         self.ui.inPlot.clicked.connect(self.guiPlot)
-        self.ui.inDataSource.clicked.connect(self.selectFile)
-
 
         #--- output group ---
-
         #self.ui.buttonSendCommand.setEnabled(0)
 
         ### connect signals to commands ###
@@ -102,9 +53,6 @@ class PlotterWidget(QtGui.QWidget):
         # self.ui.buttonSendCommand.clicked.connect(self.send_command)
         # self.ui.buttonSync.clicked.connect(self.sync)
 
-
-        exit=QtGui.QAction(self)
-        # self.setWindowTitle("Processing PBar")
 
     def selectFile(self,gui_disp):   #Open a dialog to locate the sqlite file and some more...
         path = QtGui.QFileDialog.getOpenFileName(None,"Select database:","*.db")
@@ -124,9 +72,6 @@ class PlotterWidget(QtGui.QWidget):
             event.ignore()
 
     ### event handler methods###
-    def sTimeLineDownloaded(self):
-        vDownloadTimeLineTask = self.asyncUiControl.grabLatestResult()
-
     def guiPlot(self):
         ""
         def index_containing_substring(the_list, substring):
@@ -146,31 +91,39 @@ class PlotterWidget(QtGui.QWidget):
         start=str(client.ui.inStartTime.text())
         end= str(client.ui.inEndTime.text())
         uuid=client.UUIDList
-        print start
-        print end
+
+        for i in xrange(len(uuid)):
+            sub=str(uuid[i])
+            m=re.search('([0-9]|[a-f]|-)*',sub)
+            uuid[i] = m.group(0).rstrip(' -')
+
+
         print uuid
-        print start.__class__
 
+        try:
+            data = client.datac.get_data(uuid, start, end)
 
-        data = client.datac.get_data(uuid, start, end)
+        except Exception,e:
+            print e
 
-        print data
+        ### update display
+        num_points = len(data)
+        title=self.ui.inTitle.text()
+        xLabel=self.ui.inXLabel.text()
+        yLabel=self.ui.inYLabel.text()
 
-        # try:
-        #     # dataR=db.load_data("rad")
-        #     # dataR=self.query("")
-        #
-        # except Exception,e:
-        #     print e
-
-
-        title=str(self.ui.inTitle.text())
-        xLabel=str(self.ui.inXLabel.text())
-        yLabel=str(self.ui.inYLabel.text())
+        ### plot data task
         self.mpl.update_labels(title,xLabel,yLabel)
-        # task=PlotDataTask()
-        # task.start()
 
+
+        from matplotlib import pyplot, dates
+
+        marker='-'
+        tzone='America/Denver'
+        for d in data:
+            self.mpl.plot_date(dates.epoch2num(d[:, 0] / 1000), d[:, 1], marker,
+                           tz=tzone)
+        # self.mpl.plot_date(data)
         self.mpl.show()
 
 

@@ -31,6 +31,7 @@ class MplCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
 
 
+from matplotlib import pyplot, dates
 
 class MplWidget(QtGui.QWidget):
     """Widget defined in Qt Designer"""
@@ -46,8 +47,26 @@ class MplWidget(QtGui.QWidget):
         # set the layout to the vertical box
         self.setLayout(self.vbl)
 
-    # def get_canvas(self):
-    #     return self.canvas.get_canvas()
+    def plot_date(self,x, y, fmt='bo', tz=None, xdate=True, ydate=False, hold=None,
+              **kwargs):
+        ax = self.canvas.ax
+        # allow callers to override the hold state by passing hold=True|False
+        washold = ax.ishold()
+
+        # print x
+        if hold is not None:
+            ax.hold(hold)
+        try:
+            ret = ax.plot_date(x, y, fmt=fmt, tz=tz, xdate=xdate, ydate=ydate,
+                               **kwargs)
+            # draw_if_interactive()
+        finally:
+            ax.hold(washold)
+
+        return ret
+
+
+
 
     def update_labels(self,title,xLabel,yLabel):
         """"""

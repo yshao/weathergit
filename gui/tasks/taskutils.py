@@ -31,6 +31,7 @@ def testPostgreConnection():
         conn = psycopg2.connect(conn_string)
         # conn.cursor will return a cursor object, you can use this cursor to perform queries
         cursor = conn.cursor()
+
         print "Connected!\n"
     except:
         # Get the most recent exception
@@ -38,6 +39,3 @@ def testPostgreConnection():
         # Exit the script and print an error telling what happened.
         sys.exit("Database connection failed!\n ->%s" % (exceptionValue))
 
-
-if __name__ == '__main__':
-    testPostgreConnection()

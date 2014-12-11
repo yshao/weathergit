@@ -25,12 +25,32 @@ data = d.get_data(uuid, start, end)
 # print data
 assert data.__sizeof__() > 0
 
-# c.data
 
 from matplotlib import pyplot, dates
 
+marker='-'
+tzone='America/Denver'
 for d in data:
-  pyplot.plot_date(dates.epoch2num(d[:, 0] / 1000), d[:, 1], '-',
-                   tz='America/Denver')
+  pyplot.plot_date(dates.epoch2num(d[:, 0] / 1000), d[:, 1], marker,
+                   tz=tzone)
 
 pyplot.show()
+
+
+from weathergit.gui.mplwidget import MplWidget
+
+
+mpl=MplWidget()
+
+mpl.canvas
+
+title="title"
+xLabel="x"
+yLabel="y"
+
+mpl.update_labels(title,xLabel,yLabel)
+for d in data:
+    mpl.plot_date(dates.epoch2num(d[:, 0] / 1000), d[:, 1], marker,
+                   tz=tzone)
+
+mpl.show()

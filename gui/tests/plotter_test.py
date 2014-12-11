@@ -1,9 +1,11 @@
+import sip
+sip.setapi('QString', 2)
+
 from PyQt4 import QtGui
 from common.dbconn import DbConn
 from common.config import Config
 
 from gui.mplwidget import MplWidget
-from gui.plotterwidget2 import PlotterDialog
 from gui.weatherclient import WeatherClient
 
 config=Config("../../common/weatherplotter.conf")
