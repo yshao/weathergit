@@ -11,13 +11,14 @@ from gui.weatherclient import WeatherClient
 config=Config("../../common/weatherplotter.conf")
 
 
-try:
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    plotter = WeatherClient()
-    plotter.setConfig(config)
-    plotter.show()
-    sys.exit(app.exec_())
+# try:
+import sys
 
-except Exception,e:
-    print e
+app = QtGui.QApplication(sys.argv)
+plotter = WeatherClient()
+plotter.setConfig(config)
+plotter.show()
+sys.exit(app.exec_())
+
+# except Exception,e:
+#     print e

@@ -16,11 +16,11 @@ import psutil as p
 # number of data points
 POINTS = 300
 
-class RTPlotWidget(QtGui.QWidget):
+class RTDispWidget(QtGui.QWidget):
     """Matplotlib wxFrame with animation effect"""
     ### connects widgets and signals ###
     def __init__(self, parent = None):
-        super(RTPlotWidget, self).__init__(parent)
+        super(RTDispWidget, self).__init__(parent)
 
         # Matplotlib Figure
         self.fig = Figure((6, 4), 100)
@@ -144,7 +144,7 @@ class RTPlotWidget(QtGui.QWidget):
 if __name__ == '__main__':
     # app = QCoreApplication([])
     app = QtGui.QApplication(sys.argv)
-    main = RTPlotWidget()
+    main = RTDispWidget()
     # main.show()
 
     sys.exit(app.exec_())

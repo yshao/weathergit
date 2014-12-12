@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="leftTab">
       <property name="currentIndex">
        <number>1</number>
@@ -25,42 +25,39 @@
         <string>UUID</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="4" column="0" colspan="2">
-         <widget class="QTableView" name="inUUIDList"/>
+        <item row="4" column="0" colspan="3">
+         <widget class="QTableView" name="inUUIDList">
+          <property name="sortingEnabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>uuid</string>
+           <string>UUID</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <widget class="QDateTimeEdit" name="inStartTime"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>start</string>
+           <string>Start</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>end</string>
+           <string>End</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="2" column="2">
          <widget class="QDateTimeEdit" name="inEndTime"/>
-        </item>
-        <item row="5" column="1">
-         <widget class="QPushButton" name="inRTDisp">
-          <property name="text">
-           <string>RT Display</string>
-          </property>
-         </widget>
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="label_3">
@@ -76,38 +73,181 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="1">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Clear Selection</string>
+          </property>
+         </widget>
+        </item>
        </layout>
-       <zorder>cSMAP</zorder>
        <zorder>label_4</zorder>
        <zorder>label_5</zorder>
        <zorder>inStartTime</zorder>
        <zorder>inEndTime</zorder>
        <zorder>label_6</zorder>
        <zorder>inUUIDList</zorder>
-       <zorder>inRTDisp</zorder>
        <zorder>label_3</zorder>
        <zorder>pushButton</zorder>
+       <zorder>pushButton_2</zorder>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>SMAPStatus</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="2" column="0">
+         <widget class="QGroupBox" name="cSMAPSource">
+          <property name="title">
+           <string>SMAP Source</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="2">
+            <widget class="QLineEdit" name="outSMAPHost">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>192.168.1.140</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QLineEdit" name="outSMAPPort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>8079</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Port</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>IP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="2">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Status Unknown</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLineEdit" name="outSourceSize">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>2.3</string>
+             </property>
+             <property name="readOnly">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Size</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="cSMAPServer">
+          <property name="title">
+           <string>SMAP Server</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>IP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="outPort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>8080</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Port</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="outHost">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>192.168.1.108</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="outSMAPStatus">
+             <property name="text">
+              <string>Status Unknown</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="inTestConnection">
+          <property name="text">
+           <string>Test Connection</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
         <string>SMAPControl</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="3" column="3">
+        <item row="2" column="0" colspan="3">
+         <widget class="QLineEdit" name="inCmdLine"/>
+        </item>
+        <item row="2" column="3">
          <widget class="QPushButton" name="inCmdSend_2">
           <property name="text">
            <string>Send</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="0" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Command</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1" colspan="3">
+        <item row="0" column="1" colspan="3">
          <widget class="QComboBox" name="inCmdSel">
           <item>
            <property name="text">
@@ -126,7 +266,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Update Config</string>
+            <string>Update System Config</string>
            </property>
           </item>
           <item>
@@ -136,73 +276,10 @@
           </item>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>IP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="4">
+        <item row="3" column="0" colspan="4">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Command Idle</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Port</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="outSMAPHost">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>192.168.1.140</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLineEdit" name="outSMAPPort">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>8079</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="3">
-         <widget class="QComboBox" name="inSMAPToolSel">
-          <item>
-           <property name="text">
-            <string>SSH</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>SFTP</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>VNC</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="3">
-         <widget class="QLineEdit" name="inCmdLine"/>
-        </item>
-        <item row="4" column="3">
-         <widget class="QPushButton" name="inOpenSMAPTool">
-          <property name="text">
-           <string>Open Tool</string>
           </property>
          </widget>
         </item>
@@ -210,7 +287,10 @@
       </widget>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="1" column="0" colspan="2">
+     <widget class="QTextBrowser" name="outLogBrowser"/>
+    </item>
+    <item row="0" column="1">
      <widget class="QTabWidget" name="rightTab">
       <property name="minimumSize">
        <size>
@@ -222,87 +302,6 @@
        <number>-1</number>
       </property>
      </widget>
-    </item>
-    <item row="0" column="0" colspan="2">
-     <widget class="QGroupBox" name="cSMAP">
-      <property name="title">
-       <string>SMAP Server</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>IP</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLineEdit" name="outPort">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>8080</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Port</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="outHost">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>192.168.1.108</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="outSMAPStatus">
-         <property name="text">
-          <string>Status Unknown</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="inTestConnection">
-         <property name="text">
-          <string>Test Connection</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QPushButton" name="inOpenServerTool">
-         <property name="text">
-          <string>Open Tool</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QComboBox" name="inServerToolSel">
-         <item>
-          <property name="text">
-           <string>Postgre</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ReadingDB</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="2">
-     <widget class="QTextBrowser" name="outLogBrowser"/>
     </item>
    </layout>
   </widget>
@@ -321,8 +320,28 @@
     </property>
     <addaction name="actionConfig_Editor"/>
     <addaction name="actionDatabase_Admin"/>
+    <addaction name="actionTime_Series_DB"/>
+    <addaction name="actionSource_SSH_Client"/>
+    <addaction name="actionServer_SSH_Client"/>
+    <addaction name="actionSource_VNC"/>
+   </widget>
+   <widget class="QMenu" name="menuWeb_Portal">
+    <property name="title">
+     <string>Web Portal</string>
+    </property>
+    <addaction name="actionOpen_SMAP_Monitor"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_SMAP_Plotter"/>
+    <addaction name="actionOpen_SMAP_Server"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
    </widget>
    <addaction name="menuTools"/>
+   <addaction name="menuWeb_Portal"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionConfig_Editor">
@@ -333,6 +352,41 @@
   <action name="actionDatabase_Admin">
    <property name="text">
     <string>Database Admin</string>
+   </property>
+  </action>
+  <action name="actionOpen_SMAP_Monitor">
+   <property name="text">
+    <string>Open SMAP Monitor</string>
+   </property>
+  </action>
+  <action name="actionOpen_SMAP_Plotter">
+   <property name="text">
+    <string>Open SMAP Plotter</string>
+   </property>
+  </action>
+  <action name="actionOpen_SMAP_Server">
+   <property name="text">
+    <string>Open SMAP Server</string>
+   </property>
+  </action>
+  <action name="actionTime_Series_DB">
+   <property name="text">
+    <string>Time Series DB</string>
+   </property>
+  </action>
+  <action name="actionSource_SSH_Client">
+   <property name="text">
+    <string>Source SSH Client</string>
+   </property>
+  </action>
+  <action name="actionServer_SSH_Client">
+   <property name="text">
+    <string>Server SSH Client</string>
+   </property>
+  </action>
+  <action name="actionSource_VNC">
+   <property name="text">
+    <string>Source VNC</string>
    </property>
   </action>
  </widget>

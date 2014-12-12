@@ -92,13 +92,12 @@ class PlotterWidget(QtGui.QWidget):
         end= str(client.ui.inEndTime.text())
         uuid=client.UUIDList
 
-        for i in xrange(len(uuid)):
-            sub=str(uuid[i])
-            m=re.search('([0-9]|[a-f]|-)*',sub)
-            uuid[i] = m.group(0).rstrip(' -')
+        # for i in xrange(len(uuid)):
+        #     sub=str(uuid[i])
+        #     m=re.search('([0-9]|[a-f]|-)*',sub)
+        #     uuid[i] = m.group(0).rstrip(' -')
+        client.logger.info(" ".join(uuid))
 
-
-        print uuid
 
         try:
             data = client.datac.get_data(uuid, start, end)

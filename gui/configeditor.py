@@ -2,8 +2,8 @@ from PyQt4 import QtCore, QtGui, QtXml
 import io
 
 
-PATH_XML="config.xml"
-path_xml = io.open(PATH_XML,"rt").read()
+# PATH_XML="config.xml"
+# path_xml = io.open(PATH_XML,"rt").read()
 
 class XmlHandler(QtXml.QXmlDefaultHandler):
     def __init__(self, root):

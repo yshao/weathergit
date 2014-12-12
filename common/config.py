@@ -12,7 +12,7 @@ class Config(object):
         self.fhandle.close()
 
     def __str__(self):
-        return str(pprint(self.data))
+        return str(self.data)
 
     def __getitem__(self, item):
         return self.data[item]

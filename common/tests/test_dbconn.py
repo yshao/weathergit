@@ -16,11 +16,6 @@ class UUIDTest(unittest.TestCase):
         # print login
         self.conn=DbConn(login)
 
-    # def testConnect(self):
-    #     assert self.data["maps"][0]["id"] == "blabla"
-    #     assert self.data["masks"]["id"] == "valore"
-    #     assert self.data["om_points"] == "value"
-
     def test_SelectUUID(self):
         """"""
         uuid=self.conn.get_uuid()

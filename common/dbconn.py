@@ -3,6 +3,7 @@ import psycopg2.extensions
 import logging
 import json
 import sys
+from common.config import Config
 
 
 class LoggingCursor(psycopg2.extensions.cursor):
@@ -61,16 +62,63 @@ class LoggingCursor(psycopg2.extensions.cursor):
 #
 #
 #
+import re
 
+from common.env import Env
 
 class DbConn(object):
-    def __init__(self,login):
+    connected=False
+
+    def __init__(self,login=None):
+
+        if login == None:
+            login={}
+            config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
+            login['dbname']=config['dbname']
+            login['user']=config["user"]
+            login['password']=config['password']
+            login['host']=config['host']
+            login['port']=config['smap_server_db_port']
+            self.login=login
+        else:
+            self.login=login
+        self.connect()
+
+
+    def connect(self):
         """"""
-        self.conn=psycopg2.connect("host='%(host)s' dbname='%(dbname)s' user='%(user)s' password='%(password)s'" % login)
+
+        login=self.login
+        conn_string = "host='%(host)s' dbname='%(dbname)s' user='%(user)s' password='%(password)s' port='%(port)i'"\
+                        % login
+
+        try:
+            self.conn = psycopg2.connect(conn_string)
+
+            self.cursor = self.conn.cursor()
+            cursor=self.cursor
+            cursor.execute('SELECT version()')
+            ver = cursor.fetchone()[0]
+            # cursor.close()
+            m=re.search(r'PostgreSQL',ver)
+            if m != None:
+                self.connected = True
+
+
+        except psycopg2.DatabaseError, e:
+            print 'Error %s' % e
+
+            # Get the most recent exception
+            exceptionType, exceptionValue, exceptionTraceback = sys.exc_info()
+            # sys.exit("Database connection failed!\n ->%s" % (exceptionValue))
+            pass
+
+
 
 
     def get_uuid(self):
-        cur = self.conn.cursor(cursor_factory=LoggingCursor)
+        cur=self.conn.cursor()
+        # cur = self.conn.cursor(cursor_factory=LoggingCursor)
         cur.execute("SELECT * from stream")
         rows = cur.fetchall()
         self.uuid={}
@@ -87,9 +135,12 @@ class DbConn(object):
         cur = self.conn.cursor(cursor_factory=LoggingCursor)
 
 
-    def __del__(self):
-        """"""
-        self.conn.close()
+    # def __del__(self):
+    #     """"""
+    #     print self.conn
+    #     self.conn.close()
+    #     return True
+
 
 
 # conn=DbConn(login)

@@ -1,6 +1,12 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
-from PyQt4.QtGui import QStandardItemModel, QStandardItem
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
+from gui.RTDispWidget import RTDispWidget
+from gui.command.OpenDialogCmd import OpenDialogCmd
+from gui.command.OpenToolCmd import OpenToolCmd
+from gui.command.OpenVNCCmd import OpenVNCCmd
+from gui.command.OpenWebCmd import OpenWebCmd
+from gui.command.invoker import Invoker
 from gui.tasks.TestServerConnectionTask import TestServerConnectionTask
 
 sip.setapi('QString', 2)
@@ -55,6 +61,8 @@ class ClientLogger:
 
 
 class WeatherClient(QtGui.QMainWindow):
+    invoker=Invoker()
+
     ### connects widgets and signals ###
     def __init__(self):
         """"""
@@ -67,38 +75,30 @@ class WeatherClient(QtGui.QMainWindow):
     def setConfig(self,config):
         """"""
         ### meta data connection
-        login={}
-        login['dbname']=config['dbname']
-        login['user']=config["user"]
-        login['password']=config['password']
-        login['host']=config['host']
-        conn=DbConn(login)
-        self.uuid=conn.get_uuid()
+        # if config == None:
+        #     config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
 
-        ### time series db connection
-        login['host']=config['smap_server_host']
-        login['port']=config["smap_server_port"]
-
-        self.datac=DataClient(login)
+        self.dbconn=DbConn()
+        self.uuid=self.dbconn.get_uuid()
+        self.datac=DataClient()
 
         ### init ###
+        self.config = config
         self.initEnv()
         self.logger = ClientLogger(self.ui.outLogBrowser)
-        self.config = config
+
+
+
 
 
         ### gui init ###
-        #--- Config Group ---
-        self.ui.outPort.setText(self.config["smap_server_port"])
-        self.ui.outHost.setText(self.config["smap_server_host"])
-        # self.evt_testServerConnect()
-        self.ui.statusbar.showMessage("Config initialized")
 
         #--- inputs group ---
         self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
+        self.ui.rightTab.addTab(RTDispWidget(self),"RT Display")
 
         self.ui.inTestConnection.clicked.connect(self.testServerConnection)
-        self.ui.actionDatabase_Admin.triggered.connect(self.openPostgre)
+        self.initInvoker()
         # self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
         ### connect signals to commands ###
@@ -139,9 +139,54 @@ class WeatherClient(QtGui.QMainWindow):
 
 
     ### event handler methods###
+
+
+    ### refresh methods ###
+    def refreshEnv(self):
+        #--- Config Group ---
+        self.ui.outPort.setText(self.config["smap_server_port"])
+        self.ui.outHost.setText(self.config["smap_server_host"])
+        # self.evt_testServerConnect()
+        self.ui.statusbar.showMessage("Config initialized")
+
+    ### init methods ###
     def initEnv(self):
         """"""
+        self.refreshEnv()
+
         # check postgre installed
+        now = QtCore.QDateTime.currentDateTime()
+        self.ui.inEndTime.setDateTime(now)
+
+
+    def initInvoker(self):
+        """"""
+        path="C:/Program Files/PostgreSQL/9.3/bin/pgAdmin3.exe"
+        self.ui.actionDatabase_Admin.triggered.connect(lambda: self.invoker.invoke(OpenToolCmd(path)))
+
+        path="C:/Program Files/teraterm/ttermpro.exe"
+        self.ui.actionServer_SSH_Client.triggered.connect(lambda: self.invoker.invoke(OpenToolCmd(path)))
+
+        path="C:/Program Files/teraterm/ttermpro.exe"
+        self.ui.actionSource_SSH_Client.triggered.connect(lambda: self.invoker.invoke(OpenToolCmd(path)))
+
+        self.ui.actionSource_VNC.triggered.connect(lambda: self.invoker.invoke(OpenVNCCmd(path)))
+
+
+        name="ConfigEditor"
+        self.ui.actionConfig_Editor.triggered.connect(lambda: self.invoker.invoke(OpenDialogCmd(name)))
+
+        self.ui.actionOpen_SMAP_Plotter.triggered.connect(
+            lambda: self.invoker.invoke(OpenWebCmd(self.config['smap_plotter'])))
+
+        self.ui.actionOpen_SMAP_Server.triggered.connect(
+            lambda: self.invoker.invoke(OpenWebCmd(ip=self.config['smap_server'])))
+
+        self.ui.actionOpen_SMAP_Monitor.triggered.connect(
+            lambda: self.invoker.invoke(OpenWebCmd(self.config['smap_monitor'])))
+
+        self.ui.actionSource_VNC.triggered.connect(lambda: self.invoker.invoke(OpenVNCCmd()))
+
 
 
 
@@ -165,10 +210,10 @@ class WeatherClient(QtGui.QMainWindow):
 
     def testServerConnection(self):
         ""
-        task=TestServerConnectionTask(self,self.logger,self.ui.cSMAP)
-        result=task.run()
+        task=TestServerConnectionTask(self,self.logger,self.ui.cSMAPServer)
+        res=task.run()
 
-        return result
+        return res
 
 
     ### methods and algorithm ###
@@ -179,16 +224,18 @@ class WeatherClient(QtGui.QMainWindow):
         # self.selUUIDList=[]
 
         model=QStandardItemModel()
+        model.setHorizontalHeaderItem(0,QStandardItem("UUID"))
+        model.setHorizontalHeaderItem(1,QStandardItem("Path"))
 
         def on_item_changed():
             i = 0
             list=[]
             while model.item(i):
-                if not model.item(i).checkState():
+                if not model.item(i,0).checkState():
                     ""
                     # return
                 else:
-                    list.append(model.item(i).text())
+                    list.append(model.item(i,0).text())
                 i += 1
 
             self.UUIDList=list
@@ -196,13 +243,19 @@ class WeatherClient(QtGui.QMainWindow):
 
         for key in keys:
             name=self.uuid[key]['Path']
-            item = QStandardItem(key+' - '+name)
-            item.setCheckable(True)
-            model.appendRow(item)
+            item1 = QStandardItem(key)
+            item2 = QStandardItem(name)
+            item1.setCheckable(True)
+
+            model.appendRow([item1,item2])
+
 
 
         model.itemChanged.connect(lambda: on_item_changed())
+
         self.ui.inUUIDList.setModel(model)
+        self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.ui.inUUIDList.sortByColumn(1)
 
 
 

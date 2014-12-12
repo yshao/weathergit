@@ -1,0 +1,36 @@
+<RCC>
+  <qresource>
+    <file alias="window_icon.gif" >images/window_icon.gif</file>
+    <file alias="open.png" >images/open.png</file>
+    <file alias="quit.png" >images/quit.png</file>
+    <file alias="clear.png">images/clear.png</file>
+    <file alias="find.png">images/find.png</file>
+    <file alias="input.png">images/input.png</file>
+    <file alias="tab_new.png">images/tab_new.png</file>
+    <file alias="tab_remove.png">images/tab_remove.png</file>
+    <file alias="save.png">images/save.png</file>
+    <file alias="saveas.png">images/saveas.png</file>
+    <file alias="delete.png">images/delete.png</file>
+    <file alias="rename.png">images/rename.png</file>
+    <file alias="cut.png">images/cut.png</file>
+    <file alias="copy.png">images/copy.png</file>
+    <file alias="paste.png">images/paste.png</file>
+    <file alias="1uparrow.png">images/1uparrow.png</file>
+    <file alias="1downarrow.png">images/1downarrow.png</file>
+    <file alias="2uparrow.png">images/2uparrow.png</file>
+    <file alias="2downarrow.png">images/2downarrow.png</file>
+    <file alias="sort.png">images/sort.png</file>
+    <file alias="new.png">images/new.png</file>
+    <file alias="reload.png">images/reload.png</file>
+    <file alias="close.png">images/close.png</file>
+    <file alias="addchild.png">images/addchild.png</file>
+    <file alias="addsibling_before.png">images/addsibling_before.png</file>
+    <file alias="addsibling_after.png">images/addsibling_after.png</file>
+    <file alias="indent.png">images/indent.png</file>
+    <file alias="unindent.png">images/unindent.png</file>
+    <file alias="pastechild.png">images/pastechild.png</file>
+    <file alias="pastesibling.png">images/pastesibling.png</file>
+    <file alias="undo.png">images/undo.png</file>
+    <file alias="redo.png">images/redo.png</file>
+  </qresource>
+</RCC>
