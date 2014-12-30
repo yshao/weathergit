@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui\plotterdialog.ui'
 #
-# Created: Fri Dec 12 15:15:17 2014
+# Created: Thu Dec 18 12:39:52 2014
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

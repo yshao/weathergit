@@ -1,1 +1,1 @@
-__author__ = 'Ping'
+interval size as time series

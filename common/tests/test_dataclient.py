@@ -15,6 +15,9 @@ class TestDataClient(unittest.TestCase):
     def testGetData(self):
         self.d.get_data()
 
+    def testSyncDataToUTC(self):
+        ""
+
 
 
 

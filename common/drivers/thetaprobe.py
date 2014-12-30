@@ -4,12 +4,12 @@ from smap.util import periodicSequentialCall
 
 class ThetaProbe(SmapDriver):
     def setup(self, opts):
-        self.tz = opts.get('Timezone', 'America/Denver')
+        self.tz = opts.get('Timezone')
         self.rate = float(opts.get('Rate', 1))
         ADC.setup()
 
-        self.add_timeseries('/humidityLO', 'V', data_type="double")
-        self.add_timeseries('/humidityHI', 'V', data_type="double")
+        self.add_timeseries('/humidityLO', 'V', data_type="double",timezone=self.tz)
+        self.add_timeseries('/humidityHI', 'V', data_type="double",timezone=self.tz)
 
     def start(self):
         # call self.read every self.rate seconds

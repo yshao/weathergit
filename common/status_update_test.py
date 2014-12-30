@@ -27,9 +27,24 @@ res=sc.send("df -h")
 for ln in res:
     print ln
 
-res=sc.send("df -h")
+
+### restart twist
+res=sc.send("pgrep twistd")
+pid=0
+for ln in res:
+    i=int(ln)
+
+
+sc.send('kill %i' % pid)
+
+sc.send('twistd -n smap weather.ini')
 
 
 
-###
-sftp=
+### update config
+sc.connectSFTP()
+
+sc.get("")
+sc.put()
+
+### get raw files

@@ -1,11 +1,9 @@
-import base64
 from datetime import datetime
 import httplib
 import io
 import os
 import time
 
-from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
 
@@ -18,21 +16,21 @@ password = ''
 
 def main():
     time_count = 2
-    get_snapshot(time_count)
+    idx,file_path=get_snapshot(('217.126.89.102',8020),wdir,time_count)
+    # update(idx,file_path)
 
     # update_img()
 
 
 # def update_img():
 #     db.save(img)
-#     conn.source()
+#     conn.source
 
 
 
-def get_snapshot(time_count):
-    # h = httplib.HTTP(stream_url)
-    # h.putrequest('GET', '/videostream.cgi')
-    h= httplib.HTTP('217.126.89.102',8020)
+def get_snapshot(port,save_dir,time_count):
+    # h= httplib.HTTP('217.126.89.102',8020)
+    h= httplib.HTTP(*port)
     h.putrequest('GET','/axis-cgi/mjpg/video.cgi')
     # h.putheader('Authorization', 'Basic %s' % base64.encodestring('%s:%s' % (username, password))[:-1])
     h.endheaders()
@@ -47,6 +45,9 @@ def get_snapshot(time_count):
         cname = "Cam1-"
         dnow = """Date: %s """ % dte
         dnow1 = """Time: %s""" % dte1
+
+        idx=dnow+dnow1
+
         # your camera may have a different streaming format
         # but I think you can figure it out from the debug style below
         source_name = stream_file.readline()    # '--ipcamera'
@@ -79,8 +80,10 @@ def get_snapshot(time_count):
         draw.text((0, 10), dnow, fill="white")
         draw.text((0, 20), dnow1, fill="white")
         img_name = "Cam1-" + dte + dte1 + ".jpg"
-        img_path = os.path.join(wdir, img_name)
+        img_path = os.path.join(save_dir, img_name)
         image_as_pil.save(img_path)
+
+    return idx,img_path
 
 
 

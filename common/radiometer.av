@@ -1,0 +1,20 @@
+{"namespace": "praco.radiometer",
+ "type": "record",
+ "name": "RadiometerRecord",
+ "fields": [
+     {"name": "header", "type": "string"},
+     {"name": "key","type": ["null","byte"]},
+     {"name": "ch1","type": ["null","int32"]},
+     {"name": "ch2","type": ["null","int32"]},
+     {"name": "ch3","type": ["null","int32"]},
+     {"name": "ch4","type": ["null","int32"]},
+     {"name": "ch5","type": ["null","int32"]},
+     {"name": "ch6","type": ["null","int32"]},
+     {"name": "ch7","type": ["null","int32"]},
+     {"name": "ch8","type": ["null","int32"]},
+     {"name": "ch9","type": ["null","int32"]},
+     {"name": "ch10","type": ["null","int32"]},
+     {"name": "ch11","type": ["null","int32"]},
+     {"name": "ch12","type": ["null","int32"]}
+ ]
+}

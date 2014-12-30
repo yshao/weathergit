@@ -29,7 +29,14 @@ class MLxException(DeviceException):
     def __init__(self, message, http_code=None):
         Exception.__init__(self, message)
         self.http_code = http_code
-        
+
+class TrendNetException(DeviceException):
+    """"""
+    def __init__(self, message, http_code=None):
+        Exception.__init__(self, message)
+        self.http_code = http_code
+
+
 class PRACOException(DeviceException):
     """"""
     def __init__(self, message, http_code=None):

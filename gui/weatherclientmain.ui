@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="leftTab">
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -277,9 +277,79 @@
          </widget>
         </item>
         <item row="3" column="0" colspan="4">
+         <widget class="QTextBrowser" name="outCmdResult"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>DataManager</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="1">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Command Idle</string>
+           <string>connectString</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="inEditConn">
+          <property name="text">
+           <string>Edit Connection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Update Interval</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="inUpdateInterval"/>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Data Processing Operations</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>Time Segment Size:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>Conversion:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QListView" name="inFormulaList"/>
+           </item>
+           <item row="0" column="1">
+            <widget class="QTimeEdit" name="inTimeSegmentSize">
+             <property name="currentSection">
+              <enum>QDateTimeEdit::HourSection</enum>
+             </property>
+             <property name="displayFormat">
+              <string>h:mm:ss</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QPushButton" name="inUpdateDataset">
+          <property name="text">
+           <string>Update Dataset - Disabled</string>
           </property>
          </widget>
         </item>

@@ -12,65 +12,6 @@ from twisted.protocols.basic import LineReceiver
 
 from smap.driver import SmapDriver
 
-# VAISALA_UNITS = {
-#     'R1' : {
-#       'D' : 'deg',
-#       'M' : 'm/s',
-#       },
-#     'R2' : {
-#       'C' : 'C',
-#       'P' : 'rh',
-#       'H' : 'Pa',
-#       },
-#     'R3' : {
-#       'M' : 'mm',
-#       's' : 'second',
-#       },
-#     'R5' : {
-#       'V' : 'V',
-#       'C' : 'C',
-#       '#' : '#',
-#
-#     }
-#     }
-#
-# VAISALA_POINTS = {
-#     'R1' : (
-#        'wind', {
-#          'direction' : ('Dm', 'Dn', 'Dx'),
-#          'speed' : ('Sm', 'Sn', 'Sx')
-#          }
-#        ),
-#     'R2' : (
-#        'pth', {
-#          'temperature' : ('Ta', None, None),
-#          'rh' : ('Ua', None, None),
-#          'pressure' : ('Pa', None, None),
-#          }
-#        ),
-#     'R3' : (
-#        'precipitation', {
-#           'rain_accumulation' : ('Rc', None, None),
-#           'rain_duration' : ('Rd', None, None),
-#           'rain_intensity' : ('Ri', None, 'Rp'),
-#           'hail_accumulation' : ('Hc', None, None),
-#           'hail_duration' : ('Hd', None, None),
-#           'hail_intensity' : ('Hi', None, 'Hp')
-#           }
-#        ),
-#
-#     'R5': (
-#         'status',{
-#             'temp' : ('Th',None,None),
-#             'voltage' : ('Vh','Vs','Vr'),
-#
-#
-#         }
-#
-#     )
-#     }
-
-
 GARMIN_UNTS={
             'utc':'',
             'longitude':'deg E',
@@ -177,11 +118,12 @@ class GarminSerial(SmapDriver):
                 unit = GARMIN_UNTS[k]
 
                 if not self.inst.lookup(path):
-                    self.inst.add_timeseries(path, unit, data_type='double')
+                    self.inst.add_timeseries(path, unit, data_type='double',timzone=self.tz)
 
                 self.inst.add(path,ts,val)
 
     def setup(self, opts):
+        self.tz = opts.get('Timezone')
         self.port = opts.get('Port')
         self.log = logging.getLogger('GarminReader')
         self.set_metadata('/', {

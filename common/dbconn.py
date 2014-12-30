@@ -135,6 +135,16 @@ class DbConn(object):
         cur = self.conn.cursor(cursor_factory=LoggingCursor)
 
 
+    def insert_img(self):
+        """"""
+
+    def insert(self,stmt):
+        cur = self.conn.cursor(cursor_factory=LoggingCursor)
+
+        cur.execute(stmt)
+        res=cur.fetchall()
+        return res
+
     # def __del__(self):
     #     """"""
     #     print self.conn

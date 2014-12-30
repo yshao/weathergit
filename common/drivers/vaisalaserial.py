@@ -92,6 +92,8 @@ class VaisalaSerial(SmapDriver):
                 self.log.error("Error in update: " + str(e))
 
         def process(self, line):
+            self.tz=opt
+
             fields = line.split(',')
             reg = fields[0][1:]
             def proc_field(f):
@@ -107,7 +109,7 @@ class VaisalaSerial(SmapDriver):
                     unit = VAISALA_UNITS[reg][data[v[0]][1]]
                     path = '/%s/%s' % (point, k)
                     if not self.inst.lookup(path):
-                        self.inst.add_timeseries(path, unit, data_type='double')
+                        self.inst.add_timeseries(path, unit, data_type='double',timezone=self.tz)
 
                     val_ = float(data.get(v[0])[0])
                     min_ = data.get(v[1], None)
@@ -118,6 +120,7 @@ class VaisalaSerial(SmapDriver):
 
 
     def setup(self, opts):
+        self.tz = opts.get('Timezone')
         self.port = opts.get('Port')
         self.log = logging.getLogger('VaisalaSerial')
         self.set_metadata('/', {

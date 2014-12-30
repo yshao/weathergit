@@ -4,12 +4,12 @@ from smap.util import periodicSequentialCall
 
 class Omega(SmapDriver):
     def setup(self, opts):
-        self.tz = opts.get('Timezone', 'America/Denver')
+        self.tz = opts.get('Timezone')
         self.rate = float(opts.get('Rate', 1))
         ADC.setup()
 
-        self.add_timeseries('/tempLO', 'mV', data_type="double")
-        self.add_timeseries('/tempHI', 'mV', data_type="double")
+        self.add_timeseries('/tempLO', 'mV', data_type="double",timezone=self.tz)
+        self.add_timeseries('/tempHI', 'mV', data_type="double",timezone=self.tz)
 
 
     def start(self):
