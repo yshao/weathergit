@@ -1,3 +1,6 @@
+from PyQt4.QtCore import QThread
+
+
 class CommandHandler(object):
     def __init__(self):
         """"""
@@ -7,5 +10,6 @@ class CommandHandler(object):
         out="OUT"
         err="ERR"
         print cmd
-        cmd.execute()
+        t=QThread(cmd.execute)
+        t.run()
         return out,err

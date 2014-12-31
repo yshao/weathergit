@@ -1,6 +1,6 @@
 
-from gui.command.command import Command
-from gui.configeditor import ConfigEditor
+from weathergit.gui.command.command import Command
+from weathergit.configeditor import ConfigEditor
 
 
 class OpenDialogCmd(Command):

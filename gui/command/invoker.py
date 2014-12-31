@@ -1,4 +1,4 @@
-from gui.command.commandhandler import CommandHandler
+from weathergit.gui.command.commandhandler import CommandHandler
 
 
 class Invoker(object):

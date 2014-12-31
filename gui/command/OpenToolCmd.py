@@ -1,4 +1,4 @@
-from gui.command.command import Command
+from weathergit.gui.command.command import Command
 
 
 class OpenToolCmd(Command):

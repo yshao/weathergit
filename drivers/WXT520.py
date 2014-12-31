@@ -8,7 +8,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.protocols.basic import LineReceiver
 
-from smap.driver import SmapDriver
+from smaputil.driver import SmapDriver
 
 VAISALA_UNITS = {
     'R1' : {

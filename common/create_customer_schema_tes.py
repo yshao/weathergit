@@ -1,22 +1,4 @@
-'time'
-import paramiko
-
-'data'
-''
-
-'soil_temp'
-'soil_humidity'
-
-'location'
-
-'wind_direction'
-
-'precipitation'
-
-'pressure'
-
-
-class ServerClient(object):
+class RDBClient(object):
     def __init__(self):
         """"""
 
@@ -41,6 +23,8 @@ class ServerClient(object):
 
 sc=ServerClient()
 
+### KCOBOULD29
+### Shanahan Ridge
 
 ### get from reading ###
 
@@ -52,12 +36,3 @@ rdb=Reading()
 
 'query from '
 
-### processing ###
-
-
-
-### put into customer
-config=Config('dbconn.conf')
-
-login={'':'5432','host':}
-db=DbConn(login)

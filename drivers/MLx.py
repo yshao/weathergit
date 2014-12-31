@@ -6,8 +6,8 @@ import os
 
 from twisted.python import log
 
-import smap.driver as driver
-import smap.util as util
+import smaputil.driver as driver
+import smaputil.util as util
 import Adafruit_BBIO.ADC as ADC
 
 class IseriesSteam(driver.SmapDriver):

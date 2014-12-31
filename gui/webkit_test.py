@@ -35,23 +35,23 @@ class Main(QtGui.QMainWindow):
         self.enter.clicked.connect(self.Enter)
         self.enter.setShortcut("Return")
  
-        self.reload = QtGui.QPushButton("reload",self)
+        self.reload = QtGui.QPushButton("R",self)
         self.reload.setMinimumSize(35,30)
         self.reload.setShortcut("F5")
         self.reload.setStyleSheet("font-size:23px;")
         self.reload.clicked.connect(self.Reload)
  
-        self.back = QtGui.QPushButton("back",self)
+        self.back = QtGui.QPushButton("BK",self)
         self.back.setMinimumSize(35,30)
         self.back.setStyleSheet("font-size:23px;")
         self.back.clicked.connect(self.Back)
  
-        self.forw = QtGui.QPushButton("forward",self)
+        self.forw = QtGui.QPushButton("FW",self)
         self.forw.setMinimumSize(35,30)
         self.forw.setStyleSheet("font-size:23px;")
         self.forw.clicked.connect(self.Forward)
  
-        self.book = QtGui.QPushButton("book",self)
+        self.book = QtGui.QPushButton("BOOK",self)
         self.book.setMinimumSize(35,30)
         self.book.clicked.connect(self.Bookmark)
         self.book.setStyleSheet("font-size:18px;")

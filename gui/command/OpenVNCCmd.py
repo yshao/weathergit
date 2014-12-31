@@ -1,5 +1,5 @@
-from common.sourceclient import SourceClient
-from gui.command.command import Command
+from weathergit.common.sourceclient import SourceClient
+from weathergit.gui.command.command import Command
 
 
 class OpenVNCCmd(Command):

@@ -16,11 +16,11 @@ class Operator(object):
       data_type={}
 
   def fetch_data(self):
-      data=
+      data=smaputils.get_data()
 
   def operate(self):
       def parse():
 
 
-      res=self.convert_data(self.data)
-      return parse(res)
+        res=self.convert_data(self.data)
+        return parse(res)

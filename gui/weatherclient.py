@@ -1,8 +1,9 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
+sip.setapi('QString', 2)
 from weathergit.common.env import Env
 
-sip.setapi('QString', 2)
+
 
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 from weathergit.gui.RTDispWidget import RTDispWidget
