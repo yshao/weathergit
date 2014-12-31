@@ -3,44 +3,26 @@
 
 import psycopg2
 import sys
-from common.dbconn import DbConn
+from weathergit.common.dbconn import DbConn
 
-
-cars = (
-    (1, 'Audi', 52642),
-)
 
 con = None
 
-try:
-     
-    con = psycopg2.connect("dbname='testdb' user='janbodnar'")   
-  
-    cur = con.cursor()  
-    
-    # cur.execute("DROP TABLE IF EXISTS Cars")
-    # cur.execute("CREATE TABLE Cars(Id INT PRIMARY KEY, Name TEXT, Price INT)")
-    query = "INSERT INTO Snapshots (Id, ImagePath, ImageIdx) VALUES (%s, %s, %s)"
-    cur.executemany(query, cars)
-        
-    con.commit()
-    
+def insert_snapshot(image):
+    try:
+        image=('Cam1-18-12-201411-51-14.jpg','18-12-201411-51-14')
+        # fmt='dd-mm-yyyy hh24-mm-ss'
+        query = "INSERT INTO images (ImagePath, ImageIdx) VALUES (%s, %s)"
 
-except psycopg2.DatabaseError, e:
-    
-    if con:
-        con.rollback()
-    
-    print 'Error %s' % e    
-    sys.exit(1)
-    
-    
-finally:
-    
-    if con:
-        con.close()
-
-
+        con.insert_img(query,image)
+    except psycopg2.DatabaseError,e:
+        if con:
+            # con.rollback()
+            ""
+        print str(e)
+    finally:
+        if con:
+            con.close()
 
 
 ###retrieve
@@ -64,11 +46,10 @@ def convert_to_video():
 
 def get_image():
     try:
-        # con = psycopg2.connect(database="testdb", user="janbodnar")
         con=DbConn()
-        cur = con.cursor()
-        cur.execute("SELECT ImagePath FROM Snapshots LIMIT 1")
-        fpath = cur.fetchone()[1]
+        stmt="SELECT ImagePath FROM images LIMIT 1"
+        res=con.select(stmt)
+        fpath = res.fetchone()[1]
 
         fh=readImage(fpath)
 
@@ -76,7 +57,6 @@ def get_image():
     except psycopg2.DatabaseError, e:
 
         print 'Error %s' % e
-        sys.exit(1)
 
     finally:
 

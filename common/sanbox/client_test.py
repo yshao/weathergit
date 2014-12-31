@@ -1,5 +1,5 @@
-from smap.archiver.client import SmapClient
-from smap.contrib import dtutil
+from smaputil.archiver.client import SmapClient
+from smaputil.contrib import dtutil
 
 from matplotlib import pyplot
 from matplotlib import dates

@@ -1,7 +1,7 @@
 from smap.archiver.client import SmapClient
 from smap.contrib import dtutil
-from common.config import Config
-from common.env import Env
+from weathergit.common.config import Config
+from weathergit.common.env import Env
 
 
 class DataClient(object):
@@ -17,7 +17,9 @@ class DataClient(object):
         else:
             self.login=login
 
+        print "http://%(host)s:%(port)s" % self.login
         self.c = SmapClient("http://%(host)s:%(port)s" % self.login)
+
 
 
 

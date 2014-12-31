@@ -28,12 +28,6 @@ with settings(host_string='debian@192.168.1.146',password='temppwd'):
 
 
 ### check df -h on smap source
-
-
-
-
-
-
 # with settings(host_string='debian@192.168.1.146'):
 #     res= hello("root")
 #     host_type()

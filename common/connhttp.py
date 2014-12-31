@@ -1,6 +1,39 @@
 import httplib
 import urllib
 import urllib2
+import requests
+import time
+
+### ip camera check
+# r = requests.post(url, files=files)
+
+### curl on server
+r = requests.get('http://192.168.1.120:8079/api/query/Properties__UnitofMeasure')
+print r.status_code
+assert r.status_code == 200
+print r.content
+# print r.text
+
+r = requests.get('http://217.126.89.102:8020//axis-cgi/mjpg/video.cgi',)
+print r.status_code
+
+print 'httpbin'
+url = 'http://httpbin.org/post'
+files = {'file': open('cam.ini', 'rb')}
+
+r = requests.post(url, files=files)
+print r.text
+assert r.status_code == True
+
+
+print 'requestbin'
+
+r = requests.post('http://requestb.in/vhwb7rvh', data={"ts":time.time()})
+print r.status_code
+print r.content
+print r.text
+
+print 'twitter'
 
 c = httplib.HTTPConnection('www.python.org')
 c.request('GET', '/', headers={'Connection': 'close'})

@@ -1,4 +1,4 @@
-from smap.archiver.client import SmapClient
+from smaputil.archiver.client import SmapClient
 
 host='192.168.1.120'
 port='8079'
@@ -8,7 +8,7 @@ endTime="12-9-2014"
 
 c = SmapClient("http://"+host+":"+port)
 
-from smap.contrib import dtutil
+from smaputil.contrib import dtutil
 
 start = dtutil.dt2ts(dtutil.strptime_tz(startTime, "%m-%d-%Y"))
 end   = dtutil.dt2ts(dtutil.strptime_tz(endTime, "%m-%d-%Y"))

@@ -11,76 +11,12 @@ from twisted.internet.endpoints import SerialPortEndpoint
 
 from twisted.protocols.basic import LineReceiver
 
-from smap.driver import SmapDriver
+from smaputil.driver import SmapDriver
 
-VAISALA_UNITS = {
-    'R1' : {
-      'D' : 'deg',
-      'M' : 'm/s',
-      },
-    'R2' : {
-      'C' : 'C',
-      'P' : 'rh',
-      'H' : 'Pa',
-      },
-    'R3' : {
-      'M' : 'mm',
-      's' : 'second',
-      },
-    'R5' : {
-      'V' : 'V',
-      'C' : 'C',
-      '#' : '#',
-
-    }
-    }
-
-VAISALA_POINTS = {
-    'R1' : (
-       'wind', {
-         'direction' : ('Dm', 'Dn', 'Dx'),
-         'speed' : ('Sm', 'Sn', 'Sx')
-         }
-       ),
-    'R2' : (
-       'pth', {
-         'temperature' : ('Ta', None, None),
-         'rh' : ('Ua', None, None),
-         'pressure' : ('Pa', None, None),
-         }
-       ),
-    'R3' : (
-       'precipitation', {
-          'rain_accumulation' : ('Rc', None, None),
-          'rain_duration' : ('Rd', None, None),
-          'rain_intensity' : ('Ri', None, 'Rp'),
-          'hail_accumulation' : ('Hc', None, None),
-          'hail_duration' : ('Hd', None, None),
-          'hail_intensity' : ('Hi', None, 'Hp')
-          }
-       ),
-
-    'R5': (
-        'status',{
-            'temp' : ('Th',None,None),
-            'voltage' : ('Vh','Vs','Vr'),
-
-
-        }
-
-    )
-    }
-
+from weathergit.common.schema import *
 
 from twisted.internet import reactor
-from twisted.internet.serialport import SerialPort
 
-
-# port=o.opts['port']
-# baudrate=int(o.opts['baudrate'])
-#
-# SerialPort(VaisalaListener(), port, reactor, baudrate=baudrate)
-# reactor.run()
 
 class PracoSource(SmapDriver):
     class VaisalaSerialListener(LineReceiver):
@@ -133,10 +69,6 @@ class PracoSource(SmapDriver):
             'Extra/Driver' : 'smap.drivers.praco.PracoSource',
             'Instrument/Manufacturer' : 'BEST',
             'Instrument/Model' : 'v1' })
-
-
-        self.serialPort=opts.get('SerialPort')
-        self.baud=int(opts.get('Baud'))
 
         self.raw_path=opts.get('')
 

@@ -1,15 +1,20 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
-from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
-from gui.RTDispWidget import RTDispWidget
-from gui.command.OpenDialogCmd import OpenDialogCmd
-from gui.command.OpenToolCmd import OpenToolCmd
-from gui.command.OpenVNCCmd import OpenVNCCmd
-from gui.command.OpenWebCmd import OpenWebCmd
-from gui.command.invoker import Invoker
-from gui.tasks.TestServerConnectionTask import TestServerConnectionTask
+from weathergit.common.env import Env
 
 sip.setapi('QString', 2)
+
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
+from weathergit.gui.RTDispWidget import RTDispWidget
+# from weathergit.gui.command.OpenDialogCmd import OpenDialogCmd
+from weathergit.gui.command.OpenToolCmd import OpenToolCmd
+from weathergit.gui.command.OpenVNCCmd import OpenVNCCmd
+from weathergit.gui.command.OpenWebCmd import OpenWebCmd
+from weathergit.gui.command.OpenWidgetCmd import OpenWidgetCmd
+from weathergit.gui.command.invoker import Invoker
+from weathergit.gui.tasks.TestServerConnectionTask import TestServerConnectionTask
+
+
 import webbrowser
 import os
 import re
@@ -19,11 +24,11 @@ import threading
 from PyQt4 import QtCore, QtGui
 
 ### ui files
-from common.dataclient import DataClient
+from weathergit.common.dataclient import DataClient
 from weathergit.gui.plotterwidget import PlotterWidget
-from common.dbconn import DbConn
-from gui.matplotwidget import MatplotlibWidget
-from gui.mplwidget import MplWidget
+from weathergit.common.dbconn import DbConn
+from weathergit.gui.matplotwidget import MatplotlibWidget
+from weathergit.gui.mplwidget import MplWidget
 from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
 
 # from weathergit.gui.configeditor import ConfigEditor
@@ -31,6 +36,7 @@ from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
 from best.common.utils import *
 from best.common.fileutils import *
 from best.common.netutils import *
+from weathergit.common.config import Config
 
 ### py files
 # from weathergit.gui.tasks.taskutils import *
@@ -70,13 +76,14 @@ class WeatherClient(QtGui.QMainWindow):
         self.ui = Ui_WeatherClientMain()
         self.ui.setupUi(self)
         self.ui.outSMAPStatus.setText("Unknown")
+        self.setConfig()
 
 
-    def setConfig(self,config):
+    def setConfig(self,config=None):
         """"""
         ### meta data connection
-        # if config == None:
-        #     config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
+        if config == None:
+            config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
 
         self.dbconn=DbConn()
         self.uuid=self.dbconn.get_uuid()
@@ -174,7 +181,7 @@ class WeatherClient(QtGui.QMainWindow):
 
 
         name="ConfigEditor"
-        self.ui.actionConfig_Editor.triggered.connect(lambda: self.invoker.invoke(OpenDialogCmd(name)))
+        self.ui.actionConfig_Editor.triggered.connect(lambda: self.invoker.invoke(OpenWidgetCmd(name)))
 
         self.ui.actionOpen_SMAP_Plotter.triggered.connect(
             lambda: self.invoker.invoke(OpenWebCmd(self.config['smap_plotter'])))

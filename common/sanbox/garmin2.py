@@ -9,7 +9,7 @@ from twisted.internet.endpoints import SerialPortEndpoint
 
 from twisted.protocols.basic import LineReceiver
 
-from smap.driver import SmapDriver
+from smaputil.driver import SmapDriver
 
 GARMIN_POINTS = {
     'gga' : {
