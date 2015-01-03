@@ -1,4 +1,5 @@
 import unittest
+from common.smaplib.jprint import pprint
 from weathergit.common.smaplib.smap_query import *
 from weathergit.common.smaplib.smap_tool import *
 from weathergit.common.smaplib.smap_load import *
@@ -101,9 +102,12 @@ class SmapUtils(object):
 
     def get_curr_val(self,path):
         ""
+        def parse(json):
+            print pprint(json)
+
         self.init_smap_query()
         response=dict(out='',err=False,code=0)
-        sql="select data before now where uuid='%s'" % path
+        sql="select data before now where Path='%s'" % path
         try:
             res=run_query(opts,sql)
             if res != '[]':

@@ -10,20 +10,20 @@ from twisted.internet.endpoints import SerialPortEndpoint
 
 from twisted.protocols.basic import LineReceiver
 
-from smaputil.driver import SmapDriver
+from smap.driver import SmapDriver
 
 GARMIN_UNTS={
             'utc':'',
-            'longitude':'deg E',
-            'latitude':'deg N',
-            'altitude':'mm',
-            'geoid':'M',
-            'fix':'',
+            'longitude':'W',
+            'latitude':'N',
+            'altitude':'M above mean sea level',
+            'fix':'mode',
             'speed':'M',
             'tracking_angle':'M',
             'magnetic_variation':'',
-
-
+            'horizontal_dilution_of_precision':'',
+            'num_of_satellites':'satellites in view',
+            'height_of_geoid':'M'
 }
 
 from nmea import NMEAReceiver as GPSProtocolBase
@@ -69,8 +69,10 @@ class GarminSerial(SmapDriver):
             data['longitude']=na['lon']
             data['latitude']=na['lat']
             data['altitude']=na['alt']
-            data['geoid']=na['geo']
+            data['height_of_geo']=na['geo']
             data['fix']=na['fix']
+            data['num_satellites']=na['sat']
+            data['horizontal_dilution_of_precision']=na['hdp']
 
 
             self.upload(data,'gga')
@@ -90,22 +92,24 @@ class GarminSerial(SmapDriver):
             self.upload(data,'rmc')
 
 
-        # def handle_activesatellites(self,*args):
-        #     """"""
-        #     # log.msg('activesatellites:\n' +
-        #     #  '\n'.join(map(lambda n: '  %s = %s' % tuple(n), zip(('satlist', 'mode', 'pdop', 'hdop', 'vdop'), map(repr, args)))))
-        #     na=dict(zip(('satlist', 'mode', 'pdop', 'hdop', 'vdop'), map(repr, args)))
-        #     print na
-        #     # print "AA"
-        #     # print args
-        #     # args=dict((y, x) for x, y in args)
-        #     data={}
-        #     data['pdop']=na['pdop']
-        #     data['hdop']=na['hdop']
-        #     data['vdop']=na['vdop']
+        def handle_activesatellites(self,*args):
+            """"""
+            # log.msg('activesatellites:\n' +
+            #  '\n'.join(map(lambda n: '  %s = %s' % tuple(n), zip(('satlist', 'mode', 'pdop', 'hdop', 'vdop'), map(repr, args)))))
+            na=dict(zip(('satlist', 'mode', 'pdop', 'hdop', 'vdop'), map(repr, args)))
+            print na
+            # print "AA"
+            # print args
+            # args=dict((y, x) for x, y in args)
+            data={}
+            data['pdop']=na['pdop']
+            data['hdop']=na['hdop']
+            data['vdop']=na['vdop']
+            data['satlist']=na['satlist']
+            data['mode']=na['mode']
 
 
-            # self.upload(data,'na')
+            self.upload(data,'gsa')
 
 
         def upload(self,data,reg):
