@@ -11,10 +11,14 @@ rdb.db_add(db, 1, [(x, 0, x) for x in xrange(0, 100)])
 
 # read back the data we just wrote using the existing connection
 # the args are streamid, start_timestamp, end_timestamp
+print "object"
+print db
+
+print "query"
 print rdb.db_query(1, 0, 100, conn=db)
 # close
 rdb.db_close(db)
 
 # read back the data again using a connection pool this time.  You can
 # specify a list of streamids to range-query multiple streams at once.
-rdb.db_query([1], 0, 100) 
+print rdb.db_query([1], 0, 100)
