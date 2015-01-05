@@ -20,3 +20,9 @@ requests.GET(SMAP_SERVER,'streams')
 
 # requests.GET(SMAP_SOURCE,'reports')
 
+
+
+### run ipython server ###
+# fabfile runipython
+# ipython notebook --ip=* --no-browser
+# webview ipython calc
