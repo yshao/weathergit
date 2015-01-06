@@ -1,9 +1,21 @@
 import unittest
-from common.config import Config
+from weathergit.common.config import Config
 
 class ConfigTest(unittest.TestCase):
     def setUp(self):
+
+        with open('data.conf', 'w') as file:
+            file.write("""
+{"maps":[{"id":"blabla","iscategorical":"0"},{"id":"blabla","iscategorical":"0"}],
+"masks":{"id":"valore"},
+"om_points":"value",
+"parameters":{"id":"valore"}
+}
+            """
+            )
+
         self.data= Config("data.conf")
+
 
     def testGet(self):
         assert self.data["maps"][0]["id"] == "blabla"
