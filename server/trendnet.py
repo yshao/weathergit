@@ -1,13 +1,11 @@
+import os
 import time
 import logging
 
 from smap.util import periodicSequentialCall
 from smap.driver import SmapDriver
 
-from weathergit.common.webcamutils import *
-from weathergit.common.server.drivers.webcamutils import *
-from weathergit.common.server.fabricutils import *
-
+from h264 import get_snapshot
 
 class TrendnetDriver(SmapDriver):
     path = '/trendnet0/time'
@@ -22,14 +20,18 @@ class TrendnetDriver(SmapDriver):
             'Instrument/Model' : 'WXT520' })
 
 
+        self.conn = DbConn()
 
-        InitCamera()
         ### create timeseries
         if not self.inst.lookup(self.path):
             self.add_timeseries(self.path, '', data_type="double",timezone=self.tz)
 
     def poll_snapshot(self):
-        imagepath,imageidx=get_snapshot(self.port,self.save_dir)
+
+        imagepath=get_snapshot(self.save_dir)
+        imageidx=os.path.basename(imagepath)
+        self.conn.insert(imageidx)
+
         self.inst.add(self.path, imageidx)
 
     def start(self):

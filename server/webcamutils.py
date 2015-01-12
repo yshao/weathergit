@@ -12,6 +12,24 @@ import pytz
 import datetime
 import requests
 
+from fabric.context_managers import cd
+from fabric.operations import put
+from fabric.state import env
+env.user="data"
+env.password="data@best!"
+env.hosts=['192.168.1.223']
+
+def move_file(filep):
+    with cd("data/WeatherStation/ImageStore"):
+        upload=put(filep)
+
+    # Verify the upload
+    return upload.succeeded
+
+
+def initCam():
+    return True
+
 
 def InitCamera():
     """routine to check camera is running"""
