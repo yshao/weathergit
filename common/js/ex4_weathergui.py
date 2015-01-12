@@ -1,6 +1,17 @@
-'Camera'
+'Location - WebCam'
+'Map'
+
+'Now monitor'
+
+
+'Summary Table''
+'High Low Average'
+
 
 'Plotter'
+
+
+
 
 
 

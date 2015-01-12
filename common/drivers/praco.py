@@ -11,7 +11,7 @@ from twisted.internet.endpoints import SerialPortEndpoint
 
 from twisted.protocols.basic import LineReceiver
 
-from smaputil.driver import SmapDriver
+from smap.driver import SmapDriver
 
 from weathergit.common.schema import *
 

@@ -1,6 +1,6 @@
 import Adafruit_BBIO.ADC as ADC
-from smaputil.driver import SmapDriver
-from smaputil.util import periodicSequentialCall
+from smap.driver import SmapDriver
+from smap.util import periodicSequentialCall
 
 class ThetaProbe(SmapDriver):
     def setup(self, opts):
