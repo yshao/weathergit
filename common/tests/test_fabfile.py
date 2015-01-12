@@ -1,6 +1,6 @@
 import re
 import requests
-from fabfile import *
+from weathergit.common.fabfile import *
 from fabric.context_managers import settings
 
 __author__ = 'Ping'
@@ -8,6 +8,11 @@ __author__ = 'Ping'
 
 with settings(host_string='debian@192.168.1.146',password='temppwd'):
     get_smap_config()
+
+
+with settings(host_string='ubuntu@192.168.1.120',password='reverse'):
+    # list()
+    rdb_query("select *")
 
 ### restart smap
 # with settings(host_string='debian@192.168.1.146'):
@@ -62,21 +67,3 @@ with settings(host_string='debian@192.168.1.146',password='temppwd'):
 #     put_config_files()
 #     uptime()
 
-### insert snapshot
-
-# INSERT INTO app(p_id, the_geom)
-# VALUES(2, ST_GeomFromText('POINT(-71.060316 48.432044)', 4326));
-config=dict(hostname=,password=,dbname=,)
-conn=DbConn()
-cur = conn.cursor()
-cur.executemany("""INSERT INTO bar(first_name,last_name) VALUES (%(first_name)s, %(last_name)s)""", namedict)
-### check storage is getting snapshots
-#query(time)
-
-#sv.get_data()[0]
-#header == 'recent'
-
-
-### check disp is running with gps and cam updates
-
-### cam.sig.

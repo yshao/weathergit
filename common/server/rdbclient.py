@@ -1,4 +1,6 @@
 import readingdb as rdb
+import sys
+
 
 class RDBClient(object):
     def __init__(self):
@@ -16,10 +18,8 @@ class RDBClient(object):
 
         # read back the data we just wrote using the existing connection
         # the args are streamid, start_timestamp, end_timestamp
-        print "object"
-
         print "query: %s"+query
-        print rdb.db_query(1, 0, 100, conn=db)
+        print rdb.db_query(1, 0, 100, conn=self.db)
         # close
 
     def close(self):
@@ -28,3 +28,9 @@ class RDBClient(object):
 # read back the data again using a connection pool this time.  You can
 # specify a list of streamids to range-query multiple streams at once.
 # print rdb.db_query([1], 0, 100)
+
+if __name__ == "__main__":
+
+    rc = RDBClient()
+    print sys.argv[0]
+    rc.query(sys.argv[0])

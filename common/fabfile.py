@@ -94,6 +94,16 @@ def restart_smap():
             print res
 
 
+### Server Side ###
+def rdb_query(query):
+    with cd('/home/ubuntu/server'):
+        run('python rdbclient.py "%s"' % query)
+
+
+### KCOBOULD29
+### Shanahan Ridge
+
+### get from reading ###
 
 def get_server_id():
     """"""
