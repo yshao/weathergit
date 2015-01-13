@@ -2,6 +2,9 @@ import unittest
 from weathergit.common.config import Config
 
 class ConfigTest(unittest.TestCase):
+    """
+    Test Config
+    """
     def setUp(self):
 
         with open('data.conf', 'w') as file:
@@ -18,6 +21,10 @@ class ConfigTest(unittest.TestCase):
 
 
     def testGet(self):
+        """
+        test basic functionality of json based config file
+        :return:
+        """
         assert self.data["maps"][0]["id"] == "blabla"
         assert self.data["masks"]["id"] == "valore"
         assert self.data["om_points"] == "value"

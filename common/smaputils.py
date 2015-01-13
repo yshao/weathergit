@@ -1,5 +1,5 @@
 import unittest
-from common.smaplib.jprint import pprint
+from weathergit.common.smaplib.jprint import pprint
 from weathergit.common.smaplib.smap_query import *
 from weathergit.common.smaplib.smap_tool import *
 from weathergit.common.smaplib.smap_load import *
@@ -143,7 +143,9 @@ class SmapUtils(object):
 # sudo(cmd)
 #
 # browser.open('192.168.1.146:5900')
-#
-# '"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
+import subprocess
+cmd='"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
+subprocess.call([cmd])
+
 
 
