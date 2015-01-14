@@ -96,7 +96,7 @@ print "4"
 cmd={'key':'','port':'8079','host':'new.openbms.org/backend/republish'}
 
 c = pycurl.Curl()
-c.setopt(c.URL, 'http://%(host)/republish' % cmd)
+c.setopt(c.URL, "http://%(host)s/republish" % cmd)
 try:
     c.perform()
 
@@ -104,12 +104,13 @@ try:
 
 except:
 
-print "5"
+    print "5"
+
 cmd={'key':'','port':'8079','host':'192.168.1.120'}
 
 
 c = pycurl.Curl()
-c.setopt(c.URL, 'http://%(host):%(port)/add/%(key)' % cmd)
+c.setopt(c.URL, 'http://%(host)s:%(port)/add/%(key)s' % cmd)
 c.setopt(c.CONNECTTIMEOUT, 5)
 c.setopt(c.TIMEOUT, 8)
 c.setopt(c.COOKIEFILE, '')
