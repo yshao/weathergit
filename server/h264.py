@@ -4,6 +4,7 @@ import sys
 import live555
 import threading
 from sysutils import run_command
+from utils import get_timestamp
 
 def rtsp_pull_frames():
     cameraIP = '192.168.1.121'
@@ -53,16 +54,20 @@ def convert_to_png(filep,outfilep):
     run_command(cmd)
 
 
-def gen_filename():
+def _gen_filename():
     ""
+    return get_timestamp()+'.png'
 
 from fabric.context_managers import settings
 from fabfile import move_file
 
 
 
-def get_snapshot():
-    outfilep=gen_filename()
+
+def get_snapshot(outfilep=''):
+    if outfilep == '':
+        outfilep=_gen_filename()
+
     if rtsp_pull_frames():
         convert_to_png('out.264',outfilep)
 

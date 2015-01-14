@@ -27,78 +27,43 @@ import unittest
 
 from PyQt4 import QtCore, QtGui
 import datetime
-from common.smaputils import SmapUtils
-from gui.loggerhandler import logger
+# from weathergit.common.smaputils import SmapUtils
+# from gui.loggerhandler import logger
 
 # from projexui.widgets.xfilepathedit import XFilepathEdit
 # import projexui
-
-class CommandSet(object):
-    def __init__(self):
-        ""
-    def run(self,b):
-        print b
-
-
-smap=SmapUtils()
-fab=FabUtils()
-
-def command(a,b):
-    print a+b
-
-def show_disk():
-    print datetime.datetime.today()
-
-def smap_connected():
-    ""
-
-
-def show_smap_stautus():
-    ""
-    smap.show_status()
-
-def disk_size():
-    ""
-    fab
-
-def sync_time():
-    ""
-
-def get_data():
-    ""
-
-def add_stream():
-    ""
-
-def del_stream():
-    ""
-
-def show_streams():
-    ""
-
-def take_snapshot():
-    ""
-
-
-
-def open_cam():
-    'http://192.168.1.121/doc/page/home_basic.asp?1421084323538'
-
+from weathergit.gui.commandset import CommandSet
+from weathergit.common.fabutils import *
 import sys
-current_module = sys.modules[__name__]
-
-cmd=CommandSet()
-
+# current_module = sys.modules[__name__]
 import inspect
 from pprint import pprint
 
-# pprint(inspect.getmembers(current_module, inspect.isfunction))
-a=[]
-lis=inspect.getmembers(current_module, inspect.isfunction)
-for item in lis:
-    a.append(item[0])
+cmd=CommandSet()
 
-print a
+
+# def show_disk():
+#     print datetime.datetime.today()
+
+# def smap_connected():
+#     ""
+#
+#
+# def show_smap_stautus():
+#     ""
+
+
+# def disk_size():
+#     ""
+#
+# def sync_time():
+#     ""
+
+# def open_cam():
+#     'http://192.168.1.121/doc/page/home_basic.asp?1421084323538'
+
+
+
 
 class PythonConsoleWidget(QtGui.QLineEdit):
 
@@ -148,7 +113,8 @@ class PythonConsoleWidget(QtGui.QLineEdit):
         
         self.expression = self.text()
         try:
-            result = str(eval(str(self.expression)))
+
+            result = str(eval('cmd.'+str(self.expression)))
             
             # Emit the result of the evaluated expression.
 

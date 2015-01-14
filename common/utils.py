@@ -9,6 +9,10 @@ def csv2mat(filep,outfilp):
     scipy.io.savemat(basename+'.mat',data)
 
 
+def get_timestamp():
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    return timestr
+
 
 class DaqException(Exception):
     """Generic error"""

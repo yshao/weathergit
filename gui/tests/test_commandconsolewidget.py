@@ -15,7 +15,6 @@ class Test_CommandConsole(unittest.TestCase):
     def test_get_data(self):
         self.assertEqual(get_data().__class__,'numpy')
 
-    def test_
 
     def test_take_snapshot(self):
         ""

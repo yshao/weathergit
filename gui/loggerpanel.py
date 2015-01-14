@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 import sip
 sip.setapi('QString', 2)
-from gui.ui.ui_loggerpanel import Ui_loggerpanel
-
-
 
 import json
 
@@ -12,7 +9,7 @@ import sys
 
 # number of data points
 from PyQt4.QtCore import QTimer, pyqtSignal
-# from weathergit.gui.ui.ui_loggerpanel import Ui_loggerpanel
+from weathergit.gui.ui.ui_loggerpanel import Ui_loggerpanel
 from weathergit.gui.commandconsolewidget import PythonConsoleWidget
 from weathergit.gui.loggerwidget import LoggerWidget
 
