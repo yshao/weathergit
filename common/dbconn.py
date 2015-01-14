@@ -69,8 +69,6 @@ class DbConn(object):
             pass
 
 
-
-
     def get_uuid(self):
         cur=self.conn.cursor()
         # cur = self.conn.cursor(cursor_factory=LoggingCursor)
@@ -89,11 +87,10 @@ class DbConn(object):
         res=self.cursor.execute(query)
         return res.fetchall()
 
-    def insert_img(self,query,val):
-        """"""
-        self.cursor.execute(query, val)
-
+    def insert(self,query):
+        self.cur.execute(query)
         self.conn.commit()
+
 
     # def __del__(self):
     #     """"""
@@ -103,34 +100,5 @@ class DbConn(object):
 
     def close(self):
         self.conn.close()
-
-
-
-# conn=DbConn(login)
-# try:
-#     uuid=conn.get_uuid()
-#     # print uuid
-#
-#     # print uuid['0049d709-eb70-50b5-8349-859ab8b9c9f8']['Path']
-#
-#
-# except Exception,e:
-#     print e
-
-### insert ###
-
-# namedict = ({"first_name":"Joshua", "last_name":"Drake"},
-#             {"first_name":"Steven", "last_name":"Foo"},
-#             {"first_name":"David", "last_name":"Bar"})
-#
-#
-# cur = conn.cursor()
-# cur.executemany("""INSERT INTO bar(first_name,last_name) VALUES (%(first_name)s, %(last_name)s)""", namedict)
-
-# try:
-#     cur.execute("""DROP DATABASE foo_test""")
-# except:
-#     print "I can't drop our test database!"
-
 
 

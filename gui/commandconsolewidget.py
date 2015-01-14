@@ -44,6 +44,28 @@ def command(a,b):
 def show_disk():
     print datetime.datetime.today()
 
+def smap_connected():
+    ""
+
+def disk_size():
+    ""
+
+def sync_time():
+    ""
+
+def get_data():
+    ""
+
+def del_stream():
+    ""
+
+def show_stream():
+    ""
+
+def
+
+
+
 import sys
 current_module = sys.modules[__name__]
 
