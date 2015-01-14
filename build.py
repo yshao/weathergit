@@ -20,10 +20,14 @@ from best.common.sysutils import *
 from best.common.fileutils import *
 
 ### build all ui
-folder="gui"
+folder="gui/ui"
 for f in list_files(folder,".ui"):
     target=os.path.join(folder,"ui_"+os.path.basename(f)[:-3]+".py")
-    run_command('pyuic4 -x %s -o %s' %(f,target))
+
+    if run_command('pyuic4 -x %s -o %s' %(f,target)) == ('',''):
+        print "built ui for "+f
+    else:
+        print "error: "+f
 
 
 # run_command("msbuild DAQArchImu /p:Configuration=Debug")

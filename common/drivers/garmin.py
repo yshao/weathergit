@@ -16,13 +16,13 @@ GARMIN_UNTS={
             'utc':'',
             'longitude':'W',
             'latitude':'N',
-            'altitude':'M above mean sea level',
+            'altitude':'M',
             'fix':'mode',
             'speed':'M',
             'tracking_angle':'M',
             'magnetic_variation':'',
             'horizontal_dilution_of_precision':'',
-            'num_of_satellites':'satellites in view',
+            'num_of_satellites':'',
             'height_of_geoid':'M'
 }
 

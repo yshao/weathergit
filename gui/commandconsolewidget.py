@@ -23,13 +23,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 import inspect
+import unittest
 
 from PyQt4 import QtCore, QtGui
 import datetime
+from common.smaputils import SmapUtils
 from gui.loggerhandler import logger
 
-from projexui.widgets.xfilepathedit import XFilepathEdit
-import projexui
+# from projexui.widgets.xfilepathedit import XFilepathEdit
+# import projexui
 
 class CommandSet(object):
     def __init__(self):
@@ -37,6 +39,9 @@ class CommandSet(object):
     def run(self,b):
         print b
 
+
+smap=SmapUtils()
+fab=FabUtils()
 
 def command(a,b):
     print a+b
@@ -47,8 +52,14 @@ def show_disk():
 def smap_connected():
     ""
 
+
+def show_smap_stautus():
+    ""
+    smap.show_status()
+
 def disk_size():
     ""
+    fab
 
 def sync_time():
     ""
@@ -56,28 +67,26 @@ def sync_time():
 def get_data():
     ""
 
+def add_stream():
+    ""
+
 def del_stream():
     ""
 
-def show_stream():
+def show_streams():
     ""
 
-def
+def take_snapshot():
+    ""
 
 
+
+def open_cam():
+    'http://192.168.1.121/doc/page/home_basic.asp?1421084323538'
 
 import sys
 current_module = sys.modules[__name__]
 
-# class LoggerWidget(QtGui.QTextBrowser):
-#     def __init__(self,parent=None):
-#         super(LoggerWidget, self).__init__(parent)
-#
-#         self.logger=logger()
-#
-#         self.connect(SIGNAL=,self.print)
-#
-#     def print():
 cmd=CommandSet()
 
 import inspect
@@ -164,17 +173,18 @@ if __name__ == "__main__":
 
 
     # >>> # create the edit
-    edit = projexui.testWidget(XFilepathEdit)
-
-    # >>> # set the filepath
-    edit.setFilepath('/path/to/file')
-
-    # >>> # prompt the user to select the filepath
-    edit.pickFilepath()
-    print edit.filepath()
-
-    edit.hide()
-    del edit
+    # edit = projexui.testWidget(XFilepathEdit)
+    #
+    # # >>> # set the filepath
+    # edit.setFilepath('/path/to/file')
+    #
+    # # >>> # prompt the user to select the filepath
+    # edit.pickFilepath()
+    # print edit.filepath()
+    #
+    # edit.hide()
+    # del edit
 
 
     sys.exit(app.exec_())
+

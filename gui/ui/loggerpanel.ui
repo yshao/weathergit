@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>loggerwidget</class>
- <widget class="QWidget" name="loggerwidget">
+ <class>loggerpanel</class>
+ <widget class="QWidget" name="loggerpanel">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,19 +11,16 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Command Console</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+   <item row="0" column="0">
     <widget class="QComboBox" name="comboBox"/>
    </item>
-   <item row="1" column="1">
+   <item row="0" column="1">
     <widget class="QLineEdit" name="inCommand"/>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QTextBrowser" name="outLogger"/>
-   </item>
-   <item row="2" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
     <widget class="QTextBrowser" name="outResult"/>
    </item>
   </layout>

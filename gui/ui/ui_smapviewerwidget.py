@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui\smapviewerwidget.ui'
+# Form implementation generated from reading ui file 'gui/ui\smapviewerwidget.ui'
 #
-# Created: Wed Dec 31 11:18:52 2014
+# Created: Wed Jan 14 10:56:04 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
