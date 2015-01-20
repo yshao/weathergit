@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui/ui\weatherclientmain.ui'
 #
-# Created: Wed Jan 14 10:56:05 2015
+# Created: Mon Jan 19 16:59:59 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

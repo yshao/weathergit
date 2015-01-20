@@ -38,7 +38,7 @@ def auto_comment(func):
         return ret
     return wraper
 
-@auto_comment
+# @auto_comment
 def hello(who="world"):
    print "Hello {who}!".format(who=who)
    print("Executing on %s as %s" % (env.host, env.user))
@@ -132,17 +132,23 @@ def run_smap():
 
 
 def host_type():
-    run('uname -s')
+    res=run('uname -s')
+    return res
 
+
+def get_time():
+    res = run("date +'%d%m%Y%H%M%S'")
+    return res
 
 def get_uptime():
     res = run('cat /proc/uptime')
     print res
+    return res
 
-# def combo():
-#     host_type()
-#     list()
-#     get_logs()
+def ipcam_take_snapshot():
+    res = run('python trendnet.py get_snapshot')
+    return res
+
 
 # Download some logs
 def get_smap_config():
@@ -159,9 +165,9 @@ def disconnect():
     disconnect_all()
 
 
-# @roles('webserver')
-@parallel
-def pcmd(cmd):
-    run(cmd)
+# # @roles('webserver')
+# @parallel
+# def pcmd(cmd):
+#     run(cmd)
 
 
