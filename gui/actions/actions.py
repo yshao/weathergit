@@ -1,5 +1,10 @@
+from time import sleep
+import unittest
+from PyQt4 import QtGui
 import inspect
-from PyQt4.QtCore import QThread, QObject
+from PyQt4.QtCore import QThread, QObject, QThreadPool
+import sys
+from PyQt4.QtGui import QApplication
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -15,14 +20,6 @@ def log(logger):
     logger.log()
 
 
-
-def show_running_threads():
-    ""
-
-
-class ThreadMon(QObject):
-    ""
-
 class TaskThread(QThread):
     ""
     def __init__(self,parser):
@@ -31,13 +28,22 @@ class TaskThread(QThread):
 
 
     @log
-    def run():
+    def run(self):
         ""
 
 
-mon=ThreadMon()
+#TODO: add xlwings API methods here
+def save_to_file():
+    ""
+
+
+
 
 def download_data(sql):
+
+    params=win.getGuiData()
+    sql = "select data %s %s where uuid like ''"
+
     print(inspect.stack()[0][0].f_code.co_name)
     print(inspect.stack()[0][3])
     print(inspect.currentframe().f_code.co_name)
@@ -55,5 +61,13 @@ def download_data(sql):
 # @log
 # def open_window():
 #     ""
+if __name__ == '__main__':
+    app = QtGui.QApplication(sys.argv)
+    mon = QThreadPool.globalInstance()
+    print mon.activeThreadCount()
+
+    sys.exit(app.exec_())
+
+
 
 
