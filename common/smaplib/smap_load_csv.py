@@ -135,10 +135,14 @@ if __name__ == '__main__':
         print >>sys.stderr, "Error:", e
         sys.exit(1)
 
+
+def server_load_csv(fp,stream=None):
     data = csv.reader(fp)
     fieldnames = data.next()
     columns = set(xrange(0, len(fieldnames)))
-    paths = make_path_names(fieldnames)
+
+    if stream == None:
+        paths = make_path_names(fieldnames)
 
     # choose the columns 
     if opts.takes:

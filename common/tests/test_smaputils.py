@@ -1,8 +1,13 @@
+import os
 import re
 import unittest
-from weathergit.common.dataclient import DataClient
+# from weathergit.server.client import SmapClient
+# from weathergit.common.dataclient import DataClient
 from weathergit.common.config import Config
 from weathergit.common.smaputils import SmapUtils
+
+from xlwings import Workbook, Sheet, Range
+import numpy as np
 
 POINT=dict(
     latitude='/garmin0/latitude',
@@ -15,25 +20,33 @@ POINT=dict(
 )
 
 
-def export_csv():
-    dc=DataClient()
+def export_csv(streamp,startdt,enddt):
+    # dc=DataClient()
 
     opt='EXCEL'
-    data=dc.load_data()
+    # data=dc.load_data(streamp,startdt,enddt)
     if opt == 'EXCEL':
-        from xlwings import Workbook, Sheet, Range
-        import numpy as np
+
         wb=Workbook("test.xlsx")
         wb.caller()
         n = Range('Sheet1', 'B1').value  # Write desired dimensions into Cell B1
         rand_num = np.random.randn(n, n)
-        Range('Sheet1', 'C3').value = rand_num
+        # Range('Sheet1', 'C3').value = rand_num
+        # Range('Sheet2', 'A1').value = data
 
-def load_csv(filep,streamp):
-    ""
+# def load_csv(filep,streamp):
+#     ""
+#     sc=SmapClient()
+#
+#     sc.load_csv(filep)
 
+path='/garmin0/altitude'
+startdt=""
+enddt=""
+fpath=re.replace(path,'/','_')+'.xlsx'
 
-export_csv()
+export_csv(path,startdt,enddt)
+# assert os.path.exists(fpath)
 
 # class SmapUtilsTest(unittest.TestCase):
 #     EXCEL=1
