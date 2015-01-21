@@ -29,6 +29,7 @@ class DbConn(object):
 
         if login == None:
             login={}
+            print Env.getpath('HOME')
             config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
             login['dbname']=config['smap_server_db_dbname']
             login['user']=config["smap_server_db_user"]

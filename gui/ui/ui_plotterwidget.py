@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui/ui\plotterwidget.ui'
 #
-# Created: Mon Jan 19 16:59:58 2015
+# Created: Wed Jan 21 14:30:42 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

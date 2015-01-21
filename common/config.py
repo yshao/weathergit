@@ -7,6 +7,9 @@ class Config(object):
         self.fhandle=open(path)
         self.data = json.load(self.fhandle)
 
+    def save(self):
+        js=json.write(self.data)
+        self.fhandle(js)
 
     def close(self):
         self.fhandle.close()

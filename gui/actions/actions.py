@@ -2,7 +2,7 @@ from time import sleep
 import unittest
 from PyQt4 import QtGui
 import inspect
-from PyQt4.QtCore import QThread, QObject, QThreadPool
+from PyQt4.QtCore import QThread, QObject, QThreadPool, QString
 import sys
 from PyQt4.QtGui import QApplication
 
@@ -36,39 +36,6 @@ class TaskThread(QThread):
 def save_to_file():
     ""
 
-class Handler(QObject):
-    ""
-
-
-class datawidgetHandler(Handler):
-    def __init__(self):
-        ""
-
-
-
-    def on_download_data(win):
-
-        params=win.getGuiData()
-        sql = "select data %s %s where uuid like ''"
-        return sql
-
-
-
-class test_handler(unittest.TestCase,datawidgetHandler):
-    ""
-    def setUp(self):
-        ""
-        self.data={
-            'start_time':1,
-            'end_time':2,
-            'stream_limit':1,
-            'paths':['']
-        }
-        # win=DataWidget()
-
-
-    def test_on_download_data(self):
-        assert self.on_download_data(self.data) == 'select data 1 2 streamlimit 1 where uuid like '1''
 
 def download_data(sql):
 
@@ -85,6 +52,18 @@ def download_data(sql):
     # mon.connect(q.started)
     # q.run()
     # logger.log(" : ".join[mname,tid,"result",res])
+
+
+### gui based ###
+def open_file_browser():
+    ""
+
+    path = QtGui.QFileDialog.getOpenFileName(None,QString.fromLocal8Bit("Select config file:"),"*.ini")
+    # if path:
+    #     self.database = path # To make possible cancel the FileDialog and continue loading a predefined db
+    # self.openDBFile()
+
+    return path
 
 
 
