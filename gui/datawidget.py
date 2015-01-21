@@ -10,6 +10,8 @@ import sys
 from PyQt4.QtCore import pyqtSignal,pyqtSlot, QThread, QObject
 from weathergit.gui.ui.ui_datawidget import Ui_datawidget
 
+
+
 @pyqtSlot(int)
 @pyqtSlot(str)
 def download_data(s):
