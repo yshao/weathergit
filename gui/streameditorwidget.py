@@ -14,6 +14,7 @@ class StreamEditorWidget(QtGui.QWidget):
     # handler=streameditorwidgetHandler()
 
     UUIDList=[]
+    jc = Javascript()
 
     ### connects widgets and signals ###
     def __init__(self, parent = None):
@@ -51,6 +52,10 @@ class StreamEditorWidget(QtGui.QWidget):
 
 
         ### connect signals ###
+        #TODO: select signal carrying index
+        self.ui.metaEditor.currentChanged(lambda: self.__guiUpdateWView())
+        self.ui.metaEditor.currentChanged(lambda: self.__guiUpdateTree())
+
         # self.ui.inActionAdd.clicked.connect(self.add)
         # self.ui.inActionDone.clicked.connect(self.save_config)
         # self.ui.inActionAddSection.clicked.connect(self.add_section)
@@ -99,6 +104,7 @@ class StreamEditorWidget(QtGui.QWidget):
     @pyqtSlot(str)
     def _guiUpdateFilePath(self):
         ""
+
         self.ui.inFilePathLine.setText(self.filep)
         # self.ui.outLeftWView.load(QtCore.QUrl("http://192.168.1.120/status"))
         # self.ui.outRightWView.load(QtCore.QUrl("http://192.168.1.120/smap_query"))
@@ -106,14 +112,36 @@ class StreamEditorWidget(QtGui.QWidget):
 
         self.__guiUpdateTree()
 
+    @pyqtSlot()
     def __guiUpdateWView(self):
         ""
-        self.ui.webView.load(QUrl("http://192.168.1.120/status"))
+        uuid=self.ui.metaEditor.selectedIndexes()
 
+        self.ui.webView.load(QUrl("http://192.168.1.120/status"))
+        # self.ui.webView.setGeometry(400,400,600,245)
+        # self.ui.webView.baseSize(100)
+        # self.ui.webView.scroll(300,10)
+
+
+        # TODO: unittest signal
+        uuid = self.ui.metaeditor.selected()
+        self.jc.update()
+
+
+
+    @pyqtSignal()
     def __guiUpdateTree(self):
         ""
+        uuid=self.ui.metaEditor.selectedIndexes()
+
         # self.config=Config(self.filep)
         self.ui.treeEditor()
+
+        # TODO: unittest
+        res=self.su.smap_query("select * where uuid like '%s'" % uuid)
+        for row in res:
+            print row
+
 
     ### gui methods ###
     def add(self):

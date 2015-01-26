@@ -14,17 +14,7 @@ __author__ = 'Y. Shao'
 __created__ = '1/19/2015' '4:39 PM'
 
 
-class TaskThread(QThread):
-    ""
-    def __init__(self,parser):
-        ""
-        super(TaskThread, self).__init__()
-        tid=self.currentThreadId()
 
-
-    # @log
-    def run(self):
-        ""
 
 class Test_actions(unittest.TestCase):
     ""

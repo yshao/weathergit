@@ -13,7 +13,7 @@ from weathergit.gui.command.OpenVNCCmd import OpenVNCCmd
 from weathergit.gui.command.OpenWebCmd import OpenWebCmd
 from weathergit.gui.command.OpenWidgetCmd import OpenWidgetCmd
 from weathergit.gui.command.invoker import Invoker
-from weathergit.gui.tasks.TestServerConnectionTask import TestServerConnectionTask
+# from weathergit.gui.tasks.TestServerConnectionTask import TestServerConnectionTask
 
 
 import webbrowser
@@ -26,11 +26,11 @@ from PyQt4 import QtCore, QtGui
 
 ### ui files
 from weathergit.common.dataclient import DataClient
-from weathergit.gui.plotterwidget import PlotterWidget
+# from weathergit.gui.plotterwidget import PlotterWidget
 from weathergit.common.dbconn import DbConn
 from weathergit.gui.matplotwidget import MatplotlibWidget
 from weathergit.gui.mplwidget import MplWidget
-from weathergit.gui.ui_weatherclientmain import Ui_WeatherClientMain
+from weathergit.gui.ui.ui_weatherclientmain import Ui_WeatherClientMain
 
 # from weathergit.gui.configeditor import ConfigEditor
 
@@ -102,10 +102,10 @@ class WeatherClient(QtGui.QMainWindow):
         ### gui init ###
 
         #--- inputs group ---
-        self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
+        # self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
         self.ui.rightTab.addTab(RTDispWidget(self),"RT Display")
 
-        self.ui.inTestConnection.clicked.connect(self.testServerConnection)
+        # self.ui.inTestConnection.clicked.connect(self.testServerConnection)
         self.initInvoker()
         # self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
@@ -164,7 +164,7 @@ class WeatherClient(QtGui.QMainWindow):
 
         # check postgre installed
         now = QtCore.QDateTime.currentDateTime()
-        self.ui.inEndTime.setDateTime(now)
+        # self.ui.inEndTime.setDateTime(now)
 
 
     def initInvoker(self):
@@ -216,12 +216,12 @@ class WeatherClient(QtGui.QMainWindow):
         # configeditor.show()
         # sys.exit(app.exec_())
 
-    def testServerConnection(self):
-        ""
-        task=TestServerConnectionTask(self,self.logger,self.ui.cSMAPServer)
-        res=task.run()
-
-        return res
+    # def testServerConnection(self):
+    #     ""
+    #     task=TestServerConnectionTask(self,self.logger,self.ui.cSMAPServer)
+    #     res=task.run()
+    #
+    #     return res
 
 
     ### methods and algorithm ###
