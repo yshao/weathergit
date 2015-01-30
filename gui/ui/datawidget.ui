@@ -34,6 +34,15 @@
    <item row="0" column="2" colspan="2">
     <widget class="QDateTimeEdit" name="inStartTime"/>
    </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QComboBox" name="inExportType">
+     <item>
+      <property name="text">
+       <string>xlsx</string>
+      </property>
+     </item>
+    </widget>
+   </item>
    <item row="3" column="0" colspan="4">
     <widget class="QTableView" name="inUUIDList">
      <property name="sortingEnabled">
@@ -55,16 +64,6 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>SQL</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="4">
-    <widget class="QTextBrowser" name="outSql"/>
-   </item>
    <item row="6" column="2">
     <widget class="QPushButton" name="inDownload">
      <property name="text">
@@ -72,14 +71,15 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" colspan="2">
-    <widget class="QComboBox" name="inExportType">
-     <item>
-      <property name="text">
-       <string>xlsx</string>
-      </property>
-     </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="inActionSQL">
+     <property name="text">
+      <string>SQL</string>
+     </property>
     </widget>
+   </item>
+   <item row="4" column="2" rowspan="2" colspan="2">
+    <widget class="QTextBrowser" name="outSql"/>
    </item>
   </layout>
  </widget>
