@@ -1,10 +1,19 @@
 import time
 import logging
+import datetime
 
 from smap.util import periodicSequentialCall
 from smap.driver import SmapDriver
 
 from weathergit.common.webcamutils import *
+
+
+def InitCamera():
+    return True
+
+
+def get_snapshot():
+    return "",datetime.datetime.now()
 
 class TrendnetDriver(SmapDriver):
     path = '/trendnet0/time'
@@ -16,7 +25,7 @@ class TrendnetDriver(SmapDriver):
         self.log = logging.getLogger('Trendnet')
         self.set_metadata('/', {
             'Instrument/Manufacturer' : 'Trendnet',
-            'Instrument/Model' : 'WXT520' })
+            'Instrument/Model' : 'TV-IP310PI' })
 
 
 
