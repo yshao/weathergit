@@ -15,10 +15,26 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0" colspan="2">
+     <widget class="QTextBrowser" name="outLogBrowser"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QTabWidget" name="rightTab">
+      <property name="minimumSize">
+       <size>
+        <width>388</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QTabWidget" name="leftTab">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -26,7 +42,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <item row="2" column="0" colspan="3">
-         <widget class="QTableView" name="inUUIDList">
+         <widget class="QTableView" name="metaEditor">
           <property name="sortingEnabled">
            <bool>false</bool>
           </property>
@@ -62,200 +78,10 @@
         </item>
        </layout>
        <zorder>label_6</zorder>
-       <zorder>inUUIDList</zorder>
+       <zorder>metaEditor</zorder>
        <zorder>label_3</zorder>
        <zorder>pushButton</zorder>
        <zorder>pushButton_2</zorder>
-      </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>SMAPStatus</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="2" column="0">
-         <widget class="QGroupBox" name="cSMAPSource">
-          <property name="title">
-           <string>SMAP Source</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="2">
-            <widget class="QLineEdit" name="outSMAPHost">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>192.168.1.140</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QLineEdit" name="outSMAPPort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>8079</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Port</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>IP</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Status Unknown</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLineEdit" name="outSourceSize">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>2.3</string>
-             </property>
-             <property name="readOnly">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>Size</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QGroupBox" name="cSMAPServer">
-          <property name="title">
-           <string>SMAP Server</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>IP</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLineEdit" name="outPort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>8080</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Port</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="outHost">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>192.168.1.108</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="outSMAPStatus">
-             <property name="text">
-              <string>Status Unknown</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="inTestConnection">
-          <property name="text">
-           <string>Test Connection</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>SMAPControl</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="2" column="0" colspan="3">
-         <widget class="QLineEdit" name="inCmdLine"/>
-        </item>
-        <item row="2" column="3">
-         <widget class="QPushButton" name="inCmdSend_2">
-          <property name="text">
-           <string>Send</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Command</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="3">
-         <widget class="QComboBox" name="inCmdSel">
-          <item>
-           <property name="text">
-            <string>Power Reset</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Download Raw Data</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Get System Status</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Update System Config</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>New Item</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="4">
-         <widget class="QTextBrowser" name="outCmdResult"/>
-        </item>
-       </layout>
       </widget>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
@@ -331,22 +157,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QTextBrowser" name="outLogBrowser"/>
-    </item>
-    <item row="0" column="1">
-     <widget class="QTabWidget" name="rightTab">
-      <property name="minimumSize">
-       <size>
-        <width>388</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="currentIndex">
-       <number>-1</number>
-      </property>
      </widget>
     </item>
    </layout>

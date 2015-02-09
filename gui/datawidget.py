@@ -1,8 +1,3 @@
-from time import sleep
-from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
-from weathergit.common.dbconn import DbConn
-from weathergit.gui.handlers.datawidgethandler import datawidgetHandler
-
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Ping'
@@ -10,9 +5,13 @@ __created__ = '1/19/2015' '2:32 PM'
 
 from PyQt4 import QtGui
 import sys
-from PyQt4.QtCore import pyqtSignal,pyqtSlot, QThread, QObject
+from PyQt4.QtCore import pyqtSignal,pyqtSlot, QThread, QObject,QString
 from weathergit.gui.ui.ui_datawidget import Ui_datawidget
 
+from time import sleep
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView, QFileDialog
+from weathergit.common.dbconn import DbConn
+from weathergit.gui.handlers.datawidgethandler import datawidgetHandler
 
 
 @pyqtSlot(int)
@@ -73,42 +72,45 @@ class DataWidget(QtGui.QWidget):
         self.sig.emit(20)
 
 
+        ### demo
+        self.ui.actionBrowseFolder.clicked.connect(lambda: self.ui.outFilePath.setText(selectFile()))
+        self.ui.actionDownload.clicked.connect(lambda: download_data(self.UUIDList,self.ui.outFilePath.text()))
+        self.ui.inActionSQL.clicked.connect(lambda: self.ui.outSql.setText(self._guiGet_parse2sql()))
+
+
+
+    # def _guiGet_uuid(self):
+    #     for idx in self.ui.inUUIDList.selectedIndexes():
+    #         item=self.ui.inUUIDList.indexAt(idx)
+    #         item.
 
     # def on_tblItemChanged(self,current,previous):
     #     print(current.data().toString())
 
+    def _guiGet_parse2sql(self):
+        ""
+        d={}
+        d['start_time']=self.ui.inStartTime.text()
+        d['end_time']=self.ui.inEndTime.text()
+        d['stream_limit']=self.ui.inStreamLimit.text()
+        d['uuid']=self.UUIDList
+
+
+        sql = "select data start %(start_time)s end %(end_time)s streamlimit %(stream_limit)s where uuid like '%(uuid)s'" %d
+
+        return sql
+
+
     def _init(self):
         ""
-        ### connect gui signals ###
-        # self.ui.inUUIDList.selectionModel().currentChanged.connect(self.on_tblItemChanged)
-
-
-        self._guiUpdate()
-
-        ### connect signals ###
-        # self.ui.inDownload.clicked.connect(lambda: download_data)
+        # ### connect gui signals ###
+        # # self.ui.inUUIDList.selectionModel().currentChanged.connect(self.on_tblItemChanged)
         #
         #
-        # self.sig.connect(download_data)
-        # self.sig[str].connect(download_data)
+        # self._guiUpdate()
+        #
+        # ### connect signals ###
 
-        t=TThread(self)
-
-        ### connect signals ###
-        # self.ui.inDownload.clicked.connect(lambda: t.download_data("downloaded"))
-        self.ui.inDownload.clicked.connect(lambda: self.handler.on_download_data(self._getGuiData()))
-        # t.connectSlot()
-        # print t.finished()
-        t.finished.connect(self.done_download_data)
-        t.update.connect(lambda: self.update_download_data("A"))
-
-        self.sig.connect(download_data)
-        self.sig[str].connect(download_data)
-
-        ### connect slots ###
-        self.handler.sigSql[str].connect(self._updateGui)
-
-        self.ui.outSql.setText("A")
 
     def done_download_data(self):
         ""
@@ -161,6 +163,7 @@ class DataWidget(QtGui.QWidget):
         self.ui.inUUIDList.setModel(model)
         self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.ui.inUUIDList.sortByColumn(1)
+        self.ui.inUUIDList.resizeColumnsToContents()
 
     def _getGuiData(self):
         # print self.UUIDList
@@ -192,6 +195,17 @@ class DataWidget(QtGui.QWidget):
         ""
         # self.ui.outLat.setText("1000")
         # self.ui.outLong.setText("1000")
+
+
+
+def selectFile(msg='select folder:',ext='*.*'):   #Open a dialog to locate the sqlite file and some more...
+    path = str(QFileDialog.getExistingDirectory(None,QString("Select Directory")))
+    # path = QtGui.QFileDialog.getOpenFileName(None, QString.fromLocal8Bit(msg),ext)
+    # if path:
+    #     for i in items.iteritems():
+    #         i = path # To make possible cancel the FileDialog and continue loading a predefined db
+
+    return path
 
 
 if __name__ == '__main__':

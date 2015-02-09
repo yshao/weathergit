@@ -1,3 +1,5 @@
+from PyQt4.QtCore import pyqtSlot
+
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'

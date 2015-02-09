@@ -1,6 +1,8 @@
 from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
+from common.dbconn import DbConn
 from gui.ui.ui_streameditorwidget import Ui_streameditorwidget
 
 __company__ = 'Boulder Environmental Sciences and Technology'
@@ -14,7 +16,7 @@ class StreamEditorWidget(QtGui.QWidget):
     # handler=streameditorwidgetHandler()
 
     UUIDList=[]
-    jc = Javascript()
+    # jc = Javascript()
 
     ### connects widgets and signals ###
     def __init__(self, parent = None):
@@ -37,7 +39,7 @@ class StreamEditorWidget(QtGui.QWidget):
     def _init(self):
         ""
 
-        self.__guiUpdateWView()
+        self._guiUpdateWView()
 
         ### connect gui signals ###
         # self._guiUpdate()
@@ -53,8 +55,8 @@ class StreamEditorWidget(QtGui.QWidget):
 
         ### connect signals ###
         #TODO: select signal carrying index
-        self.ui.metaEditor.currentChanged(lambda: self.__guiUpdateWView())
-        self.ui.metaEditor.currentChanged(lambda: self.__guiUpdateTree())
+        # self.ui.metaEditor.currentChanged(lambda: self._guiUpdateWView())
+        # self.ui.metaEditor.currentChanged(lambda: self._guiUpdateTree())
 
         # self.ui.inActionAdd.clicked.connect(self.add)
         # self.ui.inActionDone.clicked.connect(self.save_config)
@@ -73,6 +75,8 @@ class StreamEditorWidget(QtGui.QWidget):
 
         ### connect slots ###
         # self.handler.sigSql[str].connect(self._updateGui)
+
+        self._guiUpdate_UUID()
 
 
 
@@ -113,23 +117,23 @@ class StreamEditorWidget(QtGui.QWidget):
         self.__guiUpdateTree()
 
     @pyqtSlot()
-    def __guiUpdateWView(self):
+    def _guiUpdateWView(self):
         ""
         uuid=self.ui.metaEditor.selectedIndexes()
 
-        self.ui.webView.load(QUrl("http://192.168.1.120/status"))
+        # self.ui.webView.load(QUrl("http://192.168.1.120/status"))
         # self.ui.webView.setGeometry(400,400,600,245)
         # self.ui.webView.baseSize(100)
         # self.ui.webView.scroll(300,10)
 
 
         # TODO: unittest signal
-        uuid = self.ui.metaeditor.selected()
-        self.jc.update()
+        # uuid = self.ui.metaeditor.selected()
+        # self.jc.update()
 
 
 
-    @pyqtSignal()
+    # @pyqtSignal()
     def __guiUpdateTree(self):
         ""
         uuid=self.ui.metaEditor.selectedIndexes()
@@ -141,6 +145,47 @@ class StreamEditorWidget(QtGui.QWidget):
         res=self.su.smap_query("select * where uuid like '%s'" % uuid)
         for row in res:
             print row
+
+
+    def _guiUpdate_UUID(self):
+        ""
+        self.dbconn=DbConn()
+        self.uuid=self.dbconn.get_uuid()
+        keys=self.uuid.keys()
+
+        model=QStandardItemModel()
+        model.setHorizontalHeaderItem(0,QStandardItem("UUID"))
+        model.setHorizontalHeaderItem(1,QStandardItem("Path"))
+
+        def on_item_changed():
+            i = 0
+            list=[]
+            while model.item(i):
+                if not model.item(i,0).checkState():
+                    ""
+                    # return
+                else:
+                    # print model.item(i,0).text()
+                    list.append(model.item(i,0).text())
+                i += 1
+
+            self.UUIDList=list
+
+
+        for key in keys:
+            name=self.uuid[key]['Path']
+            item1 = QStandardItem(key)
+            item2 = QStandardItem(name)
+            item1.setCheckable(True)
+
+            model.appendRow([item1,item2])
+
+        model.itemChanged.connect(lambda: on_item_changed())
+
+        self.ui.inUUIDList.setModel(model)
+        self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.ui.inUUIDList.sortByColumn(1)
+        self.ui.inUUIDList.resizeColumnsToContents()
 
 
     ### gui methods ###
