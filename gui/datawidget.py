@@ -5,12 +5,13 @@ __created__ = '1/19/2015' '2:32 PM'
 
 from PyQt4 import QtGui
 import sys
-from PyQt4.QtCore import pyqtSignal,pyqtSlot, QThread, QObject,QString
+from PyQt4.QtCore import pyqtSignal,pyqtSlot, QThread, QObject
 from weathergit.gui.ui.ui_datawidget import Ui_datawidget
 
 from time import sleep
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView, QFileDialog
 from weathergit.common.dbconn import DbConn
+from weathergit.common.guiutils import *
 from weathergit.gui.handlers.datawidgethandler import datawidgetHandler
 
 
@@ -195,17 +196,6 @@ class DataWidget(QtGui.QWidget):
         ""
         # self.ui.outLat.setText("1000")
         # self.ui.outLong.setText("1000")
-
-
-
-def selectFile(msg='select folder:',ext='*.*'):   #Open a dialog to locate the sqlite file and some more...
-    path = str(QFileDialog.getExistingDirectory(None,QString("Select Directory")))
-    # path = QtGui.QFileDialog.getOpenFileName(None, QString.fromLocal8Bit(msg),ext)
-    # if path:
-    #     for i in items.iteritems():
-    #         i = path # To make possible cancel the FileDialog and continue loading a predefined db
-
-    return path
 
 
 if __name__ == '__main__':

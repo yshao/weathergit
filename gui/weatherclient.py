@@ -1,12 +1,17 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
+from camviewwidget import CamviewWidget
+from gui.snapshotmanwidget import SnapshotManWidget
+from gui.statuscontrolwidget import StatusControlWidget
+
 sip.setapi('QString', 2)
 from weathergit.common.env import Env
 
-
+from weathergit.gui.datawidget import DataWidget
+from weathergit.gui.streameditorwidget import StreamEditorWidget
 
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
-from weathergit.gui.RTDispWidget import RTDispWidget
+from weathergit.gui.rtdispwidget import RTDispWidget
 # from weathergit.gui.command.OpenDialogCmd import OpenDialogCmd
 from weathergit.gui.command.OpenToolCmd import OpenToolCmd
 from weathergit.gui.command.OpenVNCCmd import OpenVNCCmd
@@ -76,7 +81,7 @@ class WeatherClient(QtGui.QMainWindow):
         super(WeatherClient, self).__init__()
         self.ui = Ui_WeatherClientMain()
         self.ui.setupUi(self)
-        self.ui.outSMAPStatus.setText("Unknown")
+        # self.ui.outSMAPStatus.setText("Unknown")
         self.setConfig()
 
 
@@ -102,8 +107,22 @@ class WeatherClient(QtGui.QMainWindow):
         ### gui init ###
 
         #--- inputs group ---
+        # self.ui.leftTab.removeTab(0)
+        # self.ui.leftTab.removeTab(1)
+
+        self.ui.leftTab.addTab(StatusControlWidget(self),'Status')
+        self.ui.leftTab.addTab(StreamEditorWidget(self),'Stream')
+        self.ui.leftTab.addTab(DataWidget(self),'Data')
+        self.ui.leftTab.addTab(SnapshotManWidget(self),'Cam')
+
         # self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
-        self.ui.rightTab.addTab(RTDispWidget(self),"RT Display")
+        self.ui.rightTab.addTab(RTDispWidget(self),"RTDisplay")
+        self.ui.rightTab.addTab(CamviewWidget(self),"Cam")
+
+
+        tabRTWidget = self.ui.rightTab.currentWidget()
+        tabRTWidget.update_view('http://192.168.1.146:8079/docs/')
+
 
         # self.ui.inTestConnection.clicked.connect(self.testServerConnection)
         self.initInvoker()
@@ -126,15 +145,7 @@ class WeatherClient(QtGui.QMainWindow):
 
         # exit=QtGui.QAction(self)
 
-        self.populate_uuids()
-
-
-    def selectFile(self,*items):   #Open a dialog to locate the sqlite file and some more...
-        path = QtGui.QFileDialog.getOpenFileName(None,QtCore.QString.fromLocal8Bit("Select database:"),"*.sqlite")
-        if path:
-            for i in items.iteritems():
-                i = path # To make possible cancel the FileDialog and continue loading a predefined db
-        self.openDBFile()
+        # self.populate_uuids()
 
 
     def closeEvent(self,event):
@@ -151,11 +162,12 @@ class WeatherClient(QtGui.QMainWindow):
 
     ### refresh methods ###
     def refreshEnv(self):
+        ""
         #--- Config Group ---
-        self.ui.outPort.setText(self.config["smap_server_port"])
-        self.ui.outHost.setText(self.config["smap_server_host"])
+        # self.ui.outPort.setText(self.config["smap_server_port"])
+        # self.ui.outHost.setText(self.config["smap_server_host"])
         # self.evt_testServerConnect()
-        self.ui.statusbar.showMessage("Config initialized")
+        # self.ui.statusbar.showMessage("Config initialized")
 
     ### init methods ###
     def initEnv(self):
@@ -163,7 +175,7 @@ class WeatherClient(QtGui.QMainWindow):
         self.refreshEnv()
 
         # check postgre installed
-        now = QtCore.QDateTime.currentDateTime()
+        # now = QtCore.QDateTime.currentDateTime()
         # self.ui.inEndTime.setDateTime(now)
 
 
@@ -225,45 +237,6 @@ class WeatherClient(QtGui.QMainWindow):
 
 
     ### methods and algorithm ###
-
-    def populate_uuids(self):
-        ""
-        keys=self.uuid.keys()
-        # self.selUUIDList=[]
-
-        model=QStandardItemModel()
-        model.setHorizontalHeaderItem(0,QStandardItem("UUID"))
-        model.setHorizontalHeaderItem(1,QStandardItem("Path"))
-
-        def on_item_changed():
-            i = 0
-            list=[]
-            while model.item(i):
-                if not model.item(i,0).checkState():
-                    ""
-                    # return
-                else:
-                    list.append(model.item(i,0).text())
-                i += 1
-
-            self.UUIDList=list
-
-
-        for key in keys:
-            name=self.uuid[key]['Path']
-            item1 = QStandardItem(key)
-            item2 = QStandardItem(name)
-            item1.setCheckable(True)
-
-            model.appendRow([item1,item2])
-
-
-
-        model.itemChanged.connect(lambda: on_item_changed())
-
-        self.ui.inUUIDList.setModel(model)
-        self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.ui.inUUIDList.sortByColumn(1)
 
 
 

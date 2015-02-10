@@ -30,11 +30,21 @@ class StreamEditorWidget(QtGui.QWidget):
 
         self.sig[str].emit("opened")
         self.sig.emit(20)
+        ### demo
+        # self.model.itemChanged.connect(lambda: on_item_changed())
+
+
+        # map(self.model.itemChanged.connect, [lambda: on_item_changed(), lambda: self._on_itemSelected()])
+        map(self.model.itemChanged.connect, [lambda: self._on_itemSelected()])
 
 
 
-    # def on_tblItemChanged(self,current,previous):
-    #     print(current.data().toString())
+    sigItemSelected=pyqtSignal()
+
+    @pyqtSlot()
+    def on_itemSelected(self):
+        self.sigItemSelected.emit()
+
 
     def _init(self):
         ""
@@ -116,6 +126,8 @@ class StreamEditorWidget(QtGui.QWidget):
 
         self.__guiUpdateTree()
 
+
+
     @pyqtSlot()
     def _guiUpdateWView(self):
         ""
@@ -181,6 +193,8 @@ class StreamEditorWidget(QtGui.QWidget):
             model.appendRow([item1,item2])
 
         model.itemChanged.connect(lambda: on_item_changed())
+
+        self.model=model
 
         self.ui.inUUIDList.setModel(model)
         self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)

@@ -13,6 +13,12 @@ __author__ = 'Ping'
 #     restart_smap()
 
 
+def get_status():
+    """
+
+    :return:
+    """
+
 def show_smap_status():
     """
 
@@ -72,7 +78,7 @@ def show_time():
 def sync_time():
     ""
 
-def take_snapshot():
+def take_snapshot(outfilep):
     ""
     def parse():
         ""
@@ -80,11 +86,28 @@ def take_snapshot():
     out=[]
 
     with settings(host_string='ubuntu@192.168.1.120'):
-        out.append(ipcam_take_snapshot())
+        out.append(ipcam_take_snapshot(outfilep))
+
+
+
 
     d=parse(out)
 
     return d
+
+
+def get_snapshot_files(lfile_idx,localp):
+    with settings(host_string='data@192.168.1.223',password='data@best!'):
+        # out.append(get_time())
+
+        with cd("store/images"):
+            upload=get(lfile_idx,localp)
+
+        # Verify the upload
+        return upload.succeeded
+
+
+
 
 ### check html returns has monitor running X
 # r=requests.get("http://192.168.1.146:8079/data")

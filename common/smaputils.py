@@ -13,7 +13,7 @@ default_backend = 'http://192.168.1.120:8079/api/query'
 
 
 # sql="select data in (\"1/1/2012\", \"1/7/2012\") where uuid='62a74dc0-d3c1-5986-aefa-953bf7a616e7'"
-sql="select data in (\"12/29/2014\", \"12/30/2014\")  streamlimit 200 where uuid='62a74dc0-d3c1-5986-aefa-953bf7a616e7'"
+# sql="select data in (\"12/29/2014\", \"12/30/2014\")  streamlimit 200 where uuid='62a74dc0-d3c1-5986-aefa-953bf7a616e7'"
 
 class SmapUtils(object):
     """
@@ -82,6 +82,7 @@ class SmapUtils(object):
                           default='CSV Input', help='Metadata/SourceName tag value')
 
         opts, args = self.parser.parse_args()
+
 
     def _init_smap_query(self):
         ""

@@ -1,23 +1,21 @@
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
-__created__ = '2/9/2015' '10:24 AM'
+__created__ = '2/9/2015' '10:48 AM'
 
 import sip
 sip.setapi('QString', 2)
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 from weathergit.common.dbconn import DbConn
-from weathergit.common.ProcessPool import ProcessPool
-from common.guiutils import selectFile
+
 from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 
-from gui.ui.ui_snapshotmanwidget import Ui_snapshotmanwidget
+from gui.ui.ui_rtdispwidget import Ui_rtdispwidget
 
 
-
-class SnapshotManWidget(QtGui.QWidget):
+class RTDispWidget(QtGui.QWidget):
     ""
     sig=pyqtSignal((int,), (str,))
     # handler=streameditorwidgetHandler()
@@ -27,8 +25,8 @@ class SnapshotManWidget(QtGui.QWidget):
 
     ### connects widgets and signals ###
     def __init__(self, parent = None):
-        super(SnapshotManWidget, self).__init__()
-        self.ui = Ui_snapshotmanwidget()
+        super(RTDispWidget, self).__init__()
+        self.ui = Ui_rtdispwidget()
         self.ui.setupUi(self)
         self._init()
         self.dbconn=DbConn()
@@ -36,17 +34,15 @@ class SnapshotManWidget(QtGui.QWidget):
 
 
 
-
+        self._guiUpdate_status(self.get_status())
 
         # self._getGuiData()
 
-        # self.sig[str].emit("opened")
-        # self.sig.emit(20)
+        self.sig[str].emit("opened")
+        self.sig.emit(20)
 
-        ### demo
-        self.ui.actionBrowseFolder.clicked.connect(lambda: self.ui.outFilePath.setText(selectFile()))
-        self.ui.actionSnapshot.clicked.connect(lambda: ProcessPool.gen_task_cmd("take_snapshot"))
-        self.ui.actionGetFiles.clicked.connect(lambda: ProcessPool.gen_task_cmd("get_"))
+    # def on_tblItemChanged(self,current,previous):
+    #     print(current.data().toString())
 
     def _init(self):
         ""
@@ -91,6 +87,9 @@ class SnapshotManWidget(QtGui.QWidget):
         ### connect slots ###
         # self.handler.sigSql[str].connect(self._updateGui)
 
+    def get_status(self):
+        ""
+        return dict(smap_status="yes",bbb_smap_version="2.7.6",bbb_diskspace="0.4 G",server_status="yes",server_version="ubuntu 12.14",server_diskspace="12.1 G")
 
     def _guiInit(self):
         ""
@@ -142,26 +141,14 @@ class SnapshotManWidget(QtGui.QWidget):
     def _guiUpdate_status(self,data):
         ""
 
-        # model=QStandardItemModel()
-        # model.setHorizontalHeaderItem(0,QStandardItem("attribute"))
-        # model.setHorizontalHeaderItem(1,QStandardItem("status"))
-        #
-        # for key in data.keys():
-        #     value=data[key]
-        #     item1 = QStandardItem(key)
-        #     item2 = QStandardItem(value)
-        #     # item1.setCheckable(True)
-        #
-        #     model.appendRow([item1,item2])
-        #
-        # self.ui.outStatus.setModel(model)
-        # self.ui.outStatus.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # self.ui.outStatus.sortByColumn(1)
 
     @pyqtSlot(str)
     def update_download_data(self,s):
         print s
 
+
+    def update_view(self,url):
+        self.ui.wview.load(QUrl(url))
 
     def _getGuiData(self):
         d={}
@@ -243,9 +230,9 @@ class SnapshotManWidget(QtGui.QWidget):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
 
-    main = SnapshotManWidget()
-    # main.load(filep)
-
+    main = RTDispWidget()
     main.show()
 
     sys.exit(app.exec_())
+
+
