@@ -12,7 +12,7 @@ import sys
 
 class DispWidget(QtGui.QWidget):
     def __init__(self):
-        super(Disp, self).__init__()
+        super(DispWidget, self).__init__()
 
 
     def slotResult(self):
@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
         #     'Choice C': CHOICE_C,
         #     'Choice D': CHOICE_D,
         # }
-        #
+
         self.vis.set_defaults({
             'text1': 'hello1',
             'text2': 'hello2',
@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
         #     'active': True,
         #     'combo': CHOICE_C,
         # })
-        #
+
         gd = QGridLayout()
         #
         # sb = QSpinBox()

@@ -44,12 +44,12 @@ class StatusControlWidget(QtGui.QWidget):
 
         ### demo
 
+
         self.ui.gridLayout.removeWidget(self.ui.inCmdLine)
         self.ui.inCmdLine.setParent(None)
-        # self.ui.dragDataEdit = myDumpBox(self.ui.centralwidget)
-        # self.ui.gridLayout.addWidget(self.ui.dragDataEdit, 0, 0, 1, 1)
         self.xcmd=PythonConsoleWidget()
-        self.ui.gridLayout.addWidget(self.xcmd)
+        self.xcmd.add_logger(self.ui.outResult)
+        self.ui.gridLayout_2.addWidget(self.xcmd,1,0)
 
 
     def _init(self):
@@ -163,6 +163,7 @@ class StatusControlWidget(QtGui.QWidget):
 
         self.ui.outStatus.setModel(model)
         self.ui.outStatus.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.ui.outStatus.resizeColumnsToContents()
         # self.ui.outStatus.sortByColumn(1)
 
     @pyqtSlot(str)

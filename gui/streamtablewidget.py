@@ -1,16 +1,17 @@
-from PyQt4 import QtGui
-from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
-import sys
-from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView, QTreeWidgetItem, QTableWidgetItem
-from common.dbconn import DbConn
-from gui.ui.ui_streameditorwidget import Ui_streameditorwidget
-
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
-__created__ = '1/21/2015' '2:11 PM'
+__created__ = '2/10/2015' '10:18 AM'
 
-class StreamEditorWidget(QtGui.QWidget):
+from PyQt4 import QtGui
+from PyQt4.QtCore import pyqtSignal, pyqtSlot
+from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
+import sys
+from common.dbconn import DbConn
+
+from weathergit.gui.ui.ui_streamtablewidget import Ui_streamtablewidget
+
+class StreamTableWidget(QtGui.QWidget):
     ""
     sig=pyqtSignal((int,), (str,))
     # handler=streameditorwidgetHandler()
@@ -20,8 +21,8 @@ class StreamEditorWidget(QtGui.QWidget):
 
     ### connects widgets and signals ###
     def __init__(self, parent = None):
-        super(StreamEditorWidget, self).__init__()
-        self.ui = Ui_streameditorwidget()
+        super(StreamTableWidget, self).__init__()
+        self.ui = Ui_streamtablewidget()
         self.ui.setupUi(self)
         self._init()
         # self._guiUpdate()
@@ -33,85 +34,31 @@ class StreamEditorWidget(QtGui.QWidget):
         ### demo
         # self.model.itemChanged.connect(lambda: on_item_changed())
 
-        self.ui.inUUIDList.setSelectionBehavior(QAbstractItemView.SelectRows)
-        # self.ui.metaEditor.setE
-
 
         # map(self.model.itemChanged.connect, [lambda: on_item_changed(), lambda: self._on_itemSelected()])
-        # map(self.ui.inUUIDList.itemChanged.connect, [lambda: self._on_itemSelected()])
+        # map(self.model.itemChanged.connect, [lambda: self._on_itemSelected()])
 
-        self.ui.inUUIDList.clicked.connect(lambda: self._guiUpdate_metaTable(self.on_itemSelected()))
-
-        self.ui.inActionCommit.clicked.connect(lambda: self.update_meta())
+        self.ui.actionStreamJsonCommit.clicked.connect(lambda: self.update_metadata(self._guiUpdate_table()))
 
 
-    def update_metadata(self):
+    def update_metadata(self,d):
         ""
-        print self.metamodel
+
+    def _guiUpdate_table(self):
+        ""
+
 
     sigItemSelected=pyqtSignal()
 
     @pyqtSlot()
     def on_itemSelected(self):
-        d=self._getGuiData()
-        print d
-        self.ui.outUUID.setText(d['uuid'])
-        self.ui.outPath.setText(d['path'])
-        # self.ui.out
         self.sigItemSelected.emit()
-        self._guiUpdate_metaTable(d['uuid'])
-        return d
-
-
-    def _guiUpdate_metaTable(self,uuid):
-        dbconn=DbConn()
-        meta=dbconn.get_meta_kv()
-
-        stream=meta[str(uuid)]
-        print stream
-
-        model=QStandardItemModel()
-        model.setHorizontalHeaderItem(0,QStandardItem("Attribute"))
-        model.setHorizontalHeaderItem(1,QStandardItem("Value"))
-
-
-        while model.rowCount() > 0:
-            model.removeRow(0)
-
-        for k in stream.keys():
-            name=stream[k]
-            # print name
-            # print k
-            item1 = QStandardItem(k)
-            item2 = QStandardItem(name)
-            # item=QTableWidgetItem()
-            # item.setText(1,name)
-            # item.setText(2,k)
-            # self.ui.metaEditor
-            # model.appendRow([item1,item2])
-            # self.ui.metaEditor.appendI
-            model.appendRow([item1,item2])
-        self.ui.metaEditor.setModel(model)
-
-        # self.ui.metaEditor.addTopLevelItem(item)
-        # self.ui.metaEditor.
-
-        # model.itemChanged.connect(lambda: on_item_changed())
-
-        self.metamodel=model
-
-        # self.ui.met
-        self.ui.metaEditor.setModel(model)
-        # self.ui.metaEditor.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # self.ui.metaEditor.sortByColumn(1)
-        self.ui.metaEditor.resizeColumnsToContents()
-
 
 
     def _init(self):
         ""
-
-        self._guiUpdateWView()
+        # self._guiUpdate_table()
+        # self._guiUpdateWView()
 
         ### connect gui signals ###
         # self._guiUpdate()
@@ -148,7 +95,7 @@ class StreamEditorWidget(QtGui.QWidget):
         ### connect slots ###
         # self.handler.sigSql[str].connect(self._updateGui)
 
-        self._guiUpdate_UUID()
+        # self._guiUpdate_UUID()
 
 
 
@@ -167,15 +114,7 @@ class StreamEditorWidget(QtGui.QWidget):
 
     def _getGuiData(self):
         d={}
-        # print 'data'
 
-        idx=self.ui.inUUIDList.currentIndex()
-        row=idx.row()
-        uuid= self.ui.model.index(row,0).data().toString()
-        path= self.ui.model.index(row,1).data().toString()
-
-        d['uuid']=uuid
-        d['path']=path
 
         return d
 
@@ -201,7 +140,7 @@ class StreamEditorWidget(QtGui.QWidget):
     @pyqtSlot()
     def _guiUpdateWView(self):
         ""
-        uuid=self.ui.metaEditor.selectedIndexes()
+        uuid=self.ui.metaeditor.selectedIndexes()
 
         # self.ui.webView.load(QUrl("http://192.168.1.120/status"))
         # self.ui.webView.setGeometry(400,400,600,245)
@@ -229,47 +168,36 @@ class StreamEditorWidget(QtGui.QWidget):
             print row
 
 
-    def _guiUpdate_UUID(self):
+    def _guiUpdate_table(self,uuid):
         ""
         self.dbconn=DbConn()
-        self.uuid=self.dbconn.get_uuid()
-        keys=self.uuid.keys()
+        # self.uuid=self.dbconn.get_uuid()
+        uuid=''
+        self.meta=self.dbconn.get_meta_kv()[uuid]
+
+
+        keys=self.meta.keys()
 
         model=QStandardItemModel()
-        model.setHorizontalHeaderItem(0,QStandardItem("UUID"))
-        model.setHorizontalHeaderItem(1,QStandardItem("Path"))
+        model.setHorizontalHeaderItem(0,QStandardItem("Attribute"))
+        model.setHorizontalHeaderItem(1,QStandardItem("Value"))
 
-        def on_item_changed():
-            i = 0
-            list=[]
-            while model.item(i):
-                if not model.item(i,0).checkState():
-                    ""
-                    # return
-                else:
-                    # print model.item(i,0).text()
-                    list.append(model.item(i,0).text())
-                i += 1
-
-            self.UUIDList=list
-
-
-        for key in keys:
-            name=self.uuid[key]['Path']
-            item1 = QStandardItem(key)
+        for k in keys:
+            name=self.meta[k]['Attribute']
+            item1 = QStandardItem(k)
             item2 = QStandardItem(name)
-            # item1.setCheckable(True)
+            item1.setCheckable(True)
 
             model.appendRow([item1,item2])
 
-        model.itemChanged.connect(lambda: on_item_changed())
+        # model.itemChanged.connect(lambda: on_item_changed())
 
-        self.ui.model=model
+        self.model=model
 
-        self.ui.inUUIDList.setModel(model)
-        self.ui.inUUIDList.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.ui.inUUIDList.sortByColumn(1)
-        self.ui.inUUIDList.resizeColumnsToContents()
+        self.ui.metaeditor.setModel(model)
+        self.ui.metaeditor.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.ui.metaeditor.sortByColumn(1)
+        self.ui.metaeditor.resizeColumnsToContents()
 
 
     ### gui methods ###
@@ -298,10 +226,9 @@ class StreamEditorWidget(QtGui.QWidget):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
 
-    main = StreamEditorWidget()
+    main = StreamTableWidget()
     # main.load(filep)
 
     main.show()
 
     sys.exit(app.exec_())
-

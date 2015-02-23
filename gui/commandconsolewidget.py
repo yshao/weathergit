@@ -32,6 +32,8 @@ import datetime
 
 # from projexui.widgets.xfilepathedit import XFilepathEdit
 # import projexui
+from PyQt4.QtGui import QStringListModel, QCompleter
+from common.ProcessPool import ProcessPool
 from weathergit.gui.commandset import CommandSet
 from weathergit.common.fabutils import *
 import sys
@@ -42,43 +44,35 @@ from pprint import pprint
 cmd=CommandSet()
 
 
-# def show_disk():
-#     print datetime.datetime.today()
+class CommandLineEdit(QtGui.QLineEdit):
+    def __init__(self,parent=None):
+        super(QtGui.QLineEdit, self).__init__(parent)
 
-# def smap_connected():
-#     ""
-#
-#
-# def show_smap_stautus():
-#     ""
+        model = QStringListModel()
+        completer = QCompleter()
+        completer.setModel(model)
+        model.setStringList(cmd.cmdset)
 
-
-# def disk_size():
-#     ""
-#
-# def sync_time():
-#     ""
-
-# def open_cam():
-#     'http://192.168.1.121/doc/page/home_basic.asp?1421084323538'
+        self.setCompleter(completer)
 
 
 
-
-class PythonConsoleWidget(QtGui.QLineEdit):
+class PythonConsoleWidget(CommandLineEdit):
 
     """PythonConsoleWidget(QtGui.QLineEdit)
     
     Provides a custom widget to accept Python expressions and emit output
     to other components via a custom signal.
     """
-    
+
+    def add_logger(self,w):
+        self.w=w
+
     pythonOutput = QtCore.pyqtSignal(str)
     
     def __init__(self, parent=None):
     
         super(PythonConsoleWidget, self).__init__(parent)
-        
         self.history = []
         self.current = -1
         
@@ -105,20 +99,33 @@ class PythonConsoleWidget(QtGui.QLineEdit):
                 self.current = current
                 
                 event.accept()
-    
+
+    def execute2(self):
+
+        self.expression = self.text()
+        # cmd2=CommandSet()
+
+        result = str(eval('cmd.'+str(self.expression+'()')))
+        self.pythonOutput.emit(result)
+        self.w.append(result)
+        # ProcessPool.gen_task(self.expression)
+
     def execute(self):
     
         # Define this here to give users something to look at.
         qApp = QtGui.qApp
-        
+        cmdset=CommandSet()
         self.expression = self.text()
+
+        # print self.expression
         try:
 
-            result = str(eval('cmd.'+str(self.expression)))
+            result = str(eval('cmdset.'+str(self.expression)+'()'))
             
             # Emit the result of the evaluated expression.
 
             self.pythonOutput.emit(result)
+            self.w.append(result)
 
             # Clear the line edit, append the successful expression to the
             # history, and update the current command index.
@@ -150,6 +157,8 @@ if __name__ == "__main__":
     #
     # edit.hide()
     # del edit
+
+    # print eval('cmd.'+str('today'))
 
 
     sys.exit(app.exec_())

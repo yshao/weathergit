@@ -1,3 +1,7 @@
+import os
+from common.utils import get_timestamp
+from gui.commandset import CommandSet
+
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
@@ -14,7 +18,7 @@ from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 
 from gui.ui.ui_snapshotmanwidget import Ui_snapshotmanwidget
-
+from weathergit.common.fabutils import *
 
 
 class SnapshotManWidget(QtGui.QWidget):
@@ -45,8 +49,30 @@ class SnapshotManWidget(QtGui.QWidget):
 
         ### demo
         self.ui.actionBrowseFolder.clicked.connect(lambda: self.ui.outFilePath.setText(selectFile()))
-        self.ui.actionSnapshot.clicked.connect(lambda: ProcessPool.gen_task_cmd("take_snapshot"))
-        self.ui.actionGetFiles.clicked.connect(lambda: ProcessPool.gen_task_cmd("get_"))
+        # self.ui.actionSnapshot.clicked.connect(lambda: ProcessPool.gen_task_cmd("take_snapshot"))
+        # self.ui.actionGetFiles.clicked.connect(lambda: ProcessPool.gen_task_cmd("get_"))
+        self.ui.actionSnapshot.clicked.connect(lambda: self.snapshot())
+        self.ui.actionGetFiles.clicked.connect(lambda: self.get_files())
+
+
+    def snapshot(self):
+        filename=get_timestamp()+'.png'
+        self.ui.outFilename.setText(filename)
+        # cmd=CommandSet()
+        # cmd.take_snapshot(filename)
+        take_snapshot(filename)
+
+
+
+    def get_files(self):
+        # cmd=CommandSet()
+        file=os.path.basename(self.ui.outFilename.text())
+        outfile=self.ui.outFilePath.text()+"/"+file
+
+        print file
+        print outfile
+        get_snapshot_files(file,outfile)
+
 
     def _init(self):
         ""
