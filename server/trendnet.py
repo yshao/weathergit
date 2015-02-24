@@ -7,6 +7,11 @@ from smap.driver import SmapDriver
 
 from h264 import get_snapshot
 
+
+def get_timestamp():
+    timestr = time.strftime("%Y%m%d%H%M%S")
+    return timestr
+
 class TrendnetDriver(SmapDriver):
     path = '/trendnet0/time'
 
@@ -17,10 +22,10 @@ class TrendnetDriver(SmapDriver):
         self.log = logging.getLogger('Trendnet')
         self.set_metadata('/', {
             'Instrument/Manufacturer' : 'Trendnet',
-            'Instrument/Model' : 'WXT520' })
+            'Instrument/Model' : 'TV-IP310PI' })
 
 
-        self.conn = DbConn()
+        # self.conn = DbConn()
 
         ### create timeseries
         if not self.inst.lookup(self.path):

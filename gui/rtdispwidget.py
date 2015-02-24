@@ -44,6 +44,8 @@ class RTDispWidget(QtGui.QWidget):
     # def on_tblItemChanged(self,current,previous):
     #     print(current.data().toString())
 
+        self.ui.actionUpdate.clicked.connect(lambda: self.update_view(""))
+
     def _init(self):
         ""
 
@@ -86,6 +88,8 @@ class RTDispWidget(QtGui.QWidget):
 
         ### connect slots ###
         # self.handler.sigSql[str].connect(self._updateGui)
+        self.ui.wview.loadFinished.connect(self.handleLoadFinished)
+        self.update_view('')
 
     def get_status(self):
         ""
@@ -146,9 +150,44 @@ class RTDispWidget(QtGui.QWidget):
     def update_download_data(self,s):
         print s
 
-
     def update_view(self,url):
+        url='http://192.168.1.120/status'
+        # self.ui.wview.load(QUrl(url))
+        # frame=self.ui.wview.page().frame()
+        browser=self.ui.wview
+        uuid='6d4ebaa1-1a37-5507-bc4b-8935474d5049'
+        frame=browser.page().mainFrame()
+        print frame.toHtml()
+
+        e =frame.documentElement()
+        print "UUID"
+        print uuid
+
+        f=frame.toHtml()
+        f=frame.evaluateJavaScript("getStreamData(%s)" % uuid)
+        print f.toString()
+        # frame.setHtml(f)
+
+
+    def load_view(self,url):
+        url='http://192.168.1.120/status'
         self.ui.wview.load(QUrl(url))
+        # frame=self.ui.wview.page().frame()
+        browser=self.ui.wview
+        uuid='6d4ebaa1-1a37-5507-bc4b-8935474d5049'
+        frame=browser.page().mainFrame()
+        # print frame.toHtml()
+        # frame.evaluateJavaScript("renderStreamMetadata(%s)" % uuid)
+        print frame.toHtml()
+        self.ui.wview.loadFinished.connect(self.handleLoadFinished)
+
+    def handleLoadFinished(self):
+        browser=self.ui.wview
+        uuid='6d4ebaa1-1a37-5507-bc4b-8935474d5049'
+        frame=browser.page().mainFrame()
+
+        print frame.toHtml()
+        # frame.evaluateJavaScript("renderStreamMetadata(%s)" % uuid)
 
     def _getGuiData(self):
         d={}
@@ -231,8 +270,11 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
 
     main = RTDispWidget()
-    main.show()
 
-    sys.exit(app.exec_())
+    main.show()
+    main.load_view('')
+    # main.update_view("e0dcdc20-a6ae-5137-8d77-d728c2f565d2")
+    app.exec_()
+
 
 
