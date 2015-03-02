@@ -1,0 +1,57 @@
+{
+    "maxUsers":100,
+    "maxTextLength":2000,
+    "maxFileSize":2000,
+    "services":
+    [
+        {
+            "event":"bbb disk is full",
+            "detect_event":"show_status",
+            "isEnabled":true,
+            "timer_trigger":{
+                "interval":"",
+                "action":["notify","flush_smap_disk"]
+            }
+
+        },
+
+        {
+            "event":"could not communication",
+            "detect_event":"show_status",
+            "isEnabled":true,
+            "rule_trigger":{
+                "action":"notify"
+            }
+
+        },
+        {
+            "event":"event",
+            "isEnabled":true,
+            "timer_trigger":{
+                "interval":5,
+                "action":"web_publish"
+            }
+
+
+        },
+        {
+            "event":"archive pictures",
+            "isEnabled":true,
+            "timer_trigger":{
+                "interval":60,
+                "action":"archive_pictures"
+            }
+
+
+        },
+        {
+            "event":"unmatching radiometry measurements",
+            "isEnabled":false,
+            "rule_trigger":{
+                "interval":60,
+                "action":"archive_pictures"
+            }
+
+        }
+    ]
+}
