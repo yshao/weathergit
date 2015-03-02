@@ -1,0 +1,17 @@
+{resampler: {
+    interval: 5,
+
+
+    [
+    resampler_event: {
+        algo: thetaprobe_l1,
+        target: '/resampled/soil_moisture'
+
+    }
+    ,
+    resampler_event: {
+        algo: omega_l1,
+        target: '/resampled/soil_temperature'
+    }
+    ]
+}

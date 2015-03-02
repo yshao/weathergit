@@ -29,16 +29,38 @@
     </widget>
    </item>
    <item row="1" column="2" colspan="2">
-    <widget class="QDateTimeEdit" name="inEndTime"/>
+    <widget class="QDateTimeEdit" name="inEndTime">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2015</year>
+       <month>2</month>
+       <day>10</day>
+      </datetime>
+     </property>
+    </widget>
    </item>
    <item row="0" column="2" colspan="2">
-    <widget class="QDateTimeEdit" name="inStartTime"/>
+    <widget class="QDateTimeEdit" name="inStartTime">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2015</year>
+       <month>2</month>
+       <day>1</day>
+      </datetime>
+     </property>
+    </widget>
    </item>
    <item row="8" column="0" colspan="2">
     <widget class="QComboBox" name="inExportType">
      <item>
       <property name="text">
-       <string>xlsx</string>
+       <string>csv</string>
       </property>
      </item>
     </widget>
@@ -47,20 +69,6 @@
     <widget class="QTableView" name="inUUIDList">
      <property name="sortingEnabled">
       <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Stream Limit</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLineEdit" name="inStreamLimit">
-     <property name="text">
-      <string>100</string>
      </property>
     </widget>
    </item>
@@ -93,12 +101,29 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="text">
+      <string>c:/local</string>
+     </property>
     </widget>
    </item>
    <item row="7" column="0" colspan="2">
     <widget class="QPushButton" name="actionBrowseFolder">
      <property name="text">
       <string>Browse Folder:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="inStreamLimit">
+     <property name="text">
+      <string>100</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Stream Limit</string>
      </property>
     </widget>
    </item>

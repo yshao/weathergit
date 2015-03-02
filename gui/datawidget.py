@@ -13,7 +13,7 @@ from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView, QF
 from weathergit.common.dbconn import DbConn
 from weathergit.common.guiutils import *
 from weathergit.gui.handlers.datawidgethandler import datawidgetHandler
-
+from weathergit.common.dataclient import DataClient
 
 @pyqtSlot(int)
 @pyqtSlot(str)
@@ -75,8 +75,36 @@ class DataWidget(QtGui.QWidget):
 
         ### demo
         self.ui.actionBrowseFolder.clicked.connect(lambda: self.ui.outFilePath.setText(selectFile()))
-        self.ui.actionDownload.clicked.connect(lambda: download_data(self.UUIDList,self.ui.outFilePath.text()))
+        self.ui.actionDownload.clicked.connect(lambda: self.download_data(self.UUIDList,self.ui.outFilePath.text()))
         self.ui.inActionSQL.clicked.connect(lambda: self.ui.outSql.setText(self._guiGet_parse2sql()))
+
+    def save_data(self,data,filep):
+        print data
+        import numpy
+        # a = numpy.asarray([ [1,2,3], [4,5,6], [7,8,9] ])
+        numpy.savetxt(filep, data[0], delimiter=",")
+
+
+    def download_data(self,uuid,outFilePath):
+
+        start=self.ui.inStartTime.text()
+        end=self.ui.inEndTime.text()
+
+        print uuid
+        print start
+        print end
+
+
+        dc=DataClient()
+        for u in uuid:
+            data = dc.get_data(uuid, start, end)
+
+            filep=self.ui.outFilePath.text()+'/'+u+'.csv'
+            print filep
+
+
+            self.save_data(data,filep)
+
 
 
 

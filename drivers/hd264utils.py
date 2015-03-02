@@ -6,7 +6,7 @@ import threading
 from sysutils import run_command
 
 def rtsp_pull_frames():
-    cameraIP = '192.168.1.121'
+    cameraIP = '192.168.1.212'
     channel = 1
     seconds = 5
     fileOut = 'out.264'
@@ -55,18 +55,34 @@ def convert_to_png(filep,outfilep):
 
 import sys
 
-outfilep=sys.argv[1]
-print outfilep
-if rtsp_pull_frames():
-    convert_to_png('out.264',outfilep)
+# outfilep=sys.argv[1]
+# print outfilep
+# if rtsp_pull_frames():
+#     convert_to_png('out.264',outfilep)
+#
+#
+# # move_file(outfilep)
+# from fabric.context_managers import settings
+# from fabfile import move_file
+#
+# with settings(host_string='data@192.168.1.223'):
+#     move_file(outfilep)
+
+def get_snapshot(outfilep):
+    # outfilep=sys.argv[1]
+    print 'snapshot'
+    print outfilep
+    if rtsp_pull_frames():
+        convert_to_png('out.264',outfilep)
 
 
-# move_file(outfilep)
-from fabric.context_managers import settings
-from fabfile import move_file
+    # move_file(outfilep)
+    from fabric.context_managers import settings
+    from fabfile import move_file
 
-with settings(host_string='data@192.168.1.223'):
-    move_file(outfilep)
+    with settings(host_string='data@192.168.1.223'):
+        print 'moving: ' + outfilep
+        move_file(outfilep)
 
 
 
