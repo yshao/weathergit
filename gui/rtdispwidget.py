@@ -12,7 +12,7 @@ from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 
-from gui.ui.ui_rtdispwidget import Ui_rtdispwidget
+from weathergit.gui.ui.ui_rtdispwidget import Ui_rtdispwidget
 
 
 class RTDispWidget(QtGui.QWidget):

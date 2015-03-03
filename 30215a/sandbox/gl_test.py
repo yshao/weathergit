@@ -2,7 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import * 
 from OpenGL.GLUT import * 
 from Numeric import * 
-import sys 
+import sys
+from math import cos, sin
+
 global horizvel 
 global vertvel 
 def init(): 

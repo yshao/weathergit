@@ -2,8 +2,8 @@ from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView, QTreeWidgetItem, QTableWidgetItem
-from common.dbconn import DbConn
-from gui.ui.ui_streameditorwidget import Ui_streameditorwidget
+from weathergit.common.dbconn import DbConn
+from weathergit.gui.ui.ui_streameditorwidget import Ui_streameditorwidget
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''

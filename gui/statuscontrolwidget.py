@@ -12,7 +12,7 @@ from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 
-from gui.ui.ui_statuscontrolwidget import Ui_statuscontrolwidget
+from weathergit.gui.ui.ui_statuscontrolwidget import Ui_statuscontrolwidget
 from commandconsolewidget import PythonConsoleWidget
 
 

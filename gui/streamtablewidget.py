@@ -7,7 +7,7 @@ from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSignal, pyqtSlot
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 import sys
-from common.dbconn import DbConn
+from weathergit.common.dbconn import DbConn
 
 from weathergit.gui.ui.ui_streamtablewidget import Ui_streamtablewidget
 

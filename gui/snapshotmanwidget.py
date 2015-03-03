@@ -1,23 +1,21 @@
-import os
-from common.utils import get_timestamp
-from gui.commandset import CommandSet
-
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
 __created__ = '2/9/2015' '10:24 AM'
 
+
 import sip
 sip.setapi('QString', 2)
+import os
 from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
 from weathergit.common.dbconn import DbConn
 from weathergit.common.ProcessPool import ProcessPool
-from common.guiutils import selectFile
+from weathergit.common.guiutils import selectFile
 from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSlot, pyqtSignal, QUrl
 import sys
 
-from gui.ui.ui_snapshotmanwidget import Ui_snapshotmanwidget
+from weathergit.gui.ui.ui_snapshotmanwidget import Ui_snapshotmanwidget
 from weathergit.common.fabutils import *
 
 

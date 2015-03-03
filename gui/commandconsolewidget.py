@@ -33,7 +33,7 @@ import datetime
 # from projexui.widgets.xfilepathedit import XFilepathEdit
 # import projexui
 from PyQt4.QtGui import QStringListModel, QCompleter
-from common.ProcessPool import ProcessPool
+from weathergit.common.ProcessPool import ProcessPool
 from weathergit.gui.commandset import CommandSet
 from weathergit.common.fabutils import *
 import sys

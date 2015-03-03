@@ -1,49 +1,37 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
-from camviewwidget import CamviewWidget
-from gui.snapshotmanwidget import SnapshotManWidget
-from gui.statuscontrolwidget import StatusControlWidget
+
 
 sip.setapi('QString', 2)
 from weathergit.common.env import Env
-
+from weathergit.gui.instrumentwidget import InstrumentWidget
 from weathergit.gui.datawidget import DataWidget
 from weathergit.gui.streameditorwidget import StreamEditorWidget
-
-from PyQt4.QtGui import QStandardItemModel, QStandardItem, QAbstractItemView
+from weathergit.camviewwidget import CamviewWidget
+from weathergit.gui.snapshotmanwidget import SnapshotManWidget
+from weathergit.gui.statuscontrolwidget import StatusControlWidget
 from weathergit.gui.rtdispwidget import RTDispWidget
-# from weathergit.gui.command.OpenDialogCmd import OpenDialogCmd
+
 from weathergit.gui.command.OpenToolCmd import OpenToolCmd
 from weathergit.gui.command.OpenVNCCmd import OpenVNCCmd
 from weathergit.gui.command.OpenWebCmd import OpenWebCmd
 from weathergit.gui.command.OpenWidgetCmd import OpenWidgetCmd
 from weathergit.gui.command.invoker import Invoker
-# from weathergit.gui.tasks.TestServerConnectionTask import TestServerConnectionTask
-
-
-import webbrowser
-import os
-import re
-import sys
-import threading
 
 from PyQt4 import QtCore, QtGui
 
 ### ui files
 from weathergit.common.dataclient import DataClient
-# from weathergit.gui.plotterwidget import PlotterWidget
 from weathergit.common.dbconn import DbConn
-from weathergit.gui.matplotwidget import MatplotlibWidget
-from weathergit.gui.mplwidget import MplWidget
-from weathergit.gui.ui.ui_weatherclientmain import Ui_WeatherClientMain
 
-# from weathergit.gui.configeditor import ConfigEditor
+from weathergit.gui.ui.ui_weatherclientmain import Ui_WeatherClientMain
 
 from best.common.utils import *
 from best.common.fileutils import *
 from best.common.netutils import *
 from weathergit.common.config import Config
 
+import sys
 ### py files
 # from weathergit.gui.tasks.taskutils import *
 
@@ -98,10 +86,7 @@ class WeatherClient(QtGui.QMainWindow):
         ### init ###
         self.config = config
         self.initEnv()
-        self.logger = ClientLogger(self.ui.outLogBrowser)
-
-
-
+        # self.logger = ClientLogger(self.ui.outLogBrowser)
 
 
         ### gui init ###
@@ -114,18 +99,22 @@ class WeatherClient(QtGui.QMainWindow):
         self.ui.leftTab.addTab(StreamEditorWidget(self),'Stream')
         self.ui.leftTab.addTab(DataWidget(self),'Data')
         self.ui.leftTab.addTab(SnapshotManWidget(self),'Cam')
+        self.ui.leftTab.addTab(InstrumentWidget(self),'Instrument')
+        # self.ui.leftTab.addTab(EventWidget(self),'Connection')
 
         # self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
         self.ui.rightTab.addTab(RTDispWidget(self),"RTDisplay")
         self.ui.rightTab.addTab(CamviewWidget(self),"Cam")
+        # self.ui.rightTab.addTab(StreamTableWidget(self),"Editor")
 
 
-        tabRTWidget = self.ui.rightTab.currentWidget()
-        tabRTWidget.update_view('http://192.168.1.146:8079/docs/')
+        browser= self.ui.rightTab.currentWidget()
+        browser.load_view('')
+
 
 
         # self.ui.inTestConnection.clicked.connect(self.testServerConnection)
-        self.initInvoker()
+        # self.initInvoker()
         # self.ui.actionConfig_Editor.triggered.connect(self.openConfigEditor)
 
         ### connect signals to commands ###
@@ -179,7 +168,7 @@ class WeatherClient(QtGui.QMainWindow):
         # self.ui.inEndTime.setDateTime(now)
 
 
-    def initInvoker(self):
+    def initMenu(self):
         """"""
         path="C:/Program Files/PostgreSQL/9.3/bin/pgAdmin3.exe"
         self.ui.actionDatabase_Admin.triggered.connect(lambda: self.invoker.invoke(OpenToolCmd(path)))
@@ -204,6 +193,9 @@ class WeatherClient(QtGui.QMainWindow):
 
         self.ui.actionOpen_SMAP_Monitor.triggered.connect(
             lambda: self.invoker.invoke(OpenWebCmd(self.config['smap_monitor'])))
+
+        self.ui.actionOpen_SMAP_Monitor.triggered.connect(
+            lambda: self.invoker.invoke(OpenWebCmd(self.config['ip_trendnet'])))
 
         self.ui.actionSource_VNC.triggered.connect(lambda: self.invoker.invoke(OpenVNCCmd()))
 
@@ -239,9 +231,22 @@ class WeatherClient(QtGui.QMainWindow):
     ### methods and algorithm ###
 
 
+def check_network():
+    def is_connected(d):
+        if 'unreachable' in d:
+            print 'offline'
+        else:
+            print 'online'
+
+    d=run_command('ping 192.168.1.146')
+    is_connected(d)
+    d=run_command('ping 192.168.1.120')
+    is_connected(d)
+    d=run_command('ping 192.168.1.223')
+    is_connected(d)
 
 if __name__ == '__main__':
-
+    check_network()
     import sys
     app = QtGui.QApplication(sys.argv)
     weather = WeatherClient()
