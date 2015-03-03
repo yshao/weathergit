@@ -15,8 +15,8 @@ POINT=dict(
     soil_moisture='/thetaprobe0/soil_moisture',
     soil_temp='/omega0/soil_temp',
     altitude='/garmin0/altitude',
-    num_satellites='/garmin0/num_of_satellites'
-
+    num_satellites='/garmin0/num_of_satellites',
+    speed='/garmin0/speed',
 )
 
 

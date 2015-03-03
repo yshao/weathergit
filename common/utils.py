@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import scipy
+import time
 
 
 def csv2mat(filep,outfilp):
@@ -10,7 +11,7 @@ def csv2mat(filep,outfilp):
 
 
 def get_timestamp():
-    timestr = time.strftime("%Y%m%d-%H%M%S")
+    timestr = time.strftime("%Y%m%d%H%M%S")
     return timestr
 
 
