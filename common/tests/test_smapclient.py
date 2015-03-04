@@ -1,4 +1,4 @@
-from smaputil.archiver.client import SmapClient
+from smap.archiver.client import SmapClient
 
 host='192.168.1.120'
 port='8079'
@@ -8,7 +8,7 @@ endTime="12-9-2014"
 
 c = SmapClient("http://"+host+":"+port)
 
-from smaputil.contrib import dtutil
+from smap.contrib import dtutil
 
 start = dtutil.dt2ts(dtutil.strptime_tz(startTime, "%m-%d-%Y"))
 end   = dtutil.dt2ts(dtutil.strptime_tz(endTime, "%m-%d-%Y"))
@@ -28,14 +28,14 @@ for d in data:
 
 pyplot.show()
 
-class DataClient(object):
-    def __init__(self,login):
-        """"""
-        self.c = SmapClient("http://%(host)s:%(port)s" % login)
-
-
-    def get_data(self,start,end,uuid):
-        start = dtutil.dt2ts(dtutil.strptime_tz(startTime, "%m-%d-%Y"))
-        end   = dtutil.dt2ts(dtutil.strptime_tz(endTime, "%m-%d-%Y"))
-        return self.c.data_uuid(uuid, start, end)
+# class DataClient(object):
+#     def __init__(self,login):
+#         """"""
+#         self.c = SmapClient("http://%(host)s:%(port)s" % login)
+#
+#
+#     def get_data(self,start,end,uuid):
+#         start = dtutil.dt2ts(dtutil.strptime_tz(startTime, "%m-%d-%Y"))
+#         end   = dtutil.dt2ts(dtutil.strptime_tz(endTime, "%m-%d-%Y"))
+#         return self.c.data_uuid(uuid, start, end)
 
