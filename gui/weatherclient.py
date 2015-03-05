@@ -3,6 +3,9 @@ import sip
 
 
 sip.setapi('QString', 2)
+from weathergit.gui.webview import WebView
+from PyQt4.QtCore import QUrl
+from PyQt4.QtGui import QWidget
 from weathergit.common.env import Env
 from weathergit.gui.instrumentwidget import InstrumentWidget
 from weathergit.gui.datawidget import DataWidget
@@ -31,9 +34,8 @@ from best.common.fileutils import *
 from best.common.netutils import *
 from weathergit.common.config import Config
 
-import sys
-### py files
-# from weathergit.gui.tasks.taskutils import *
+
+
 
 ### setup ###
 script_name = re.sub('\..*','',os.path.basename(sys.argv[0]))
@@ -92,8 +94,7 @@ class WeatherClient(QtGui.QMainWindow):
         ### gui init ###
 
         #--- inputs group ---
-        # self.ui.leftTab.removeTab(0)
-        # self.ui.leftTab.removeTab(1)
+        # self.ui.actionAbout.triggered.connect(open_dialog(LogoView()))
 
         self.ui.leftTab.addTab(StatusControlWidget(self),'Status')
         self.ui.leftTab.addTab(StreamEditorWidget(self),'Stream')
@@ -104,8 +105,12 @@ class WeatherClient(QtGui.QMainWindow):
 
         # self.ui.rightTab.addTab(PlotterWidget(self),"Plotter")
         self.ui.rightTab.addTab(RTDispWidget(self),"RTDisplay")
-        self.ui.rightTab.addTab(CamviewWidget(self),"Cam")
-        # self.ui.rightTab.addTab(StreamTableWidget(self),"Editor")
+        w=WebView("CamView",'http://192.168.1.212')
+        self.ui.rightTab.addTab(w,w.objectName())
+
+        # self.ui.rightTab.addTab(CamviewWidget(self),"Cam")
+        w=WebView("WebView",'http://localhost:8000')
+        self.ui.rightTab.addTab(w,w.objectName())
 
 
         browser= self.ui.rightTab.currentWidget()
@@ -252,5 +257,3 @@ if __name__ == '__main__':
     weather = WeatherClient()
     weather.show()
     sys.exit(app.exec_())
-
-
