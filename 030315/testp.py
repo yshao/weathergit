@@ -1,4 +1,14 @@
-__company__ = 'Boulder Environmental Sciences and Technology'
-__project__ = ''
-__author__ = 'Y. Shao'
-__created__ = '3/3/2015' '12:53 PM'
+#!C:\Python27\python.exe
+
+# This file is part of python-keepass and is Copyright (C) 2012 Brett Viren.
+# 
+# This code is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2, or (at your option) any
+# later version.
+
+import sys
+from keepass import cli
+
+cliobj = cli.Cli(sys.argv[1:])
+cliobj()

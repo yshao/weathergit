@@ -1,4 +1,16 @@
-__company__ = 'Boulder Environmental Sciences and Technology'
-__project__ = ''
-__author__ = 'Y. Shao'
-__created__ = '3/4/2015' '9:48 AM'
+from fabric.decorators import task
+from fabric.tasks import execute
+
+@task
+def stats():
+
+    memusage = execute("""
+
+      #! /usr/bin/env python
+      import psutil
+
+      pid = open('pidfile').read()
+      process = psutil.Process(int(pid))
+      print process.get_memory_percent()
+
+    """, 'memusage.py', verbose=False, dir='/var/ampify')

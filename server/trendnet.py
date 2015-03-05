@@ -29,7 +29,7 @@ class TrendnetDriver(SmapDriver):
 
         ### create timeseries
         if not self.inst.lookup(self.path):
-            self.add_timeseries(self.path, '', data_type="double",timezone=self.tz)
+            self.add_timeseries(self.path, '', data_type="do",timezone=self.tz)
 
     def poll_snapshot(self):
 
