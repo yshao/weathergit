@@ -47,22 +47,49 @@ def load_json(url):
         data = json.load(fp)
     finally:
         fp.close()
+
+    print data
     return data
+
+
+# def get_
+
+def get_liveness(smap_url):
+    data = load_json(smap_url + '/data/+')
+    readings = [(k,
+                 v['uuid'],
+                 v['Readings'][-1] if len(v['Readings']) else [0, None],
+                 v['Properties'])
+                for k, v in data.iteritems() if 'uuid' in v]
+    readings.sort(key=lambda v: v[2][0], reverse=True)
+    # print readings
+    d={}
+    for path, uid, latest, props in readings:
+        d[uid]={}
+        d[uid]['data']=dtutil.iso8601(dtutil.ts2dt(latest[0] / 1000.),
+                             tzinfo=dtutil.gettz(props['Timezone'])),
+        # if opts.uuids: print uid,
+        d[uid]['curr']=  "%s%s" % (latest[1], props['UnitofMeasure'])
+        d[uid]['path']=  path
+        d[uid]['latest']=latest
+        d[uid]['props']=props
+
+    return d
 
 def test_liveness(smap_url, opts):
     data = load_json(smap_url + '/data/+')
-    print data
+    # print data
     readings = [(k, 
                  v['uuid'], 
                  v['Readings'][-1] if len(v['Readings']) else [0, None],
                  v['Properties'])
                 for k, v in data.iteritems() if 'uuid' in v]
     readings.sort(key=lambda v: v[2][0], reverse=True)
-    print readings
+    # print readings
     for path, uid, latest, props in readings:
         print dtutil.iso8601(dtutil.ts2dt(latest[0] / 1000.), 
                              tzinfo=dtutil.gettz(props['Timezone'])), 
-        if opts.uuids: print uid,
+        # if opts.uuids: print uid,
         print path,
         print "%s%s" % (latest[1], props['UnitofMeasure'])
 
@@ -112,7 +139,7 @@ if __name__ == '__main__':
                       help="Remove a report (by name)")
 
     opts, args = parser.parse_args()
-    print opts, args
+    # print opts, args
     if not len(args):
         parser.print_help()
         sys.exit(1)

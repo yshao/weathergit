@@ -42,7 +42,9 @@ import sys
 import json
 
 def pprint(obj):
+    print obj
     print json.dumps(obj, sort_keys=True, indent=2)
+
 
 if len(sys.argv) > 1:
     for arg in sys.argv[1:]:

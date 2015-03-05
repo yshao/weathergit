@@ -71,12 +71,21 @@ import sys
 def get_snapshot(outfilep):
     # outfilep=sys.argv[1]
     print 'snapshot'
-    print outfilep
-    if rtsp_pull_frames():
-        convert_to_png('out.264',outfilep)
+    # print outfilep
+    b=False
+    while b == False:
+
+        if rtsp_pull_frames():
+            convert_to_png('out.264',outfilep)
+
+        statinfo = os.stat(outfilep)
+        print statinfo
+        if statinfo.st_size > 100:
+            b = True
+        else:
+            time.sleep(5)
 
 
-    # move_file(outfilep)
     from fabric.context_managers import settings
     from fabfile import move_file
 

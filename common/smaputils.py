@@ -4,7 +4,7 @@ from weathergit.common.smaplib.smap_query import *
 from weathergit.common.smaplib.smap_tool import *
 from weathergit.common.smaplib.smap_load import *
 from weathergit.common.smaplib.smap_load_csv import *
-SOURCE='http://192.168.1.146:8079'
+# SOURCE='http://192.168.1.146:8079'
 
 
 ### preserved for all options to be enabled
@@ -23,8 +23,10 @@ class SmapUtils(object):
     opts={}
     args={}
 
-    def __init__(self,args):
+    def __init__(self):
         ""
+        args={}
+        self.url='http://192.168.1.146:8079'
 
 
     def _init_smap_load(self):
@@ -155,15 +157,18 @@ class SmapUtils(object):
 
         return response
 
-
-
-    def show_smap_monitor(self,url):
+    def get_smap_monitor(self):
         self._init_smap_tool()
-        test_liveness(url, self.opts)
+        return get_liveness(self.url)
 
-    def show_smap_reports(self,url):
+
+    def show_smap_monitor(self):
         self._init_smap_tool()
-        display_reports(url,self.opts)
+        test_liveness(self.url, self.opts)
+
+    def show_smap_reports(self):
+        self._init_smap_tool()
+        display_reports(self.url,self.opts)
 
     def load_server_csv(self,filep,stream=None):
         ""
@@ -185,9 +190,14 @@ class SmapUtils(object):
 # sudo(cmd)
 #
 # browser.open('192.168.1.146:5900')
-import subprocess
-cmd='"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
-subprocess.call([cmd])
-
-
-
+# import subprocess
+# cmd='"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
+# subprocess.call([cmd])
+#
+#
+#
+if __name__ == '__main__':
+    su=SmapUtils()
+    d=su.get_smap_monitor()
+    for uid in d.keys():
+        print d[uid]['path'] + ' ' + d[uid]['curr'] + ' ' + str(d[uid]['props'])
