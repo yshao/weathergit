@@ -1,6 +1,4 @@
-from PyQt4.QtGui import QTreeView
-from pyface.viewer.tree_viewer import TreeViewer
-from attributetablemodel import AttributeTableModel
+from weathergit.gui.utils.treeview import TreeView
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -10,7 +8,7 @@ __created__ = '2/24/2015' '2:44 PM'
 
 
 
-class EventViewer(TreeViewer):
+class EventViewer(TreeView):
     def __init__(self):
         ""
 

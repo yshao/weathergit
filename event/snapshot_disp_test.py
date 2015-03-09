@@ -13,3 +13,5 @@ utc=smaputils.get_curr_val('/garmin0/utc')
 filep=smaputils.get_image('/trendnet0/timestamp')
 
 
+def get_smap_values():
+    ""

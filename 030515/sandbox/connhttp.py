@@ -6,7 +6,6 @@ import time
 
 ### ip camera check
 # r = requests.post(url, files=files)
-
 ### curl on server
 r = requests.get('http://192.168.1.120:8079/api/query/Properties__UnitofMeasure')
 print r.status_code
