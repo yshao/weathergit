@@ -1,3 +1,4 @@
+import os
 import tarfile
 
 __company__ = 'Boulder Environmental Sciences and Technology'

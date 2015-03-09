@@ -7,15 +7,17 @@ def make_tarfile(output_filename, source_dir):
 
 def deploy_smap_server():
     ""
+    indir='smapserver'
     pkg='server.tar.gz'
     res=put(pkg)
-    outdir='server'
+    outdir='smapserver'
 
     run('tar -xf -C %s')
     run('deploy_smap_server')
 
 def deploy_smap_bbb():
     ""
+    indir='smapsource'
     pkg='smapbbb.tar.gz'
     outdir='smapbbb'
     res=put(pkg)

@@ -12,7 +12,7 @@ import sys
 import time
 from daemon import Daemon
 
-from server import Webpage
+from smapserver import Webpage
 
 
 class MyDaemon(Daemon):
