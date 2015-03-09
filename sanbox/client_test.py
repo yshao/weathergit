@@ -1,11 +1,11 @@
-from smaputil.archiver.client import SmapClient
-from smaputil.contrib import dtutil
+from smap.archiver.client import SmapClient
+from smap.contrib import dtutil
 
 from matplotlib import pyplot
 from matplotlib import dates
 
 
-host="192.168.1.114"
+host="192.168.1.120"
 port="8079"
 
 ### write exception
