@@ -2,7 +2,8 @@ import os
 import re
 from fabric.context_managers import cd, settings
 from fabric.operations import put, get, run
-from remoteexec import remote_exec
+# from remoteexec import remote_exec
+from common.env import Env
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -10,10 +11,28 @@ __author__ = 'Y. Shao'
 __created__ = '3/9/2015' '2:10 PM'
 
 class Remote(object):
-    def __init__(self,d,base):
+    def __init__(self,d):
         ""
         self.d=d
-        self.upload('remote_api.py',base)
+        self.init()
+
+    def status(self):
+        d=self.d
+        with settings(host_string=d['host_string'],password=d['password']):
+            res=run('date')
+            print res
+
+        return res
+
+
+
+    def init(self):
+        d=self.d
+        homep=Env().param['HOME']
+        remote_api_path=homep+'/common/remote/remote_api.py'
+        # print remote_api_path
+        with settings(host_string=d['host_string'],password=d['password']):
+            put(remote_api_path)
 
     def pexec(self,cmd,*args):
         ""
@@ -21,16 +40,24 @@ class Remote(object):
         with settings(host_string=d['host_string'],password=d['password']):
             run('python remote_api.py %s %s' % (cmd,args))
 
-    def upload(self,lFiles,dir):
+    def upload(self,lFiles,dir=None):
         ""
         d=self.d
         l=[]
+
         with settings(host_string=d['host_string'],password=d['password']):
-            with cd(dir):
-                for f in lFiles:
-                    res=put(f)
-                    if res.success:
-                        l.append()
+            if dir != None:
+                with cd(dir):
+                    for f in lFiles:
+                        res=put(f)
+                        if res.succeeded:
+                            l.append(res)
+
+            else:
+                    for f in lFiles:
+                        res=put(f)
+                        if res.succeeded:
+                            l.append(res)
         return l
 
     def download(self,lFiles,local):
@@ -40,34 +67,41 @@ class Remote(object):
             with cd(dir):
                 for f in lFiles:
                     res=get(f)
-                    if res.success:
+                    if res.succeeded:
                         l.append()
         return l
 
-    def execute(self,cmd):
-        with settings(host_string=['host_string'],password=d['password']):
-            with cd(dir):
-                run(cmd)
+    def execute(self,cmd,dir=None):
+        d=self.d
+        res=[]
+        with settings(host_string=d['host_string'],password=d['password']):
+            if dir != None:
+                with cd(dir):
+                    res=run(cmd)
+            else:
+                print cmd
+                res=run(cmd)
 
-    def pexec(self,cmd):
-        remote_exec()
+        return res
+    # def pexec(self,cmd):
+    #     remote_exec()
 
-    def ls(self):
-        self.pexec("""
-        import fileutils
+    # def ls(self):
+    #     self.pexec("""
+    #     import fileutils
+    #
+    #     """
+    #     )
+    #
+    # def move(self,):
+    #     self.pexec(
+    #
+    #     )
 
-        """
-        )
 
-    def move(self,):
-        self.pexec(
-
-        )
-
-
-class Remote():
-    def __init__(self,d):
-        ""
+# class Remote():
+#     def __init__(self,d):
+#         ""
 
 
     def ls(self):
@@ -110,8 +144,8 @@ class Remote():
     def cd(self,dir):
         ""
 
-    def pexec(self):
-        ""
+    # def pexec(self):
+    #     ""
     def cmd(self):
         ""
 

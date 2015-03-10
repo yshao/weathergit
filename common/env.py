@@ -1,3 +1,4 @@
+import os
 from keepass import kpdb
 from keepass.kpdb import Database
 from weathergit.common.jsonconfig import JsonConfig
@@ -8,6 +9,9 @@ class Env():
 
     def __init__(self):
         ""
+        #TODO: installer then test this
+        # self.init_from_os()
+
         config=self.param['HOME']+'/common/config.json'
         kdb=self.param['HOME']+'/common/resource/weather.kdb'
         d=JsonConfig(config)
@@ -16,9 +20,14 @@ class Env():
         d.update(d2)
         self.k=d
 
+    def init_from_os(self):
+        ""
+        homep=os.getenv('WEATHER_HOME', 'c:/Weather')
+        self.param['HOME']=homep
+
 
     def getpath(self,param):
-        return self.param[param]
+        return self.param
 
 
     def getConfig(self):

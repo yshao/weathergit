@@ -145,9 +145,12 @@ def get_uptime():
     print res
     return res
 
-def ipcam_take_snapshot():
-    res = run('python trendnet.py get_snapshot')
-    return res
+def ipcam_take_snapshot(outfilep):
+    with cd('/home/ubuntu/server'):
+        res = run('python hd264utils.py %s' % outfilep)
+        # res = run('python t1.py')
+        # res=run('dir')
+        return res
 
 
 # Download some logs
