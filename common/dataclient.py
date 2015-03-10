@@ -4,6 +4,8 @@ from weathergit.common.config import Config
 from weathergit.common.env import Env
 
 
+print Env.getpath('HOME')
+
 class DataClient(object):
     def __init__(self,login=None):
         """"""
@@ -13,6 +15,7 @@ class DataClient(object):
             config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
             login['host']=config['smap_server_host']
             login['port']=config["smap_server_port"]
+            print login
             self.login=login
         else:
             self.login=login

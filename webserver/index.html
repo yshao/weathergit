@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1>BEST WeatherStation</h1>
+<script>
+document.write(Date());
+</script>
+<br>
+<img id="myImage" src="resource/snapshot.png" width="640" height="460">
+<table id="location" border="1">
+  <tr>
+    <td>Picture Taken: </td>
+    <td>Longitude</td>
+    <td>Latitude</td>
+    <td>Altitude</td>
+    <td>Num of Satellites</td>
+
+  </tr>
+</table>
+
+
+<table id="myTable" border="1">
+  <tr>
+    <td>Pressue </td>
+
+    <td>Temperature</td>
+      <img id="Temperature" src="resource/vaisala0_pth_temperature.png" width="640" height="460">
+    <td>Humidity</td>
+    <td>Soil Moisture</td>
+    <td>Soil Temperature</td>
+    <td>Wind Velocity</td>
+    <td>Wind Direction</td>
+    <td>Precipitation</td>
+    <td></td>
+  </tr>
+</table>
+<br>
+<button type="button" onclick="displayResult()">Insert cell</button>
+<button type="button" onclick="displayCam()">Open Cam</button>
+
+<!--<div id="mtvPlayer">-->
+    <!--<embed-->
+        <!--type="application/x-mplayer2"-->
+        <!--pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"-->
+        <!--name="mediaplayer1"-->
+        <!--ShowStatusBar="true"-->
+        <!--EnableContextMenu="false"-->
+        <!--autostart="true"-->
+        <!--loop="false"-->
+        <!--src="rtsp://admin:bestcamera@192.168.1.121:554/ch0_0.h264"-->
+        <!--width="352px"-->
+        <!--height="288px"-->
+    <!--/>-->
+<!--</div>-->
+
+<script>
+setInterval(function() {
+    var myImageElement = document.getElementById('myImage');
+//    myImageElement.src = 'screen.jpg?rand=' + Math.random();
+    myImageElement.src = 'resource/snapshot.png';
+}, 5000);
+
+</script>
+
+<script>
+function displayCam()
+{
+
+}
+
+</script>
+
+<script>
+document.getElementById("myImage").src = "resource/snapshot.png";
+</script>
+
+
+<script>
+function update_ui()
+{
+
+document.getElementById("longitude").src = s[0];
+
+document.getElementById("latitude").src = s[1];
+}
+</script>
+
+<script>
+function displayResult()
+{
+    var firstRow=document.getElementById("myTable").rows[0];
+    var x=firstRow.insertCell(-1);
+    x.innerHTML="New cell";
+
+    var img = document.createElement('img');
+    img.src = "resource/img.png";
+    x.appendChild(img);
+}
+</script>
+
+
+<input type="file" id="fileinput" />
+<script type="text/javascript">
+  function readSingleFile(evt) {
+    //Retrieve the first (and only!) File from the FileList object
+    var f = evt.target.files[0];
+
+    if (f) {
+      var r = new FileReader();
+      r.onload = function(e) {
+	      var contents = e.target.result;
+        alert( "Got the file.n"
+              +"name: " + f.name + "n"
+              +"type: " + f.type + "n"
+              +"size: " + f.size + " bytesn"
+              + "starts with: " + contents.substr(1, contents.indexOf("n"))
+        );
+
+
+
+      }
+      r.readAsText(f);
+    } else {
+      alert("Failed to load file");
+    }
+  }
+
+  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+</script>
+
+
+</body>
+</html>

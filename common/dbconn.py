@@ -81,8 +81,22 @@ class DbConn(object):
             val=json.loads('{'+s1+'}')
             self.uuid[val['uuid']]=val
 
-
         return self.uuid
+
+    def get_meta_kv(self):
+        cur=self.conn.cursor()
+        # cur = self.conn.cursor(cursor_factory=LoggingCursor)
+        cur.execute("SELECT * from stream")
+        rows = cur.fetchall()
+        kv={}
+        for row in rows:
+            d={}
+            attrb=row[3].replace("=>",":")
+            val=json.loads('{'+attrb+'}')
+            for k,v in val.iteritems():
+                d[k]=v
+            kv[d['uuid']]=d
+        return kv
 
     def select(self,query):
         res=self.cursor.execute(query)

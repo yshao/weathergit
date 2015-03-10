@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>912</width>
     <height>600</height>
    </rect>
   </property>
@@ -15,9 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="0" colspan="2">
-     <widget class="QTextBrowser" name="outLogBrowser"/>
-    </item>
     <item row="0" column="1">
      <widget class="QTabWidget" name="rightTab">
       <property name="minimumSize">
@@ -33,130 +30,15 @@
     </item>
     <item row="0" column="0">
      <widget class="QTabWidget" name="leftTab">
-      <property name="currentIndex">
-       <number>1</number>
+      <property name="minimumSize">
+       <size>
+        <width>500</width>
+        <height>350</height>
+       </size>
       </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>StreamEditor</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="0" colspan="3">
-         <widget class="QTableView" name="metaEditor">
-          <property name="sortingEnabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Loaded</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="text">
-           <string>Clear Selection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>Reload</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>UUID</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-       <zorder>label_6</zorder>
-       <zorder>metaEditor</zorder>
-       <zorder>label_3</zorder>
-       <zorder>pushButton</zorder>
-       <zorder>pushButton_2</zorder>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>DataManager</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>connectString</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="inEditConn">
-          <property name="text">
-           <string>Edit Connection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Update Interval</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLineEdit" name="inUpdateInterval"/>
-        </item>
-        <item row="3" column="1" colspan="2">
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>Data Processing Operations</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_8">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Time Segment Size:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_16">
-             <property name="text">
-              <string>Conversion:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QListView" name="inFormulaList"/>
-           </item>
-           <item row="0" column="1">
-            <widget class="QTimeEdit" name="inTimeSegmentSize">
-             <property name="currentSection">
-              <enum>QDateTimeEdit::HourSection</enum>
-             </property>
-             <property name="displayFormat">
-              <string>h:mm:ss</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="2" column="1" colspan="2">
-         <widget class="QPushButton" name="inUpdateDataset">
-          <property name="text">
-           <string>Update Dataset - Disabled</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
      </widget>
     </item>
    </layout>
@@ -166,7 +48,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>912</width>
      <height>21</height>
     </rect>
    </property>
@@ -189,11 +71,14 @@
     <addaction name="separator"/>
     <addaction name="actionOpen_SMAP_Plotter"/>
     <addaction name="actionOpen_SMAP_Server"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Cam"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuTools"/>
    <addaction name="menuWeb_Portal"/>
@@ -243,6 +128,16 @@
   <action name="actionSource_VNC">
    <property name="text">
     <string>Source VNC</string>
+   </property>
+  </action>
+  <action name="actionOpen_Cam">
+   <property name="text">
+    <string>Open Cam</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>
