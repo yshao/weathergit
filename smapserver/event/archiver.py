@@ -1,3 +1,5 @@
+from fabric.context_managers import cd
+
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
@@ -5,9 +7,9 @@ __created__ = '3/3/2015' '10:35 AM'
 
 import shutil as sl
 import os
-from weathergit.common.fileutils import list_files_ext
-from weathergit.common.utils import get_timestamp
-from fabric.operations import run, env, cd
+from common.fileutils import list_files_ext
+from common.utils import get_timestamp
+from fabric.operations import run, env
 ### operate from server to data server ###
 def hostMove(files,tdir):
     run('mv %(files)s %(tdir)s' % files,tdir)
@@ -37,7 +39,8 @@ def archive_files():
         return list_files_ext(p,'png')
 
 
-    fidx=get_fidx_mock()
+    # fidx=get_fidx_mock()
+    fidx=[]
 
 
     curr_dt=get_timestamp()
@@ -67,3 +70,4 @@ def grep(path, regex):
 
 
 # print list_files_ext(p,'py')
+
