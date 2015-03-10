@@ -9,20 +9,6 @@ from fabric.decorators import task
 import psutil
 from remoteexec import remote_exec
 
-config=JsonConfig('')
-###
-def update_server_sw():
-    ""
-    with host=cf['smap_server_ip'],password=cf['smap_server_pwd']:
-
-
-def update_bbb_sw():
-    ""
-    with host=cf['smap_bbb_ip'],password=cf['smap_bbb_pwd']:
-        with cd()
-            put
-            run('unzip ')
-
 
 def run_scheduler():
     ""
