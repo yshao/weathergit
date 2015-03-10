@@ -19,59 +19,46 @@ def make_tarfile(output_filename, source_dir):
     with tarfile.open(output_filename, "w:gz") as tar:
         tar.add(source_dir, arcname=os.path.basename(source_dir))
 
-cfg=Env.get_config()
+        # cfg['smap_bbb_ip']
+        # cfg['smap_bbb_pwd']
+        #
+        # cfg['webserver_ip']
+        # cfg['webserver_pwd']
 
-cfg['smap_server_ip']
-cfg['smap_server_pwd']
-cfg['smap_bbb_ip']
-cfg['smap_bbb_pwd']
+class DeployClient(object):
+    def __init__(self):
+        ""
+        self.cfg=Env.get_config()
 
-cfg['webserver_ip']
-cfg['webserver_pwd']
+    def deploy_smap_server(self):
+        ""
+        cfg=self.cfg
+        host='%s@%s' % (cfg['smap_server_username'],cfg['smap_server_host'])
+        pwd=cfg['smap_server_pwd']
+        d=dict(host_string=host,password=pwd)
+        remote=Remote(d)
 
-def deploy():
-    remote=Remote()
-    remote
+        indir='smapserver'
+        pkg='server.tar.gz'
+        make_tarfile(pkg,indir)
 
-
-def deploy_smap_server():
-    ""
-    indir='smapserver'
-    pkg='server.tar.gz'
-    res=put(pkg)
-    outdir='smapserver'
-
-    run('tar -xf -C %s')
-    run('deploy_smap_server')
-
-def deploy_smap_bbb():
-    ""
-    indir='smapsource'
-    pkg='smapbbb.tar.gz'
-    outdir='smapbbb'
-    res=put(pkg)
-    run('tar -xf ')
+        remote.upload(pkg)
+        run('tar -xf -C %s'%pkg)
 
 
-# def deploy_smap_ipcam():
-#     ""
-#     pkg='smapipcam.tar.gz'
-#     res=put(pkg)
-#     if res.success:
-#         outdir='server/ip'
-#         remove('')
-#         run('tar -xf -C %s' % outdir)
-#
-# def deploy_webpage():
-#     ""
-#     pkg='webpage.tar.gz'
-#     outdir=''
-#     with():
-#         'tar -cvf webpage.tar.gz'
-#
-#
-# def run_webpage():
-#     with():
-#         'python server_daemon.py start'
+    def deploy_smap_bbb(self):
+        ""
+        cfg=self.cfg
+        host='%s@%s' % (cfg['smap_source_username'],cfg['smap_source_host'])
+        pwd=cfg['smap_source_pwd']
+        d=dict(host_string=host,password=pwd)
+        remote=Remote(d)
 
+        indir='smapsource'
+        pkg='smapbbb.tar.gz'
+        make_tarfile(pkg,indir)
 
+        remote.upload_files(pkg)
+        run('tar -xf %s'%pkg)
+
+class WClient()

@@ -2,6 +2,7 @@ import re
 import time
 import datetime
 from remoteexec import remote_exec, os
+from common.remote.remote import Remote
 from common.utils import get_timestamp
 
 __company__ = 'Boulder Environmental Sciences and Technology'
