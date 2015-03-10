@@ -6,7 +6,7 @@ __project__ = ''
 __author__ = 'Y. Shao'
 __created__ = '3/2/2015' '11:28 AM'
 
-class JsonConfig(dict):
+class JsonConfig():
     ""
     def __init__(self,filep=None):
         ""
@@ -18,14 +18,14 @@ class JsonConfig(dict):
 
     def load(self,filep):
         ""
-        self=json.load(open(filep,'rb'))
+        self.d=json.load(open(filep,'rb'))
         # print self
 
     def save(self,filep):
-        json.dump(self,open(filep,'wb'))
+        json.dump(self.d,open(filep,'wb'))
 
     def get_config(self):
-        return self
+        return self.d
 
 
 if __name__ == '__main__':

@@ -1,11 +1,11 @@
 import os
 from keepass import kpdb
 from keepass.kpdb import Database
-from weathergit.common.jsonconfig import JsonConfig
+from common.jsonconfig import JsonConfig
 
 
 class Env():
-    param={'HOME':'c:/Users/Ping/Workspace/weathergit'}
+    param={'HOME':'/home/ubuntu/smapserver'}
 
     def __init__(self):
         ""
@@ -14,7 +14,7 @@ class Env():
 
         config=self.param['HOME']+'/common/config.json'
         kdb=self.param['HOME']+'/common/resource/weather.kdb'
-        d=JsonConfig(config)
+        d=JsonConfig(config).get_config()
         d2=self._get_passwords(kdb)
 
         d.update(d2)
