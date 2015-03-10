@@ -6,7 +6,7 @@ __project__ = ''
 __author__ = 'Y. Shao'
 __created__ = '3/2/2015' '11:28 AM'
 
-class JsonConfig(dict):
+class JsonConfig():
     ""
     def __init__(self,filep=None):
         ""

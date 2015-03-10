@@ -49,8 +49,8 @@ def show_smap_status():
     print out
 
 
-    res=parse(out)
-    return res
+    # res=parse(out)
+    return out
 
 def show_disk_size():
     out=[]
@@ -59,6 +59,8 @@ def show_disk_size():
 
     with settings(host_string='ubuntu@192.168.1.120',password='reverse'):
         out.append(get_server_disk())
+
+    return out
 
 def smap_connected():
     ""
@@ -74,6 +76,8 @@ def show_time():
 
     out.append(get_timestamp())
 
+    return out
+
 
 def sync_time():
     ""
@@ -85,13 +89,11 @@ def take_snapshot(outfilep):
 
     out=[]
 
-    with settings(host_string='ubuntu@192.168.1.120'):
+    with settings(host_string='ubuntu@192.168.1.120',password='reverse'):
         out.append(ipcam_take_snapshot(outfilep))
 
 
-
-
-    d=parse(out)
+    d=out
 
     return d
 
@@ -100,11 +102,12 @@ def get_snapshot_files(lfile_idx,localp):
     with settings(host_string='data@192.168.1.223',password='data@best!'):
         # out.append(get_time())
 
-        with cd("store/images"):
+        with cd("/home/data"):
             upload=get(lfile_idx,localp)
 
         # Verify the upload
         return upload.succeeded
+
 
 
 
@@ -175,3 +178,16 @@ def get_snapshot_files(lfile_idx,localp):
 ### check disp is running with gps and cam updates
 
 ### cam.sig.
+
+if __name__ == '__main__':
+    ""
+    # with settings(host_string='ubuntu@192.168.1.120',password='reverse'):
+    #     print get_server_disk()
+    #     print take_snapshot("11111111.png")
+    #
+    # with settings(host_string='data@192.168.1.223',password='data@best!'):
+    #     get_snapshot_files('11111111.png','c:/images')
+
+    #test snapshot
+    # take_snapshot("11111111.png")
+    # get_snapshot_files('11111111.png','c:/images')

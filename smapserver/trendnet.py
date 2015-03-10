@@ -5,21 +5,23 @@ import logging
 from smap.util import periodicSequentialCall
 from smap.driver import SmapDriver
 
-from h264 import get_snapshot
-
-
+# from hd264utils import get_snapshot
 def get_timestamp():
     timestr = time.strftime("%Y%m%d%H%M%S")
     return timestr
 
+
 class TrendnetDriver(SmapDriver):
-    path = '/trendnet0/time'
+    path = '/time'
 
     def setup(self, opts):
-        self.host = opts.get('Address')
-        self.port = int(opts.get('Port', 8020))
+        self.host = opts.get('IPHost')
+        self.port = int(opts.get('IPPort', 8020))
         self.save_dir=opts.get('SaveDir')
+        self.rate = float(opts.get('rate', 1))
+
         self.log = logging.getLogger('Trendnet')
+
         self.set_metadata('/', {
             'Instrument/Manufacturer' : 'Trendnet',
             'Instrument/Model' : 'TV-IP310PI' })
@@ -28,22 +30,39 @@ class TrendnetDriver(SmapDriver):
         # self.conn = DbConn()
 
         ### create timeseries
-        if not self.inst.lookup(self.path):
-            self.add_timeseries(self.path, '', data_type="do",timezone=self.tz)
+        # if not self.inst.lookup(self.path):
+        #     self.add_timeseries(self.path, '', data_type="double",timezone=self.tz)
+        if not self.lookup(self.path):
+            # self.add_timeseries(self.path, '', data_type="double",timezone=self.tz)
+            self.add_timeseries(self.path, '', data_type="long")
+
+        self.poll_snapshot()
 
     def poll_snapshot(self):
+        ""
+        timeidx=int(get_timestamp())
+        print timeidx
+        print self.rate
 
-        imagepath=get_snapshot(self.save_dir)
-        imageidx=os.path.basename(imagepath)
-        self.conn.insert(imageidx)
+        from hd264utils import get_snapshot
+        # print 'h'
+        self.add(self.path,timeidx)
+        imgpath=str(timeidx)+'.png'
+        print imgpath
+        imagepath=get_snapshot(imgpath)
+        print imagepath
+        print self.rate
+        # imageidx=os.path.basename(imagepath)
+        # self.conn.insert(imageidx)
 
-        self.inst.add(self.path, imageidx)
+        # self.inst.add(self.path, imageidx)
+
+    def poll_timestamp(self):
+        timeidx=int(get_timestamp())
+        print timeidx
+        self.add(self.path,timeidx)
+
 
     def start(self):
-        # self.factory = ReconnectingClientFactory()
-        # # self.factory.protocol = VaisalaDriver.VaisalaListener
-        # self.point = TCP4ClientEndpoint(reactor, self.host, self.port)
-        # d = self.point.connect(self.factory)
-        # d.addCallback(self.gotprotocol)
 
-        periodicSequentialCall(self.poll_snapshot).start(self.rate)
+        periodicSequentialCall(self.poll_snapshot).start(300)

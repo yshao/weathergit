@@ -34,13 +34,3 @@ def query_retrieve_image(params):
 
 
 
-@pyqtSlot()
-def _update_smap_status():
-    self.ui
-
-
-#test_query
-
-#test_copy
-
-#test_logger
