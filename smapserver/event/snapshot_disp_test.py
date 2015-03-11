@@ -1,27 +1,51 @@
-# smaptool get longitude, latitude, time
-from time import sleep
-from weathergit.common.smaputils import SmapUtils
+import os
+from common.env import Env
+from common.smaputils import SmapUtils
+from common.remote.remote import Remote
 
 
-args=dict(url="192.168.1.146")
-smaputils=SmapUtils(args)
-
-gen={}
-gen['lon']=smaputils.get_curr_val('/garmin0/longitude')
-gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
-gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
-# utc=smaputils.get_curr_val('/garmin0/utc')
-
-with open('panel','wb') as f:
-    f.write(gen)
-
-# get image from database
-filep=smaputils.get_image('/trendnet0/timestamp')
-
-# get plots
-paths=['']
-for p in paths:
+def update_webpage():
     ""
 
-def get_smap_values():
-    ""
+    d=Env().getConfig()
+
+    args=dict(url=d['smap_source_host'])
+    smaputils=SmapUtils(args)
+
+    gen={}
+    gen['lon']=smaputils.get_curr_val('/garmin0/longitude')
+    gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
+    gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
+
+    GENDIR='generate'
+    with open('%s/panel.txt'%GENDIR,'wb') as f:
+        f.write(gen)
+
+    # get image from database
+    filep=smaputils.get_curr_val('/trendnet0/timestamp')
+    d=Remote.gen_login('dataserver')
+    dataserver=Remote(d)
+    dataserver.download('%s.png'%filep,GENDIR)
+
+    # get plots
+    paths=[
+        '/thetaprobe0/soil_moistureHI',
+        '/omega0/soil_tempHI',
+        '/vaisala0/pth/pressure',
+        '/vaisala0/pth/temperature',
+        '/vaisala0/pth/humidity'
+    ]
+    for p in paths:
+        ""
+        gen_plot(p)
+
+
+    # upload all to webserver
+    d=Remote.gen_login('webserver')
+    remote=Remote(d)
+
+    lFiles=os.list(GENDIR)
+    remote.upload(lFiles)
+
+def gen_plot(p):
+    name=p.replace('/','_')
