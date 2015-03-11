@@ -4,6 +4,7 @@ import time
 from common.jsonconfig import JsonConfig
 
 
+
 class Scheduler(object):
     def __init__(self):
         ""
@@ -33,17 +34,17 @@ class Scheduler(object):
 # schedule.every().day.at("10:30").do(job)
 # schedule.every().monday.do(job)
 # schedule.every().wednesday.at("13:15").do(job)
-# from event.generate import update_webpage
+
 # from event.archiver import archive_files
-from event.smapactions import update_status
-from event.disk_usage import diskmain
+from event.eventhandlers import update_status
+from event.webgen import update_webpage
 
 if __name__ == '__main__':
     update_status()
 
 
-    # schedule.every(1).day.do(archive_files)
-    # schedule.every(5).minutes.do(update_webpage)
+    # schedule.every().day.at("12:00").do(archive_files)
+    schedule.every(5).minutes.do(update_webpage)
     schedule.every(30).minutes.do(update_status)
     # schedule.every(5).seconds.do(lambda: update_notify(i))
     while True:

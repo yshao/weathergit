@@ -40,6 +40,19 @@ class Supervisory():
             # print[1]
         return d
 
+    def kill_all(self):
+        self.pids=self.get_all_pids()
+        l=['trendnet.ini','weather.ini','scheduler.py']
+        for e in l:
+            if e in self.pids:
+                self.kill_pid(e)
+
+
+    def restart_all(self):
+        l=['trendnet.ini','weather.ini','scheduler.py']
+        for e in l:
+                self.restart(e)
+
     def kill_pid(self,p):
         ""
         if p == 'trendnet.ini':
@@ -83,13 +96,16 @@ class Supervisory():
 
             remote.daemon('python scheduler.py &',self.server['base_dir'])
 
+
 if __name__ == '__main__':
     super=Supervisory()
+    super.kill_all()
+    super.restart_all()
     # d=super.get_all_pids()
     # print "SUPER"
     # print d
     # print super.check_pid('trendnet.ini')
-    print super.check_pid('weather.ini')
+    # print super.check_pid('weather.ini')
 
-    super.restart('weather.ini')
+    # super.restart('scheduler.py')
     # super.restart('weather.ini')

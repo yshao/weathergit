@@ -77,15 +77,16 @@ def get_snapshot(outfilep):
             time.sleep(10)
 
 
-    from fabric.context_managers import settings
-    from fabfile import move_file
-
-    with settings(host_string='data@192.168.1.223'):
-        print 'moving: ' + outfilep
-        move_file(outfilep)
+    # from fabric.context_managers import settings
+    # from fabfile import move_file
+    #
+    # with settings(host_string='data@192.168.1.223'):
+    #     print 'moving: ' + outfilep
+    #     move_file(outfilep)
 
     ###TODO: sub
-    # remote=Remote(Remote.gen_login('dataserver'))
-    # remote.upload([outfilep])
+    d=Remote.gen_login('dataserver')
+    remote=Remote(d)
+    remote.upload([outfilep])
 
     os.remove(outfilep)

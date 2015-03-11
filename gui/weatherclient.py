@@ -1,5 +1,6 @@
 # This is only needed for Python v2 but is harmless for Python v3.
 import sip
+from common.jsonconfig import JsonConfig
 
 
 sip.setapi('QString', 2)
@@ -32,7 +33,7 @@ from weathergit.gui.ui.ui_weatherclientmain import Ui_WeatherClientMain
 from best.common.utils import *
 from best.common.fileutils import *
 from best.common.netutils import *
-from weathergit.common.config import Config
+# from weathergit.common.config import Config
 
 
 
@@ -79,7 +80,7 @@ class WeatherClient(QtGui.QMainWindow):
         """"""
         ### meta data connection
         if config == None:
-            config=Config(Env.getpath('HOME')+'/common/weatherplotter.conf')
+            config=JsonConfig(Env.getpath('HOME')+'/common/config.json').get_config()
 
         self.dbconn=DbConn()
         self.uuid=self.dbconn.get_uuid()

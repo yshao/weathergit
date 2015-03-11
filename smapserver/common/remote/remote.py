@@ -1,7 +1,7 @@
 import os
 import re
 from fabric.context_managers import cd, settings
-from fabric.operations import put, get, run
+from fabric.operations import put, get, run, sudo
 # from remoteexec import remote_exec
 from common.env import Env
 
@@ -11,6 +11,36 @@ __author__ = 'Y. Shao'
 __created__ = '3/9/2015' '2:10 PM'
 
 class Remote(object):
+    @staticmethod
+    def gen_login(target):
+        d=Env().getConfig()
+        # print d
+        nd={}
+        if target == 'smapserver':
+            host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
+            pwd=d['smap_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+            # print nd
+        elif target == 'smapsource':
+            host='%s@%s' % (d['smap_source_username'],d['smap_source_host'])
+            pwd=d['smap_source_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+        elif target == 'webserver':
+            host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
+            pwd=d['smap_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+
+        elif target == 'dataserver':
+            host='%s@%s' % (d['data_server_username'],d['data_server_host'])
+            pwd=d['data_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir='')
+
+        return nd
+
     def __init__(self,d):
         ""
         self.d=d
@@ -26,19 +56,16 @@ class Remote(object):
 
         return res
 
-
-
     def init(self):
         d=self.d
         # print d
         homep=Env().param['HOME']
         remote_api_path=homep+'/common/remote/remote_api.py'
-        # print remote_api_path
-        # print 'init'
-        # print d['base_dir']
+
+        # print d
         with settings(host_string=d['host_string'],password=d['password']):
             # with cd(d['base_dir']):
-
+                print d['base_dir']
                 put(remote_api_path,d['base_dir'])
                 run('ls')
 
@@ -88,15 +115,31 @@ class Remote(object):
 
     def execute(self,cmd,dir=None):
         d=self.d
+        # if dir == None:
+        #     dir=d['base_dir']
         # print d
         res=[]
         with settings(host_string=d['host_string'],password=d['password']):
             if dir != None:
                 with cd(dir):
-                    res=run(cmd)
+                    res=sudo(cmd)
             else:
                 # print cmd
-                res=run(cmd)
+                res=sudo(cmd)
+
+        return res
+
+    def daemon(self,cmd,dir=None):
+        d=self.d
+
+        with settings(host_string=d['host_string'],password=d['password']):
+            # run('ls')
+            if dir != None:
+                with cd(dir):
+                    res=sudo(cmd,pty=False)
+            else:
+                # print cmd
+                res=sudo(cmd,pty=False)
 
         return res
     # def pexec(self,cmd):
