@@ -1,8 +1,12 @@
+import os
+from common.env import Env
 from common.smaputils import SmapUtils
 from common.remote.remote import Remote
 
 
-def webgen():
+def update_webpage():
+    ""
+
     d=Env().getConfig()
 
     args=dict(url=d['smap_source_host'])
@@ -13,22 +17,35 @@ def webgen():
     gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
     gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
 
-
-    with open('panel','wb') as f:
+    GENDIR='generate'
+    with open('%s/panel.txt'%GENDIR,'wb') as f:
         f.write(gen)
 
     # get image from database
     filep=smaputils.get_curr_val('/trendnet0/timestamp')
-
-    #
-    remote=Remote.gen_login('data_server')
-    d=remote.gen_login('data_server')
-    remote.
+    d=Remote.gen_login('dataserver')
+    dataserver=Remote(d)
+    dataserver.download('%s.png'%filep,GENDIR)
 
     # get plots
-    paths=['']
+    paths=[
+        '/thetaprobe0/soil_moistureHI',
+        '/omega0/soil_tempHI',
+        '/vaisala0/pth/pressure',
+        '/vaisala0/pth/temperature',
+        '/vaisala0/pth/humidity'
+    ]
     for p in paths:
         ""
+        gen_plot(p)
 
-    def get_smap_values():
-        ""
+
+    # upload all to webserver
+    d=Remote.gen_login('webserver')
+    remote=Remote(d)
+
+    lFiles=os.list(GENDIR)
+    remote.upload(lFiles)
+
+def gen_plot(p):
+    name=p.replace('/','_')
