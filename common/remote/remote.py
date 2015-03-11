@@ -1,7 +1,7 @@
 import os
 import re
 from fabric.context_managers import cd, settings
-from fabric.operations import put, get, run
+from fabric.operations import put, get, run, sudo
 # from remoteexec import remote_exec
 from common.env import Env
 
@@ -14,13 +14,15 @@ class Remote(object):
     def __init__(self,d):
         ""
         self.d=d
+        # print d
         self.init()
 
     def status(self):
         d=self.d
+        # print d
         with settings(host_string=d['host_string'],password=d['password']):
             res=run('date')
-            print res
+            # print res
 
         return res
 
@@ -28,17 +30,30 @@ class Remote(object):
 
     def init(self):
         d=self.d
+        # print d
         homep=Env().param['HOME']
         remote_api_path=homep+'/common/remote/remote_api.py'
         # print remote_api_path
+        # print 'init'
+        # print d['base_dir']
         with settings(host_string=d['host_string'],password=d['password']):
-            put(remote_api_path)
+            # with cd(d['base_dir']):
+
+                put(remote_api_path,d['base_dir'])
+                run('ls')
 
     def pexec(self,cmd,*args):
         ""
         d=self.d
+
         with settings(host_string=d['host_string'],password=d['password']):
-            run('python remote_api.py %s %s' % (cmd,args))
+            with cd(d['base_dir']):
+                if args != ():
+                    res=run('python remote_api.py %s %s' % (cmd," ".join(args)))
+                else:
+                    res=run('python remote_api.py %s' % (cmd))
+
+        return res
 
     def upload(self,lFiles,dir=None):
         ""
@@ -73,14 +88,36 @@ class Remote(object):
 
     def execute(self,cmd,dir=None):
         d=self.d
+        # if dir == None:
+        #     dir=d['base_dir']
+        # print d
         res=[]
         with settings(host_string=d['host_string'],password=d['password']):
             if dir != None:
                 with cd(dir):
-                    res=run(cmd)
+                    res=sudo(cmd)
             else:
-                print cmd
-                res=run(cmd)
+                # print cmd
+                res=sudo(cmd)
+
+        return res
+
+    def daemon(self,cmd,dir=None):
+        d=self.d
+        # if dir == None:
+        #     dir=d['base_dir']
+
+        # print 'daemon'
+        # print cmd
+
+        with settings(host_string=d['host_string'],password=d['password']):
+            # run('ls')
+            if dir != None:
+                with cd(dir):
+                    res=sudo(cmd,pty=False)
+            else:
+                # print cmd
+                res=sudo(cmd,pty=False)
 
         return res
     # def pexec(self,cmd):
@@ -143,6 +180,8 @@ class Remote(object):
 
     def cd(self,dir):
         ""
+        cd(dir)
+        run('pwd')
 
     # def pexec(self):
     #     ""

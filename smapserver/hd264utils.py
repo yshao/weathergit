@@ -3,7 +3,9 @@ import time
 import sys
 import live555
 import threading
+from common.env import Env
 from sysutils import run_command
+
 
 def rtsp_pull_frames():
     cameraIP = '192.168.1.212'
@@ -11,10 +13,13 @@ def rtsp_pull_frames():
     seconds = 5
     fileOut = 'out.264'
 
-    # os.remove(fileOut)
+    d=Env().getConfig()
+    username=d['smap_ipcam_username']
+    password=d['smap_ipcam_password']
+    cameraIP=d['smap_ipcam_host']
 
     # TrendNet
-    url = 'rtsp://admin:bestcamera@%s:554/Streaming/channels/%s' % (cameraIP, channel)
+    url = 'rtsp://admin:bestcamera@%s:554/Streaming/channels/%s' % (username,password,cameraIP, channel)
     fOut = open(fileOut, 'wb')
 
     #callback
