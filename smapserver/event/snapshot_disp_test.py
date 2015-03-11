@@ -1,27 +1,34 @@
-# smaptool get longitude, latitude, time
-from time import sleep
-from weathergit.common.smaputils import SmapUtils
+from common.smaputils import SmapUtils
+from common.remote.remote import Remote
 
 
-args=dict(url="192.168.1.146")
-smaputils=SmapUtils(args)
+def webgen():
+    d=Env().getConfig()
 
-gen={}
-gen['lon']=smaputils.get_curr_val('/garmin0/longitude')
-gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
-gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
-# utc=smaputils.get_curr_val('/garmin0/utc')
+    args=dict(url=d['smap_source_host'])
+    smaputils=SmapUtils(args)
 
-with open('panel','wb') as f:
-    f.write(gen)
+    gen={}
+    gen['lon']=smaputils.get_curr_val('/garmin0/longitude')
+    gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
+    gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
 
-# get image from database
-filep=smaputils.get_image('/trendnet0/timestamp')
 
-# get plots
-paths=['']
-for p in paths:
-    ""
+    with open('panel','wb') as f:
+        f.write(gen)
 
-def get_smap_values():
-    ""
+    # get image from database
+    filep=smaputils.get_curr_val('/trendnet0/timestamp')
+
+    #
+    remote=Remote.gen_login('data_server')
+    d=remote.gen_login('data_server')
+    remote.
+
+    # get plots
+    paths=['']
+    for p in paths:
+        ""
+
+    def get_smap_values():
+        ""

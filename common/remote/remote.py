@@ -11,6 +11,27 @@ __author__ = 'Y. Shao'
 __created__ = '3/9/2015' '2:10 PM'
 
 class Remote(object):
+    @staticmethod
+    def gen_login(d):
+        d=Env().getConfig()
+        if d == 'smapserver':
+            host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
+            pwd=d['smap_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=d)
+        elif d == 'smapsource':
+            host='%s@%s' % (d['smap_source_username'],d['smap_source_host'])
+            pwd=d['smap_source_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=d)
+        elif d == 'webserver':
+            host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
+            pwd=d['smap_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir=d)
+
+        return nd
+
     def __init__(self,d):
         ""
         self.d=d
@@ -23,8 +44,6 @@ class Remote(object):
             print res
 
         return res
-
-
 
     def init(self):
         d=self.d
