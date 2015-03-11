@@ -17,7 +17,8 @@ import time
 import psutil
 
 
-def main():
+def psmain():
+    l=[]
     today_day = datetime.date.today()
     templ = "%-10s %5s %4s %4s %7s %7s %-13s %5s %7s  %s"
     attrs = ['pid', 'cpu_percent', 'memory_percent', 'name', 'cpu_times',
@@ -25,7 +26,7 @@ def main():
     if os.name == 'posix':
         attrs.append('uids')
         attrs.append('terminal')
-    print(templ % ("USER", "PID", "%CPU", "%MEM", "VSZ", "RSS", "TTY",
+    l.append(templ % ("USER", "PID", "%CPU", "%MEM", "VSZ", "RSS", "TTY",
                    "START", "TIME", "COMMAND"))
     for p in psutil.process_iter():
         try:
@@ -63,7 +64,7 @@ def main():
                 int(pinfo['memory_info'].rss / 1024) or '?'
             memp = pinfo['memory_percent'] and \
                 round(pinfo['memory_percent'], 1) or '?'
-            print(templ % (
+            l.append(templ % (
                 user[:10],
                 pinfo['pid'],
                 pinfo['cpu_percent'],
@@ -75,6 +76,7 @@ def main():
                 cputime,
                 pinfo['name'].strip() or '?'))
 
+    return l.join('\n')
 
 if __name__ == '__main__':
     main()

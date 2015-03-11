@@ -1,6 +1,6 @@
 from fabric.context_managers import cd
 from fabric.operations import *
-from fabric.state import env
+# from fabric.state import env
 env.user="data"
 env.password="data@best!"
 env.hosts=['192.168.1.223']

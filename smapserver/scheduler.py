@@ -39,7 +39,9 @@ from event.smapactions import update_status
 from event.disk_usage import diskmain
 
 if __name__ == '__main__':
-    # i=10
+    update_status()
+
+
     # schedule.every(1).day.do(archive_files)
     # schedule.every(5).minutes.do(update_webpage)
     schedule.every(30).minutes.do(update_status)

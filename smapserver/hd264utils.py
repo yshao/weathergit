@@ -4,7 +4,9 @@ import sys
 import live555
 import threading
 from common.env import Env
+from common.remote.remote import Remote
 from sysutils import run_command
+
 
 
 def rtsp_pull_frames():
@@ -19,7 +21,7 @@ def rtsp_pull_frames():
     cameraIP=d['smap_ipcam_host']
 
     # TrendNet
-    url = 'rtsp://admin:bestcamera@%s:554/Streaming/channels/%s' % (username,password,cameraIP, channel)
+    url = 'rtsp://%s:%s@%s:554/Streaming/channels/%s' % (username,password,cameraIP, channel)
     fOut = open(fileOut, 'wb')
 
     #callback
@@ -59,9 +61,7 @@ def convert_to_png(filep,outfilep):
 
 
 def get_snapshot(outfilep):
-    # outfilep=sys.argv[1]
-    print 'snapshot'
-    # print outfilep
+    print "Taking Snapshot"
     b=False
     while b == False:
 
@@ -69,11 +69,12 @@ def get_snapshot(outfilep):
             convert_to_png('out.264',outfilep)
 
         statinfo = os.stat(outfilep)
+        print "FILE SIZE:"
         print statinfo
         if statinfo.st_size > 100:
             b = True
         else:
-            time.sleep(5)
+            time.sleep(10)
 
 
     from fabric.context_managers import settings
@@ -83,15 +84,8 @@ def get_snapshot(outfilep):
         print 'moving: ' + outfilep
         move_file(outfilep)
 
+    ###TODO: sub
+    # remote=Remote(Remote.gen_login('dataserver'))
+    # remote.upload([outfilep])
+
     os.remove(outfilep)
-
-
-
-
-
-# from fabric.main import main
-#
-# if __name__ == '__main__':
-#     import sys
-#     sys.argv = ['fab', '-f', __file__, 'move_file','outfilep']
-#     main()

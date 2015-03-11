@@ -24,6 +24,7 @@ def send_event_email(text):
     # Create the body of the message (a plain-text and an HTML version).
     # text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttps://www.python.org"
 
+    text=str(text)
     html_text=beautify(text)
 
     html = """\
