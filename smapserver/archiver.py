@@ -1,4 +1,7 @@
 from fabric.context_managers import cd
+from remote import Remote
+import os
+import re
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -47,14 +50,14 @@ def archive_files():
     for f in fidx:
         sl.move(f,curr_dt)
 
+    tm=get_timestamp()
+    remote=Remote(Remote.gen_login('dataserver'))
+    remote.execute('mkdir %s'%tm)
 
-p=os.getcwd()
-print p
 
-
-
-import os
-import re
+# p=os.getcwd()
+# print p
+#
 
 def grep(path, regex):
     regObj = re.compile(regex)

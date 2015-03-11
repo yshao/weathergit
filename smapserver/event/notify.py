@@ -82,4 +82,5 @@ def send_event_email(text):
     #
     # elif classname == INSTRUMENT:
 
-send_event_email('disk usage')
+if __name__ == '__main__':
+    send_event_email('disk usage')

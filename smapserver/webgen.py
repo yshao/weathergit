@@ -1,7 +1,7 @@
 import os
 from common.env import Env
 from common.smaputils import SmapUtils
-from common.remote.remote import Remote
+from remote import Remote
 
 
 def update_webpage():
@@ -23,7 +23,7 @@ def update_webpage():
 
     # get image from database
     filep=smaputils.get_curr_val('/trendnet0/timestamp')
-    d=Remote.gen_login('dataserver')
+    d=Remote.gen_login('webserver')
     dataserver=Remote(d)
     dataserver.download('%s.png'%filep,GENDIR)
 
@@ -49,3 +49,9 @@ def update_webpage():
 
 def gen_plot(p):
     name=p.replace('/','_')
+    with open(name,'wb') as fh:
+        fh.write('b')
+
+
+if __name__ == '__main__':
+    update_webpage()

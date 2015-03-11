@@ -1,52 +1,27 @@
 import schedule
+from smap.driver import SmapDriver
 import time
-# from jsonconfig import JsonConfig
-from common.jsonconfig import JsonConfig
+from smap.util import periodicSequentialCall
+from eventhandlers import Watchdog
+from archiver import archive_files
+from webgen import update_webpage
 
+__company__ = 'Boulder Environmental Sciences and Technology'
+__project__ = ''
+__author__ = 'Y. Shao'
+__created__ = '3/11/2015' '1:27 PM'
 
+class Scheduler(SmapDriver):
+    def setup(self, opts):
+        self.dog=Watchdog()
+        self.dog.watchdog()
 
-class Scheduler(object):
-    def __init__(self):
-        ""
-        self.sch=schedule
+        schedule.every(20).minutes.do(self.dog.update_status)
+        schedule.every(5).minutes.do(update_webpage)
+        schedule.every().day.at("1:00").do(archive_files)
 
-    def load_events(self):
-        ""
-        cfg=JsonConfig('event.json')
-        for evt in cfg:
-            self.register_event(evt)
-        self.cfg=cfg
-
-    def run(self):
-        ""
-        while True:
-            self.sch.run_pending()
-            time.sleep(1)
-
-    def register_event(self,evt):
-        min=evt['interval']
-        action=evt['action']
-        self.sch.every(min).minute.do(action)
-
-
-
-# schedule.every().hour.do(job)
-# schedule.every().day.at("10:30").do(job)
-# schedule.every().monday.do(job)
-# schedule.every().wednesday.at("13:15").do(job)
-
-# from event.archiver import archive_files
-from event.eventhandlers import update_status
-from event.webgen import update_webpage
-
-if __name__ == '__main__':
-    update_status()
-
-
-    # schedule.every().day.at("12:00").do(archive_files)
-    schedule.every(5).minutes.do(update_webpage)
-    schedule.every(30).minutes.do(update_status)
-    # schedule.every(5).seconds.do(lambda: update_notify(i))
-    while True:
+    def poll_tasks(self):
         schedule.run_pending()
-        time.sleep(1)
+
+    def start(self):
+        periodicSequentialCall(self.poll_tasks).start(1)    # time.sleep(1)

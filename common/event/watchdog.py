@@ -24,19 +24,13 @@ class Watchdog():
 
     def update_status(self):
         print "updating"
-        title1="Disk Space:"
-        print title1
         txt1='\n'.join(diskmain())
         print txt1
         super=Supervisory()
-        title2="Process Running:"
-        # print title2
         txt2='\n'.join((super.get_all_pids()))
-        # print txt2
-        # print 'Content:'
-        content='\n'.join([title1,txt1,title2,txt2])
-        # content='\n'.join([title1,txt1])
-        # print content
+        print txt2
+        content='\n'.join([txt1,txt2])
+        print content
         send_event_email(content)
 
 
@@ -57,6 +51,18 @@ class Watchdog():
                 send_event_email('Restart service %s' % e)
 
 
+        if not self.check_measurements():
+            ""
+            for e in l:
+                super.restart(e)
+                send_event_email('Restart service %s' % e)
+
+        if not self.check_disk():
+            ""
+            send_event_email('Flushing Disk')
+
+
+
 
     ### check actions ###
     def check_network(self):
@@ -70,6 +76,14 @@ class Watchdog():
         for link in l:
             d=run_command('ping %s' % link)
             is_connected(d)
+
+    def check_measurements(self):
+        ""
+        return True
+
+    def check_disk(self):
+        ''
+        return True
 #
 #
 # def disk_level():
@@ -103,15 +117,7 @@ class Watchdog():
 #     ### send report ###
 #     # update_status()
 #
-# def compareUpdate(l1,l2):
-#     def convert_tm(tm):
-#         return datetime.timedelta
-#
-#     for k in l1.keys():
-#         if convert_tm(l1.get(k)) - convert_tm(l2.get(k)) > 0:
-#             return False
-#
-#     return True
+
 #
 # def frozen_measurements():
 #   """
@@ -133,7 +139,19 @@ class Watchdog():
 #     return True
 #   else:
 #     return False
+
+# def compareUpdate(l1,l2):
+#     def convert_tm(tm):
+#         return datetime.timedelta
 #
+#     for k in l1.keys():
+#         if convert_tm(l1.get(k)) - convert_tm(l2.get(k)) > 0:
+#             return False
+#
+#     return True
+
+
+
 # # def handle_instruments():
 # #     read=su.curr_readings()
 # #     read_old=open('instruments.buf','rb').read()

@@ -79,4 +79,4 @@ def psmain():
     return l.join('\n')
 
 if __name__ == '__main__':
-    main()
+    psmain()

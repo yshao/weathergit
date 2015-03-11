@@ -133,42 +133,5 @@ if __name__ == '__main__':
         c.deploy_smap_server()
         c.deploy_webserver()
         c.deploy_smap_source()
-        #
-        # def get_pids():
-        #     ### check and kill
-        #     res=remote.execute("ps aux | grep python | grep -v grep",base_dir)
-        #     # print res
-        #     res=res.splitlines()
-        #     d={}
-        #     # print 'res'
-        #     # print res
-        #     for l in res:
-        #         sl=re.split(r' *', l)
-        #         k=sl[-1]
-        #         v=sl[1]
-        #         print v
-        #
-        #         d[k]=v
-        #         # print[1]
-        #     print d
-        #     return d
 
-
-
-        # d=get_pids()
-        # pid=d.get('trendnet.ini')
-        # def kill_pid(pid):
-        # remote.execute("kill -9 %s" % pid)
-
-
-        ### start daemon ###
-
-        # remote.daemon("twistd smap trendnet.ini")
-
-        ### start daemon ### TODO: python
-        # remote.daemon("python scheduler.py &")
-
-        ###
-
-        ### notifier ###
 

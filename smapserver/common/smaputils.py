@@ -1,9 +1,9 @@
 import unittest
-from weathergit.common.smaplib.jprint import pprint
-from weathergit.common.smaplib.smap_query import *
-from weathergit.common.smaplib.smap_tool import *
+from smaplib.jprint import pprint
+from smaplib.smap_query import *
+from smaplib.smap_tool import *
 from weathergit.common.smaplib.smap_load import *
-from weathergit.common.smaplib.smap_load_csv import *
+from smaplib.smap_load_csv import *
 # SOURCE='http://192.168.1.146:8079'
 
 
@@ -184,18 +184,6 @@ class SmapUtils(object):
 
 
 
-
-# cmd='x11vnc -bg -o %HOME/.x11vnc.log.%VNCDISPLAY -auth /var/run/lightdm/root/:0 -forever'
-#
-# sudo(cmd)
-#
-# browser.open('192.168.1.146:5900')
-# import subprocess
-# cmd='"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
-# subprocess.call([cmd])
-#
-#
-#
 if __name__ == '__main__':
     su=SmapUtils()
     d=su.get_smap_monitor()

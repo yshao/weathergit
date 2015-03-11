@@ -1,6 +1,7 @@
 import re
 from common.env import Env
 from common.remote.remote import Remote
+# from smapserver.event.actions.notify import send_event_email
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -27,29 +28,31 @@ class Supervisory():
         # print d
         remote=Remote(d)
 
-        res=remote.execute("ps aux | grep python | grep -v grep",d['base_dir'])
-        res=res.splitlines()
+        lines=remote.execute("ps aux | grep python | grep -v grep",d['base_dir'])
+        lines=lines.split('\n')
         d={}
+        # print res
 
-        for l in res:
+        for l in lines:
             sl=re.split(r' *', l)
-            k=sl[-1]
-            v=sl[1]
+            if len(sl) > 5:
+                k=sl[-1]
+                v=sl[1]
 
-            d[k]=v
-            # print[1]
+                d[k]=v
+
         return d
 
     def kill_all(self):
         self.pids=self.get_all_pids()
-        l=['trendnet.ini','weather.ini','scheduler.py']
+        l=['trendnet.ini','weather.ini','scheduler.ini']
         for e in l:
             if e in self.pids:
                 self.kill_pid(e)
 
 
     def restart_all(self):
-        l=['trendnet.ini','weather.ini','scheduler.py']
+        l=['trendnet.ini','weather.ini','scheduler.ini']
         for e in l:
                 self.restart(e)
 
@@ -57,14 +60,16 @@ class Supervisory():
         ""
         if p == 'trendnet.ini':
             remote=Remote(self.server)
-            # remote.execute('')
+            print 'kill -9 %s' % self.pids['trendnet.ini']
             remote.execute('kill -9 %s' % self.pids['trendnet.ini'])
         elif p == 'weather.ini':
             remote=Remote(self.source)
+            print 'kill -9 %s' % self.pids['weather.ini']
             remote.execute('kill %s' % self.pids['weather.ini'])
-        elif p == 'scheduler.py':
+        elif p == 'scheduler.ini':
             remote=Remote(self.server)
-            remote.execute('kill %s' % self.pids['scheduler.py'])
+            print 'kill -9 %s' % self.pids['scheduler.ini']
+            remote.execute('kill %s' % self.pids['scheduler.ini'])
 
     def check_pid(self,p):
         pids=self.get_all_pids()
@@ -75,7 +80,8 @@ class Supervisory():
 
 
     def restart(self,p):
-        # pids=self.get_all_pids()
+        self.pids=self.get_all_pids()
+        print self.pids.keys()
         if p == 'trendnet.ini':
             remote=Remote(self.server)
             if p in self.pids.keys():
@@ -87,25 +93,31 @@ class Supervisory():
             if p in self.pids.keys():
                 self.kill_pid('weather.ini')
 
-            print
+            # print
             remote.daemon('twistd smap weather.ini',self.source['base_dir'])
-        elif p == 'scheduler.py':
+        elif p == 'scheduler.ini':
             remote=Remote(self.server)
             if p in self.pids.keys():
-                self.kill_pid('scheduler.py')
+                self.kill_pid('scheduler.ini')
 
-            remote.daemon('python scheduler.py &',self.server['base_dir'])
+            remote.daemon('twistd --pidfile=scheduler.pid smap scheduler.ini',self.server['base_dir'])
 
+    def start_if_not(self):
+        # super=Supervisory()
+        d=self.get_all_pids()
+        l=['trendnet.ini','weather.ini','scheduler.ini']
+        el=[]
+        for e in l:
+            if not e in d.keys():
+                super.restart(e)
+                el.append(e)
+
+        return el
 
 if __name__ == '__main__':
     super=Supervisory()
     super.kill_all()
-    super.restart_all()
-    # d=super.get_all_pids()
-    # print "SUPER"
-    # print d
-    # print super.check_pid('trendnet.ini')
-    # print super.check_pid('weather.ini')
-
-    # super.restart('scheduler.py')
-    # super.restart('weather.ini')
+    super.restart('scheduler.ini')
+    # print super.get_all_pids()
+    # super.restart_all()
+    super.restart('trendnet.ini')

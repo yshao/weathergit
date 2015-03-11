@@ -1,7 +1,7 @@
 import os
 from keepass import kpdb
 from keepass.kpdb import Database
-from common.jsonconfig import JsonConfig
+from jsonconfig import JsonConfig
 
 
 class Env():
