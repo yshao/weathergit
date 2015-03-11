@@ -14,7 +14,7 @@ class Env():
 
         config=self.param['HOME']+'/common/config.json'
         kdb=self.param['HOME']+'/common/resource/weather.kdb'
-        d=JsonConfig(config)
+        d=JsonConfig(config).get_config()
         d2=self._get_passwords(kdb)
 
         d.update(d2)

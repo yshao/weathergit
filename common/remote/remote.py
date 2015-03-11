@@ -12,23 +12,32 @@ __created__ = '3/9/2015' '2:10 PM'
 
 class Remote(object):
     @staticmethod
-    def gen_login(d):
+    def gen_login(target):
         d=Env().getConfig()
-        if d == 'smapserver':
+        # print d
+        nd={}
+        if target == 'smapserver':
             host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
             pwd=d['smap_server_password']
             # base_dir=d
-            nd=dict(host_string=host,password=pwd,base_dir=d)
-        elif d == 'smapsource':
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+            # print nd
+        elif target == 'smapsource':
             host='%s@%s' % (d['smap_source_username'],d['smap_source_host'])
             pwd=d['smap_source_password']
             # base_dir=d
-            nd=dict(host_string=host,password=pwd,base_dir=d)
-        elif d == 'webserver':
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+        elif target == 'webserver':
             host='%s@%s' % (d['smap_server_username'],d['smap_server_host'])
             pwd=d['smap_server_password']
             # base_dir=d
-            nd=dict(host_string=host,password=pwd,base_dir=d)
+            nd=dict(host_string=host,password=pwd,base_dir=target)
+
+        elif target == 'dataserver':
+            host='%s@%s' % (d['data_server_username'],d['data_server_host'])
+            pwd=d['data_server_password']
+            # base_dir=d
+            nd=dict(host_string=host,password=pwd,base_dir='')
 
         return nd
 
@@ -52,12 +61,11 @@ class Remote(object):
         # print d
         homep=Env().param['HOME']
         remote_api_path=homep+'/common/remote/remote_api.py'
-        # print remote_api_path
-        # print 'init'
-        # print d['base_dir']
+
+        # print d
         with settings(host_string=d['host_string'],password=d['password']):
             # with cd(d['base_dir']):
-
+                print d['base_dir']
                 put(remote_api_path,d['base_dir'])
                 run('ls')
 
@@ -123,11 +131,6 @@ class Remote(object):
 
     def daemon(self,cmd,dir=None):
         d=self.d
-        # if dir == None:
-        #     dir=d['base_dir']
-
-        # print 'daemon'
-        # print cmd
 
         with settings(host_string=d['host_string'],password=d['password']):
             # run('ls')

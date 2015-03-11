@@ -4,15 +4,6 @@ from fabric.context_managers import settings
 
 __author__ = 'Ping'
 
-
-# with settings(host_string='debian@192.168.1.146',password='temppwd'):
-#     get_smap_config()
-
-### restart smap
-# with settings(host_string='debian@192.168.1.146'):
-#     restart_smap()
-
-
 def get_status():
     """
 

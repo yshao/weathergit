@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui/ui\smapviewerwidget.ui'
 #
-# Created: Wed Jan 21 14:30:42 2015
+# Created: Wed Feb 25 14:08:44 2015
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!

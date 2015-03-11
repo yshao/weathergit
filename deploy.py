@@ -1,3 +1,4 @@
+import re
 import tarfile
 from fabric.operations import put, run
 import os
@@ -5,7 +6,7 @@ import sys
 from common.env import Env
 from common.remote.remote import Remote
 
-def untar_tarfile(fname):
+def extract_tarfile(fname):
     # if (fname.endswith("tar.gz")):
         tar = tarfile.open(fname)
         tar.extractall()
@@ -16,70 +17,158 @@ def untar_tarfile(fname):
 
 
 def make_tarfile(output_filename, source_dir):
-    with tarfile.open(output_filename, "w:gz") as tar:
+    with tarfile.open(output_filename, "w") as tar:
         tar.add(source_dir, arcname=os.path.basename(source_dir))
 
 class DeployClient(object):
     def __init__(self):
         ""
-        self.cfg=Env.get_config()
+        self.cfg=Env().getConfig()
 
     def deploy_smap_server(self):
         ""
-        host='%s@%s' % ("ubuntu","192.168.1.120")
+        d=self.cfg
+        host='%s@%s' % (d["smap_server_username"],d["smap_server_host"])
         # print host
-        pwd="reverse"
-        d=dict(host_string=host,password=pwd)
+        pwd=d['smap_server_password']
+        base_dir='smapserver'
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
 
         remote=Remote(d)
-        remote.status()
-        # print remote.execute("ls")
 
         ### deploy ###
         homep=Env().param['HOME']
         pkgDir='smapserver'
         indir=homep+'/'+pkgDir
         pkgFile='%s.tar.gz' % pkgDir
+
+        print homep,pkgDir,indir,pkgFile
+
         make_tarfile(pkgFile,indir)
         remote.upload([pkgFile])
         remote.execute('tar -xf %s'%pkgFile)
 
 
-    def deploy_smap_bbb(self):
+    def deploy_smap_source(self):
         ""
-        host='%s@%s' % ("ubuntu","192.168.1.120")
+        d=self.cfg
+        host='%s@%s' % (d["smap_source_username"],d["smap_source_host"])
         # print host
-        pwd="reverse"
-        d=dict(host_string=host,password=pwd)
+        pwd=d['smap_source_password']
+        base_dir='smapsource'
+
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
 
         remote=Remote(d)
-        remote.status()
-        # print remote.execute("ls")
 
         ### deploy ###
         homep=Env().param['HOME']
-        pkgDir='smapource'
+        pkgDir='smapsource'
         indir=homep+'/'+pkgDir
         pkgFile='%s.tar.gz' % pkgDir
         make_tarfile(pkgFile,indir)
         remote.upload([pkgFile])
         remote.execute('tar -xf %s'%pkgFile)
+
+    def deploy_webserver(self):
+        d=self.cfg
+        host='%s@%s' % (d["smap_server_username"],d["smap_server_host"])
+        # print host
+        pwd=d['smap_server_password']
+        base_dir='webserver'
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
+
+        remote=Remote(d)
+
+        ### deploy ###
+        homep=Env().param['HOME']
+        pkgDir='webserver'
+        indir=homep+'/'+pkgDir
+        pkgFile='%s.tar.gz' % pkgDir
+        make_tarfile(pkgFile,indir)
+        remote.upload([pkgFile])
+        remote.execute('tar -xf %s'%pkgFile)
+
+
+    def run_webserver(self):
+        ""
+        d=self.cfg
+        host='%s@%s' % (d["smap_server_username"],d["smap_server_host"])
+        # print host
+        pwd=d['smap_server_password']
+        base_dir='smapserver'
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
+
+        remote=Remote(d)
+        # remote.status()
+        res=remote.pexec('start_daemon',['scheduler'])
+
+    def run_scheduler(self):
+        ""
+        d=self.cfg
+        host='%s@%s' % (d["smap_server_username"],d["smap_server_host"])
+        # print host
+        pwd=d['smap_server_password']
+        base_dir='smapserver'
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
+
+        remote=Remote(d)
+        # remote.status()
+        res=remote.pexec('start_daemon',['scheduler'])
+
 
 if __name__ == '__main__':
-        #TODO: change to config
-        host='%s@%s' % ("ubuntu","192.168.1.120")
-        print host
-        pwd="reverse"
-        d=dict(host_string=host,password=pwd)
+        ## init remote
+        d=Env().getConfig()
+        host='%s@%s' % (d["smap_server_username"],d["smap_server_host"])
+        pwd=d['smap_server_password']
+        base_dir='smapserver'
+        d=dict(host_string=host,password=pwd,base_dir=base_dir)
+        print 'test',d
 
         remote=Remote(d)
-        remote.status()
-        print remote.execute("ls")
 
-        homep=Env().param['HOME']
-        pkgDir='smapserver'
-        indir=homep+'/'+pkgDir
-        pkgFile='%s.tar.gz' % pkgDir
-        make_tarfile(pkgFile,indir)
-        remote.upload([pkgFile])
-        remote.execute('tar -xf %s'%pkgFile)
+        #deploy projects
+        c=DeployClient()
+        c.deploy_smap_server()
+        c.deploy_webserver()
+        c.deploy_smap_source()
+        #
+        # def get_pids():
+        #     ### check and kill
+        #     res=remote.execute("ps aux | grep python | grep -v grep",base_dir)
+        #     # print res
+        #     res=res.splitlines()
+        #     d={}
+        #     # print 'res'
+        #     # print res
+        #     for l in res:
+        #         sl=re.split(r' *', l)
+        #         k=sl[-1]
+        #         v=sl[1]
+        #         print v
+        #
+        #         d[k]=v
+        #         # print[1]
+        #     print d
+        #     return d
+
+
+
+        # d=get_pids()
+        # pid=d.get('trendnet.ini')
+        # def kill_pid(pid):
+        # remote.execute("kill -9 %s" % pid)
+
+
+        ### start daemon ###
+
+        # remote.daemon("twistd smap trendnet.ini")
+
+        ### start daemon ### TODO: python
+        # remote.daemon("python scheduler.py &")
+
+        ###
+
+        ### notifier ###
+
