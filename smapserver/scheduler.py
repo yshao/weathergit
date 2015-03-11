@@ -1,6 +1,7 @@
 import schedule
 import time
-from jsonconfig import JsonConfig
+# from jsonconfig import JsonConfig
+from common.jsonconfig import JsonConfig
 
 
 class Scheduler(object):
@@ -32,14 +33,16 @@ class Scheduler(object):
 # schedule.every().day.at("10:30").do(job)
 # schedule.every().monday.do(job)
 # schedule.every().wednesday.at("13:15").do(job)
-from event.generate import update_webpage
-from event.archiver import archive_files
+# from event.generate import update_webpage
+# from event.archiver import archive_files
+from event.smapactions import update_status
+from event.disk_usage import diskmain
 
 if __name__ == '__main__':
     # i=10
-    schedule.every(1).day.do(archive_files)
-    schedule.every(5).minutes.do(update_webpage)
-    schedule.every()
+    # schedule.every(1).day.do(archive_files)
+    # schedule.every(5).minutes.do(update_webpage)
+    schedule.every(30).minutes.do(update_status)
     # schedule.every(5).seconds.do(lambda: update_notify(i))
     while True:
         schedule.run_pending()

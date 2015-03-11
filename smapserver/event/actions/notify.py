@@ -12,7 +12,7 @@ def send_event_email(text):
     # me == my email address
     # you == recipient's email address
     SERVER_ADDR = "my@email.com"
-    subscriber = "yshaoeng@gmail.com"
+    subscriber = "best.weatherstation@gmail.com"
     subject = "BEST WeatherStation "
 
     # Create message container - the correct MIME type is multipart/alternative.
@@ -22,7 +22,7 @@ def send_event_email(text):
     msg['To'] = subscriber
 
     # Create the body of the message (a plain-text and an HTML version).
-    text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttps://www.python.org"
+    # text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttps://www.python.org"
 
     html_text=beautify(text)
 

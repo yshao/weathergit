@@ -53,21 +53,6 @@ def convert_to_png(filep,outfilep):
     run_command(cmd)
 
 
-import sys
-
-# outfilep=sys.argv[1]
-# print outfilep
-# if rtsp_pull_frames():
-#     convert_to_png('out.264',outfilep)
-#
-#
-# # move_file(outfilep)
-# from fabric.context_managers import settings
-# from fabfile import move_file
-#
-# with settings(host_string='data@192.168.1.223'):
-#     move_file(outfilep)
-
 def get_snapshot(outfilep):
     # outfilep=sys.argv[1]
     print 'snapshot'
@@ -92,6 +77,8 @@ def get_snapshot(outfilep):
     with settings(host_string='data@192.168.1.223'):
         print 'moving: ' + outfilep
         move_file(outfilep)
+
+    os.remove(outfilep)
 
 
 

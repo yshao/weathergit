@@ -1,3 +1,5 @@
+import datetime
+
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
 __author__ = 'Y. Shao'
@@ -8,13 +10,27 @@ def frozen_measurements():
   Check if encounters measurements not updating
   Restart
   """
-  def convert_time()
+  def convert_time():
+      ""
+
 
   curr=convert_time([])
   if curr_measurements['time'] - datetime.dateime.now() > 5
     return True
   else:
     return False
+
+
+# def handle_instruments():
+#     read=su.curr_readings()
+#     read_old=open('instruments.buf','rb').read()
+#     res=compare_readings(read,read_old)
+#     if res
+#         return res
+#         print 'readings good'
+#     else:
+#         restart_smap()
+#         print 'readings bad'
 
 
 def unable_to_connect():
@@ -52,3 +68,10 @@ def disk_level():
     return True
   else:
     return False
+
+############ disk_level #########
+def flush_smap_disk():
+    ""
+    remote=Remote()
+    remote.execute('','/')
+
