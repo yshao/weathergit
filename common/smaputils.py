@@ -1,13 +1,15 @@
-import unittest
-from weathergit.common.smaplib.jprint import pprint
-from weathergit.common.smaplib.smap_query import *
+
+# from weathergit.common.smaplib.jprint import pprint
+# from weathergit.common.smaplib.smap_query import *
 from weathergit.common.smaplib.smap_tool import *
-from weathergit.common.smaplib.smap_load import *
-from weathergit.common.smaplib.smap_load_csv import *
+# from weathergit.common.smaplib.smap_load import *
+# from weathergit.common.smaplib.smap_load_csv import *
 # SOURCE='http://192.168.1.146:8079'
 
 
 ### preserved for all options to be enabled
+from optparse import OptionParser
+
 default_backend = 'http://192.168.1.120:8079/api/query'
 # usage = 'usage: %prog [options] url'
 
@@ -27,6 +29,7 @@ class SmapUtils(object):
         ""
         args={}
         self.url='http://192.168.1.146:8079'
+
 
 
     def _init_smap_load(self):
@@ -50,7 +53,7 @@ class SmapUtils(object):
                           default=True, action='store_false',
                           help='don\'t cache downloaded data')
 
-        opts, args = self.parser.parse_args()
+        self.opts, self.args = self.parser.parse_args()
 
     def _init_smap_load_csv(self):
         self.parser = OptionParser()
@@ -83,7 +86,7 @@ class SmapUtils(object):
         self.parser.add_option('-s', '--source-name', dest='source_name',
                           default='CSV Input', help='Metadata/SourceName tag value')
 
-        opts, args = self.parser.parse_args()
+        self.opts, self.args = self.parser.parse_args()
 
 
     def _init_smap_query(self):
@@ -107,7 +110,7 @@ class SmapUtils(object):
                           default=False, action='store_true',
                           help='mutations display their results but don\'t actually happen')
 
-        opts, args = self.parser.parse_args()
+        self.opts, self.args = self.parser.parse_args()
 
     def _init_smap_tool(self):
         ""
@@ -127,7 +130,8 @@ class SmapUtils(object):
                           default=None,
                           help="Remove a report (by name)")
 
-        opts, args = self.parser.parse_args()
+        self.opts, self.args = self.parser.parse_args()
+        # print 'B'
 
     def run_server_query(self,sql):
         self._init_smap_query()
@@ -170,34 +174,24 @@ class SmapUtils(object):
         self._init_smap_tool()
         display_reports(self.url,self.opts)
 
-    def load_server_csv(self,filep,stream=None):
-        ""
-        self._init_smap_tool_csv()
-        if stream == None:
-            server_load_csv(filep,self.opts)
-        else:
-            server_load_csv(filep,stream,self.opts)
+    # def load_server_csv(self,filep,stream=None):
+    #     ""
+    #     self._init_smap_tool_csv()
+    #     if stream == None:
+    #         server_load_csv(filep,self.opts)
+    #     else:
+    #         server_load_csv(filep,stream,self.opts)
 
 
-    def add_smap_driver(self,):
-        ""
+    # def add_smap_driver(self,):
+    #     ""
+    #
+    #
 
-
-
-
-# cmd='x11vnc -bg -o %HOME/.x11vnc.log.%VNCDISPLAY -auth /var/run/lightdm/root/:0 -forever'
-#
-# sudo(cmd)
-#
-# browser.open('192.168.1.146:5900')
-# import subprocess
-# cmd='"C:\Program Files\Google\Chrome\Application\chrome.exe"  --profile-directory=Default --app-id=iabmpiboiopbgfabjmgeedhcmjenhbla'
-# subprocess.call([cmd])
-#
-#
-#
 if __name__ == '__main__':
     su=SmapUtils()
-    d=su.get_smap_monitor()
-    for uid in d.keys():
-        print d[uid]['path'] + ' ' + d[uid]['curr'] + ' ' + str(d[uid]['props'])
+    # su.get_smap_monitor()
+    su.show_smap_monitor()
+    # d=su.get_smap_monitor()
+    # for uid in d.keys():
+    #     print d[uid]['path'] + ' ' + d[uid]['curr'] + ' ' + str(d[uid]['props'])

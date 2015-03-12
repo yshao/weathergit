@@ -52,8 +52,6 @@ def load_json(url):
     return data
 
 
-# def get_
-
 def get_liveness(smap_url):
     data = load_json(smap_url + '/data/+')
     readings = [(k,
@@ -119,7 +117,11 @@ def delete_report(smap_url, opts):
     fp = opener.open(request)
     fp.close()
 
+
+
 if __name__ == '__main__':
+    # test_liveness('http://192.168.1.120',{})
+
     usage = 'usage: %prog [options] url'
     parser = OptionParser(usage=usage)
     parser.add_option('-l', '--liveness', dest='liveness',
@@ -139,13 +141,23 @@ if __name__ == '__main__':
                       help="Remove a report (by name)")
 
     opts, args = parser.parse_args()
-    # print opts, args
-    if not len(args):
-        parser.print_help()
-        sys.exit(1)
+
+
+
+    # if not len(args):
+    #     parser.print_help()
+    #     sys.exit(1)
+
+    # get_liveness('http://192.168.1.146:8079')
+    # test_liveness('http://192.168.1.146:8079',{})
 
     for source_url in args:
         if opts.liveness: test_liveness(source_url, opts)
         if opts.destination: install_report(source_url, opts)
         if opts.report_name: delete_report(source_url, opts)
         if opts.reports: display_reports(source_url, opts)
+#
+#     test_liveness('192.168.1.120')
+
+# if __name__ == '__main__':
+#     tool_main()

@@ -17,8 +17,10 @@
 "smap_source_host":"192.168.1.146",
 "smap_source_keyfile":"id_dsa",
 
-"smap_monitor":"http://192.168.1.146:8079/docs/",
-"smap_server":"http://192.168.1.120/status/",
+"smap_source_mon":"http://192.168.1.146:8079",
+"smap_ipcam_mon":"http://192.168.1.120:8082",
+
+    "smap_server":"http://192.168.1.120/status/",
 "smap_plotter":"http://192.168.1.120/plot/",
 "nbook_portal":"http://localhost:8888/tree/nbooks",
 

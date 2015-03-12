@@ -162,7 +162,7 @@ plot %s
     os.remove(pfile)
     os.remove(pscript)
 
-if __name__ == '__main__':
+def query_main():
     usage = 'usage: %prog [options] querys ...'
     try:
         default_backend = settings.conf['default backend'] + '/api/query'

@@ -1,4 +1,5 @@
 import os
+import re
 from common.env import Env
 from common.smaputils import SmapUtils
 from remote import Remote
@@ -6,26 +7,29 @@ from remote import Remote
 
 def update_webpage():
     ""
-
     d=Env().getConfig()
 
-    args=dict(url=d['smap_source_host'])
-    smaputils=SmapUtils(args)
+    url=dict(url=d['smap_source_mon'])
+    # print args
+    # smaputils=SmapUtils()
 
-    gen={}
-    gen['lon']=smaputils.get_curr_val('/garmin0/longitude')
-    gen['lat']=smaputils.get_curr_val('/garmin0/latitude')
-    gen['alt']=smaputils.get_curr_val('/garmin0/altitude')
+    su=SmapUtils()
+    d=su.get_smap_time_dict('weather.ini')
+
 
     GENDIR='generate'
     with open('%s/panel.txt'%GENDIR,'wb') as f:
-        f.write(gen)
+        for k in d.keys():
+            line='%s %s %s' % (k,d[k]['time'],d[k]['mea'])
+            f.write(line)
 
     # get image from database
-    filep=smaputils.get_curr_val('/trendnet0/timestamp')
-    d=Remote.gen_login('webserver')
-    dataserver=Remote(d)
-    dataserver.download('%s.png'%filep,GENDIR)
+    # d=su.get_smap_time_dict('trendnet.ini')
+    # print d
+    # filep=d['/trendnet0/time']['mea']
+    # d=Remote.gen_login('webserver')
+    # dataserver=Remote(d)
+    # dataserver.download('%s.png'%filep,GENDIR)
 
     # get plots
     paths=[
@@ -54,4 +58,5 @@ def gen_plot(p):
 
 
 if __name__ == '__main__':
+    print "Updating webpage"
     update_webpage()

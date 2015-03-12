@@ -11,11 +11,8 @@ def run_command(cmd):
                               stdin=subprocess.PIPE)
 
         out, err = p.communicate()
-        print err
-        print out
-
-
-
+        # print err
+        # print out
     except:
         print err
 

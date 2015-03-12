@@ -106,9 +106,11 @@ class Remote(object):
         d=self.d
         l=[]
         with settings(host_string=['host_string'],password=d['password']):
-            with cd(dir):
+            # with cd(dir):
+                print local
+                print lFiles
                 for f in lFiles:
-                    res=get(f)
+                    res=get(f,local)
                     if res.succeeded:
                         l.append()
         return l

@@ -29,7 +29,7 @@ class Supervisory():
         remote=Remote(d)
 
         lines=remote.execute("ps aux | grep python | grep -v grep",d['base_dir'])
-        lines=lines.split('\n')
+        lines=lines.splitlines()
         d={}
         # print res
 
@@ -81,7 +81,6 @@ class Supervisory():
 
     def restart(self,p):
         self.pids=self.get_all_pids()
-        print self.pids.keys()
         if p == 'trendnet.ini':
             remote=Remote(self.server)
             if p in self.pids.keys():
@@ -117,7 +116,7 @@ class Supervisory():
 if __name__ == '__main__':
     super=Supervisory()
     super.kill_all()
-    super.restart('scheduler.ini')
+    # super.restart('scheduler.ini')
     # print super.get_all_pids()
-    # super.restart_all()
-    super.restart('trendnet.ini')
+    super.restart_all()
+    # super.restart('trendnet.ini')

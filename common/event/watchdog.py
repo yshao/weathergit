@@ -1,8 +1,8 @@
-import datetime
+import time
+import re
 from common.env import Env
+from common.smaputils import SmapUtils
 from supervisory import Supervisory
-from remote import Remote
-# from common.smaputils import SmapUtils
 from event.disk_usage import diskmain
 from event.notify import send_event_email
 from common.sysutils import run_command
@@ -51,11 +51,15 @@ class Watchdog():
                 send_event_email('Restart service %s' % e)
 
 
-        if not self.check_measurements():
+        if not self.check_measurements('weather.ini'):
             ""
-            for e in l:
-                super.restart(e)
-                send_event_email('Restart service %s' % e)
+            super.restart('weather.ini')
+            send_event_email('Restart service %s' % 'weather.ini')
+
+        if not self.check_measurements('trendnet.ini'):
+            ""
+            super.restart('trendnet.ini')
+            send_event_email('Restart service %s' % 'trendnet.ini')
 
         if not self.check_disk():
             ""
@@ -77,8 +81,32 @@ class Watchdog():
             d=run_command('ping %s' % link)
             is_connected(d)
 
-    def check_measurements(self):
+    def check_measurements(self,target):
         ""
+        ### get current values###
+        su=SmapUtils()
+        lines=su.get_smap_time(target)
+        d={}
+        for l in lines:
+            sl=re.split(r' *', l)
+            d[sl[1]]={}
+            d[sl[1]]['time']=sl[0]
+            d[sl[1]]['mea']=sl[2]
+        import datetime
+        ###calc time diff###
+        for k in d.keys():
+            date_str=d[k]['time']
+            # print date_str
+            nd=date_str[0:-6]
+            td=date_str[-5:]
+
+            naive_dt = datetime.datetime.strptime(nd, '%Y-%m-%dT%H:%M:%S')
+            mea_tm= time.mktime(naive_dt.timetuple())
+            now_tm= time.mktime(datetime.datetime.now().timetuple())
+
+            if mea_tm - now_tm > 420:
+                return False
+
         return True
 
     def check_disk(self):
