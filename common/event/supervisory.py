@@ -1,7 +1,6 @@
 import re
 from common.env import Env
 from common.remote.remote import Remote
-# from smapserver.event.actions.notify import send_event_email
 
 __company__ = 'Boulder Environmental Sciences and Technology'
 __project__ = ''
@@ -115,8 +114,8 @@ class Supervisory():
 
 if __name__ == '__main__':
     super=Supervisory()
-    super.kill_all()
-    # super.restart('scheduler.ini')
+    # super.kill_all()
+    super.restart('scheduler.ini')
     # print super.get_all_pids()
-    super.restart_all()
+    # super.restart_all()
     # super.restart('trendnet.ini')

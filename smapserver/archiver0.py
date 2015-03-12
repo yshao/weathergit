@@ -1,4 +1,6 @@
+import datetime
 from fabric.context_managers import cd
+from common.smaputils import SmapUtils
 from remote import Remote
 import os
 import re
@@ -46,19 +48,28 @@ def archive_files():
     fidx=[]
 
 
-    curr_dt=get_timestamp()
-    for f in fidx:
-        sl.move(f,curr_dt)
+    # curr_dt=get_timestamp()
+    # for f in fidx:
+    #     sl.move(f,curr_dt)
 
-    tm=get_timestamp()
+    tm=get_current_time()
     remote=Remote(Remote.gen_login('dataserver'))
     remote.execute('mkdir %s'%tm)
 
+def get_current_time():
+    import time
+    su=SmapUtils()
+    d=su.get_smap_time_dict('trendnet.ini')
+    tm=d['/trendnet0/time']
+    date_str=tm
+    # print date_str
+    nd=date_str[0:-6]
+    td=date_str[-5:]
+    naive_dt = datetime.datetime.strptime(nd, '%Y-%m-%dT%H:%M:%S')
+    mea_tm= time.mktime(naive_dt.timetuple())
+    print mea_tm
 
-# p=os.getcwd()
-# print p
-#
-
+    return mea_tm
 def grep(path, regex):
     regObj = re.compile(regex)
     res = []

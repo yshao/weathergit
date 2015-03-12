@@ -19,22 +19,23 @@ import pickle
 class Watchdog():
     def __init__(self):
         ""
-        # print "Initializing"
+        print "Initializing"
         self.cfg=Env().getConfig()
+        self.superv=Supervisory()
         # self.update_status()
-        # print "Done Initializing"
+        print "Done Initializing"
 
     def update_status(self):
         self.watchdog()
 
         print "updating"
         txt1='\n'.join(diskmain())
-        print txt1
-        super=Supervisory()
-        txt2='\n'.join((super.get_all_pids()))
-        print txt2
+        # print txt1
+        # super=Supervisory()
+        txt2='\n'.join((self.pids))
+        # print txt2
         content='\n'.join([txt1,txt2])
-        print content
+        # print content
         send_event_email(content)
 
 
@@ -48,23 +49,25 @@ class Watchdog():
 
 
         ### find all the service is running
-        super=Supervisory()
-        d=super.get_all_pids()
-        l=['trendnet.ini','weather.ini','scheduler.ini']
-        for e in l:
-            if not e in d.keys():
-                super.restart(e)
-                send_event_email('Restart service %s' % e)
+        # super=Supervisory()
+        self.pids=self.superv.get_all_pids()
+        # print 'services found:'
+        # print d
+        # l=['trendnet.ini','weather.ini']
+        # for e in l:
+        #     if not e in d.keys():
+        #         super.restart(e)
+        #         send_event_email('Restart service %s' % e)
 
 
         if not self.check_measurements('weather.ini'):
             ""
-            super.restart('weather.ini')
+            self.superv.restart('weather.ini')
             send_event_email('Restart service %s' % 'weather.ini')
 
         if not self.check_measurements('trendnet.ini'):
             ""
-            super.restart('trendnet.ini')
+            self.superv.restart('trendnet.ini')
             send_event_email('Restart service %s' % 'trendnet.ini')
 
         if not self.check_disk():
@@ -110,6 +113,7 @@ class Watchdog():
             naive_dt = datetime.datetime.strptime(nd, '%Y-%m-%dT%H:%M:%S')
             mea_tm= time.mktime(naive_dt.timetuple())
             now_tm= time.mktime(datetime.datetime.now().timetuple())
+            print abs(now_tm - mea_tm)
             if abs(now_tm - mea_tm) > 420:
                 return False
 
@@ -122,10 +126,10 @@ class Watchdog():
 
 if __name__ == '__main__':
     dog=Watchdog()
-    dog.watchdog()
+    dog.update_status()
     # dog.check_measurements('weather.ini')
     # dog.check_measurements('trendnet.ini')
-    dog.check_network()
+    # dog.check_network()
 
 
 # def disk_level():
