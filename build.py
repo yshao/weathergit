@@ -1,5 +1,3 @@
-from best.common.sysutils import *
-from best.common.fileutils import *
 
 ### bbb with os ###
 
@@ -15,9 +13,6 @@ def build():
 
     :return:
     """
-
-from best.common.sysutils import *
-from best.common.fileutils import *
 
 ### build all ui
 folder="gui/ui"
